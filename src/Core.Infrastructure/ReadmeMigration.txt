@@ -1,0 +1,1 @@
+dotnet ef migrations add InitialMigration -s Core.API -p Core.Infrastructure -v

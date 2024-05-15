@@ -1,11 +1,24 @@
 version: '3.4'
 
 services:
-  rentalapp.core.api:
-    image: ${DOCKER_REGISTRY-}rentalappcoreapi
+  core.api:
+    image: ${DOCKER_REGISTRY-}coreapi
     build:
       context: .
-      dockerfile: src/RentalApp.Core.API/Dockerfile
+      dockerfile: src/Core.API/Dockerfile
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
   postgres:
     container_name: postgres_container
     image: postgres
@@ -42,5 +55,7 @@ networks:
     driver: bridge
 
 volumes:
+    rabbitmq_data:
+        driver: local
     postgres:
     pgadmin:
