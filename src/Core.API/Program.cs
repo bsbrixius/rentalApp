@@ -1,7 +1,6 @@
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core;
 using Core.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 
@@ -17,7 +16,9 @@ Log.Information("Configuring web host ({ApplicationContext})...", AppName);
 // Add services to the container.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
+
 builder.Services.AddDbContext<RentalAppContext>();
+
 //builder.Services.AddRabbitMqBroker();
 
 builder.Services.AddControllers();
@@ -34,7 +35,9 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<RentalAppContext>();
-        dbContext.Database.Migrate();
+        var listaDemoto = dbContext.Motorcycles.ToList();
+        //dbContext.Database.EnsureDeleted();
+        //dbContext.Database.EnsureCreated();
 
         //dbContext.TryInitializeDatabaseTables(app.Configuration);
         //dbContext.TrySeedDatabase(app.Configuration);

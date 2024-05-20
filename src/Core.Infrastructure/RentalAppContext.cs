@@ -7,7 +7,7 @@ namespace Core.Infrastructure
     public class RentalAppContext : DbContext
     {
         protected IConfiguration Configuration { get; }
-        public RentalAppContext(IConfiguration configuration)
+        public RentalAppContext(IConfiguration configuration, DbContextOptions<RentalAppContext> options) : base(options)
         {
             Configuration = configuration;
         }
