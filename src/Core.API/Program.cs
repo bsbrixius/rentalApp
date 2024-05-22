@@ -1,5 +1,7 @@
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core;
+using BuildingBlocks.API.Core.AutofacModules;
 using Core.Infrastructure;
 using Serilog;
 
@@ -13,7 +15,13 @@ Log.Information("Starting web host");
 Log.Information(builder.Environment.EnvironmentName);
 
 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
+
+
+//Autofac Modules
 // Add services to the container.
+var container = new ContainerBuilder();
+container.Populate(builder.Services);
+container.RegisterModule(new MediatorModule());
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 
@@ -35,9 +43,8 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<RentalAppContext>();
-        var listaDemoto = dbContext.Motorcycles.ToList();
-        //dbContext.Database.EnsureDeleted();
-        //dbContext.Database.EnsureCreated();
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.EnsureCreated();
 
         //dbContext.TryInitializeDatabaseTables(app.Configuration);
         //dbContext.TrySeedDatabase(app.Configuration);
