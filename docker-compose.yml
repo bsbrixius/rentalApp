@@ -12,6 +12,22 @@ services:
       - rabbitmq
       - postgres
     ports:
+      - "8090:8080"
+    networks:
+      - postgres
+
+  authentication.api:
+    image: ${DOCKER_REGISTRY-}authenticationapi
+    build:
+      context: .
+      dockerfile: src/Authentication.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      - rabbitmq
+      - postgres
+      - core.api
+    ports:
       - "8080:8080"
     networks:
       - postgres
