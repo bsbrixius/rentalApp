@@ -5,9 +5,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace Authentication.Infraestructure
 {
-    public class AuthenticationContext : IdentityDbContext<User>
+    public class AuthenticationContext : IdentityDbContext<User, Role, Guid>
     {
         public IConfiguration Configuration { get; }
+        const string _schema = "identity";
         public AuthenticationContext(IConfiguration configuration, DbContextOptions<AuthenticationContext> options) : base(options)
         {
             Configuration = configuration;
@@ -21,8 +22,12 @@ namespace Authentication.Infraestructure
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.HasDefaultSchema("identity");
+            builder.HasDefaultSchema(_schema);
+            builder.Entity<UserClaim>().ToTable("UserClaims");
+            builder.Entity<RoleClaim>().ToTable("RoleClaims");
+            builder.Entity<UserToken>().ToTable("UserTokens");
+            builder.Entity<UserLogin>().ToTable("UserLogins");
+            builder.Entity<User>().ToTable("Users");
         }
     }
 }
