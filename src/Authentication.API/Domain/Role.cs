@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Authentication.Domain.Domain
+namespace Authentication.API.Domain
 {
     public class Role : IdentityRole
     {

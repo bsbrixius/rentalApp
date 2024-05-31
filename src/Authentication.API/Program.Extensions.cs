@@ -1,5 +1,5 @@
-﻿using Authentication.Domain.Domain;
-using Authentication.Infraestructure;
+﻿using Authentication.API.Domain;
+using Authentication.API.Infraestructure;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
@@ -94,7 +94,7 @@ namespace Authentication.API
             {
                 Name = "RentalApp",
                 Email = "brunobrixius@outlook.com",
-                Url = new Uri("")
+                //Url = new Uri("")
             };
 
 
@@ -139,7 +139,7 @@ namespace Authentication.API
 
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddHttpContextAccessor();
             return services;
         }
 

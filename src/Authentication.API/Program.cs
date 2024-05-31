@@ -1,6 +1,6 @@
 using Authentication.API;
-using Authentication.Domain.Domain;
-using Authentication.Infraestructure;
+using Authentication.API.Domain;
+using Authentication.API.Infraestructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,9 +33,7 @@ if (app.Environment.IsDevelopment())
         var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
-
-        //dbContext.TryInitializeDatabaseTables(app.Configuration);
-        //dbContext.TrySeedDatabase(app.Configuration);
+        await dbContext.TrySeedDatabaseAsync();
     }
 
     app.UseSwagger();

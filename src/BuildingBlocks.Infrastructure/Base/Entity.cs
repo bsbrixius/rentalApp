@@ -23,14 +23,11 @@ namespace BuildingBlocks.Domain
                 _Id = value;
             }
         }
-        public DateTime CreatedAt { get; protected set; }
-        public DateTime? UpdatedAt { get; protected set; }
 
         private List<INotification> _domainEvents;
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
         protected Entity()
         {
-            CreatedAt = DateTime.UtcNow;
         }
 
 

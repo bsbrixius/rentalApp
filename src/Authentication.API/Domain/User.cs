@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Authentication.Domain.Domain
+namespace Authentication.API.Domain
 {
     public class User : IdentityUser
     {
@@ -9,7 +9,7 @@ namespace Authentication.Domain.Domain
             Id = Guid.NewGuid().ToString();
         }
 
-        public User(string username, string firstName, string lastName, DateOnly birthday, string email)
+        public User(string username, string firstName, string lastName, DateOnly birthday, string email, bool active = true)
         {
             Id = Guid.NewGuid().ToString();
             UserName = username;
@@ -20,10 +20,12 @@ namespace Authentication.Domain.Domain
             LastName = lastName;
             Birthday = birthday;
             SecurityStamp = Guid.NewGuid().ToString();
+            Active = active;
         }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateOnly? Birthday { get; set; }
+        public bool Active { get; set; }
     }
 }

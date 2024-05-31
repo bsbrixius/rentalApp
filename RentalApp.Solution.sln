@@ -59,11 +59,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portal", "Portal", "{8A4DEA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portal.API", "src\Portal.API\Portal.API.csproj", "{EC02083A-3B17-40C6-A4A3-1EC0AF82287E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication.Infraestructure", "src\Authentication.Infraestructure\Authentication.Infraestructure.csproj", "{40940151-6676-4BA7-92E2-A22B87EDE98E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crosscutting.DemoDatabaseInitialize", "src\Crosscutting.DemoDatabaseInitialize\Crosscutting.DemoDatabaseInitialize.csproj", "{062E7991-E5C4-4134-8663-6B94C7ECD33A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication.Domain", "src\Authentication.Domain\Authentication.Domain.csproj", "{AD35E9FE-9B9E-413C-B42D-A919B7E3F03D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crosscutting.DemoDatabaseInitialize", "src\Crosscutting.DemoDatabaseInitialize\Crosscutting.DemoDatabaseInitialize.csproj", "{062E7991-E5C4-4134-8663-6B94C7ECD33A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Security", "src\BuildingBlocks.Security\BuildingBlocks.Security.csproj", "{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,18 +129,14 @@ Global
 		{EC02083A-3B17-40C6-A4A3-1EC0AF82287E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC02083A-3B17-40C6-A4A3-1EC0AF82287E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC02083A-3B17-40C6-A4A3-1EC0AF82287E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40940151-6676-4BA7-92E2-A22B87EDE98E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40940151-6676-4BA7-92E2-A22B87EDE98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40940151-6676-4BA7-92E2-A22B87EDE98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40940151-6676-4BA7-92E2-A22B87EDE98E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD35E9FE-9B9E-413C-B42D-A919B7E3F03D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD35E9FE-9B9E-413C-B42D-A919B7E3F03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD35E9FE-9B9E-413C-B42D-A919B7E3F03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD35E9FE-9B9E-413C-B42D-A919B7E3F03D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{062E7991-E5C4-4134-8663-6B94C7ECD33A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{062E7991-E5C4-4134-8663-6B94C7ECD33A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{062E7991-E5C4-4134-8663-6B94C7ECD33A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{062E7991-E5C4-4134-8663-6B94C7ECD33A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -173,9 +167,8 @@ Global
 		{99C3A1E2-B92C-487E-B570-25577A273C0D} = {3C99AD81-F09C-4AEA-8EC1-A632C90B705A}
 		{8A4DEA37-55BA-44F1-86B5-4BF522EFE382} = {9E1F627D-FAFA-4478-A66E-478AC58E460F}
 		{EC02083A-3B17-40C6-A4A3-1EC0AF82287E} = {8A4DEA37-55BA-44F1-86B5-4BF522EFE382}
-		{40940151-6676-4BA7-92E2-A22B87EDE98E} = {98816EC0-B27C-491A-BA25-E63321D2C2E7}
-		{AD35E9FE-9B9E-413C-B42D-A919B7E3F03D} = {98816EC0-B27C-491A-BA25-E63321D2C2E7}
 		{062E7991-E5C4-4134-8663-6B94C7ECD33A} = {62A55332-48AE-4AB3-AA0F-8CED1EDBC64F}
+		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87} = {E1C9EE02-3467-4879-87A5-69EE5680171B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45E9873A-6D04-46BD-9631-9E49CC323C6D}
