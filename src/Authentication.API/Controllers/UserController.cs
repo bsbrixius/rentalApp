@@ -29,8 +29,22 @@ namespace Authentication.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetByIdAsync([FromRoute] string id)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] string id)
         {
+            var result = await _mediator.Send(new RegisterUserCommand
+            {
+                FirstName = registerUserDTO.FirstName,
+                LastName = registerUserDTO.LastName,
+                Username = registerUserDTO.Username,
+                Email = registerUserDTO.Email,
+                Password = registerUserDTO.Password,
+                BirthDay = registerUserDTO.BirthDay
+            });
+            if (result == null) return NoContent();
+
+            return Ok();
             //var user = await _userManager.FindByIdAsync(id);
             //if (user is null) throw new NotFoundException();
 

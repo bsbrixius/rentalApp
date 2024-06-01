@@ -1,5 +1,4 @@
 using Authentication.API;
-using Authentication.API.Domain;
 using Authentication.API.Infraestructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,7 +36,10 @@ if (app.Environment.IsDevelopment())
     }
 
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseReDoc(c =>
+    {
+        c.RoutePrefix = "swagger";
+    });
 }
 
 app.UseHttpsRedirection();
@@ -65,6 +67,6 @@ app.MapControllers();
 
 
 //TODO utilizar?
-app.MapIdentityApi<User>();
+//app.MapIdentityApi<User>();
 
 app.Run();

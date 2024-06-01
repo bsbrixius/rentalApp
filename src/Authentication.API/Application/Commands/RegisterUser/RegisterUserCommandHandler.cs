@@ -1,6 +1,6 @@
 ﻿using Authentication.API.Domain;
+using Authentication.API.Domain.Exceptions;
 using Authentication.API.Domain.Expections;
-using Authentication.API.Domain.Expections.User;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,7 +19,7 @@ namespace Authentication.API.Application.Commands.RegisterUser
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user != null)
-                throw new UserAlreadyExistsException($"User already exists with Email: ${request.Email}");
+                throw new UserDomainException($"User already exists with Email: ${request.Email}");
 
             if (!await _userManager.HasPasswordAsync(user))
             {

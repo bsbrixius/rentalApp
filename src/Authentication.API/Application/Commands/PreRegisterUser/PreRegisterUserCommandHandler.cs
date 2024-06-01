@@ -16,9 +16,7 @@ namespace Authentication.API.Application.Commands.PreRegisterUser
         {
             var newUser = new User
             {
-                UserName = request.Username,
-                FirstName = request.FirstName,
-                LastName = request.LastName
+                UserName = request.Username
             };
             var result = await _userManager.CreateAsync(newUser);
             if (result.Succeeded)
