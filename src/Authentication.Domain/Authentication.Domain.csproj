@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BuildingBlocks.EventSourcing\BuildingBlocks.EventSourcing.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.5" />
   </ItemGroup>
 
 </Project>

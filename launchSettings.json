@@ -4,8 +4,11 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "rentalapp.core.api": "StartDebugging",
-        "core.api": "StartDebugging"
+        "pgadmin": "StartWithoutDebugging",
+        "core.api": "StartDebugging",
+        "authentication.api": "StartDebugging",
+        "postgres": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging"
       }
     }
   }

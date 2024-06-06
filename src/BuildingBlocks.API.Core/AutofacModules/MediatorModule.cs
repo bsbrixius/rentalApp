@@ -12,18 +12,18 @@ namespace BuildingBlocks.API.Core.AutofacModules
                 .AsImplementedInterfaces();
 
             //Commands
-            var commands = Assembly
-                .GetExecutingAssembly()
+            var commandhandlers = Assembly
+                .GetEntryAssembly()
                 .GetTypes()
                 .Where(x =>
-                x.FullName.EndsWith($"Command") &&
+                x.FullName.EndsWith($"CommandHandler") &&
                 x.IsInterface == false)
                 .ToArray();
-            builder.RegisterTypes(commands).AsImplementedInterfaces();
+            builder.RegisterTypes(commandhandlers).AsImplementedInterfaces();
 
             //DomainEventHandlers
             var domainEventHandlers = Assembly
-                .GetExecutingAssembly()
+                .GetEntryAssembly()
                 .GetTypes()
                 .Where(x =>
                 x.FullName.EndsWith($"DomainEventHandler") &&
@@ -32,8 +32,8 @@ namespace BuildingBlocks.API.Core.AutofacModules
             builder.RegisterTypes(domainEventHandlers).AsImplementedInterfaces();
 
             //Validators
-            var validators = System.Reflection.Assembly
-                .GetExecutingAssembly()
+            var validators = Assembly
+                .GetEntryAssembly()
                 .GetTypes()
                 .Where(x => x.Name.EndsWith("Validator")).ToArray();
             builder.RegisterTypes(validators).AsImplementedInterfaces();

@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.Eventbus
+﻿namespace BuildingBlocks.Domain
 {
     public class Class1
     {

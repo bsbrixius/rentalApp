@@ -7,16 +7,12 @@ using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
 var AppName = typeof(Program).Assembly.FullName;
-
 builder.Host.AddSerilogCore();
-
 Log.Information("Starting web host");
 Log.Information(builder.Environment.EnvironmentName);
-
 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-
-
 //Autofac Modules
 // Add services to the container.
 var container = new ContainerBuilder();

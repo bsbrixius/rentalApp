@@ -1,4 +1,4 @@
-namespace Authentication.API
+namespace Portal.API
 {
     public class WeatherForecast
     {
