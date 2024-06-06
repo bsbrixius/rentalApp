@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.Security
+﻿namespace BuildingBlocks.Security.Data
 {
     public class JwtToken
     {

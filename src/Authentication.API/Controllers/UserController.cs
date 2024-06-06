@@ -3,7 +3,7 @@ using Authentication.API.Application.Commands.User.RegisterUser;
 using Authentication.API.Application.DTO.User;
 using Authentication.API.Application.Queries.User;
 using Authentication.API.Domain;
-using Authentication.API.Domain.Utils;
+using BuildingBlocks.Security.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -44,7 +44,7 @@ namespace Authentication.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest registerUserDTO)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDTO registerUserDTO)
         {
             await _mediator.Send(new RegisterUserCommand
             {
@@ -60,7 +60,7 @@ namespace Authentication.API.Controllers
 
         [HttpPost("pre-register")]
         [Authorize(Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserRequest preRegisterUserDTO)
+        public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserDTO preRegisterUserDTO)
         {
             var result = await _mediator.Send(new PreRegisterUserCommand
             {

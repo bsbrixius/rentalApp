@@ -14,19 +14,22 @@ namespace Authentication.API.Controllers
         private readonly IMediator _mediator;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        private readonly JwtUtils<User, Role> _jwtUtils;
+        private readonly JwtBuilder<User, Role> _jwtUtils;
+        private readonly JwtValidator _jwtValidator;
 
         public AuthController(
             IMediator mediator,
             SignInManager<User> signInManager,
             UserManager<User> userManager,
-            JwtUtils<User, Role> jwtUtils
+            JwtBuilder<User, Role> jwtUtils,
+            JwtValidator jwtValidator
             )
         {
             _mediator = mediator;
             _signInManager = signInManager;
             _userManager = userManager;
             _jwtUtils = jwtUtils;
+            _jwtValidator = jwtValidator;
         }
 
         [AllowAnonymous]
@@ -51,7 +54,7 @@ namespace Authentication.API.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshAsync([FromBody] string refreshToken)
         {
-            var result = await _jwtUtils.ValidateTokenAsync(refreshToken);
+            var result = await _jwtValidator.ValidateTokenAsync(refreshToken);
 
             if (!result.IsValid)
             {

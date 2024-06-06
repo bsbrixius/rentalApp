@@ -1,0 +1,14 @@
+﻿using BuildingBlocks.Infrastructure.Data;
+using Core.API.Application.Data.Repositories.Interfaces;
+using Core.API.Domain;
+using Core.Infrastructure;
+
+namespace Core.API.Application.Data.Repositories
+{
+    public class MotorcycleRepository : Repository<Motorcycle, CoreContext>, IMotorcycleRepository
+    {
+        public MotorcycleRepository(CoreContext context) : base(context)
+        {
+        }
+    }
+}

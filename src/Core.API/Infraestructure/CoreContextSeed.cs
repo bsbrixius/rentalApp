@@ -1,6 +1,6 @@
 ﻿namespace Core.API.Infraestructure
 {
-    public class RentalAppContextSeed
+    public class CoreContextSeed
     {
     }
 }

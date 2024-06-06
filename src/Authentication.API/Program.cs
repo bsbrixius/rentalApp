@@ -8,29 +8,25 @@ var builder = WebApplication.CreateBuilder(args);
 //Log.Information("Starting web host");
 //Log.Information(builder.Environment.EnvironmentName);
 //Log.Information("Configuring web host ({ApplicationContext})...", AppName);
+
 ////Autofac Modules
 builder.Host.UseAutofacIoC();
 
 
 var Configuration = builder.Configuration;
-
 builder.Services
-    //.AddIoC(Configuration)
     .AddWebAppConfiguration(Configuration)
     .AddHealthChecks(Configuration)
     .AddDbContext(Configuration)
     .AddServices(Configuration)
     .AddSecurity(Configuration)
     .AddSwagger(Configuration);
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //Log.Information("Applying migrations ({ApplicationContext})...", AppName);
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();

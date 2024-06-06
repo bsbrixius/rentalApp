@@ -5,16 +5,12 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.Security;
-using BuildingBlocks.Security.Settings;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
 using System.Text.Json;
 
 namespace Authentication.API
@@ -125,60 +121,25 @@ namespace Authentication.API
                     Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-        {
-            new OpenApiSecurityScheme {
-                Reference = new OpenApiReference {
-                    Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                }
-            },
-            new string[] {}
-        }
-    });
+                {
+                    new OpenApiSecurityScheme {
+                        Reference = new OpenApiReference {
+                            Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                    }
+                });
             });
-
-            //services.AddSwaggerGen(options =>
-            //{
-            //    options.SwaggerDoc("Portal", new OpenApiInfo
-            //    {
-            //        Title = "RentalApp Admin - HTTP API",
-            //        Version = "v1",
-            //        //Contact = contact
-            //    });
-
-            //    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-            //    {
-            //        Description = "Input the JWT like: Bearer {your token}",
-            //        Name = "Authorization",
-            //        Scheme = "Bearer",
-            //        BearerFormat = "JWT",
-            //        In = ParameterLocation.Header,
-            //        Type = SecuritySchemeType.Http
-            //    });
-
-            //    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            //    {
-            //        {
-            //            new OpenApiSecurityScheme
-            //            {
-            //                Reference = new OpenApiReference
-            //                {
-            //                    Type = ReferenceType.SecurityScheme,
-            //                    Id = "Bearer"
-            //                }
-            //            },
-            //            Array.Empty<string>()
-            //        }
-            //    });
-            //});
-
             return services;
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddHttpContextAccessor();
-            services.AddSingleton<JwtUtils<User, Role>>();
+            services.AddSingleton<JwtBuilder<User, Role>>();
+            services.AddSingleton<JwtValidator>();
             return services;
         }
 
@@ -203,37 +164,7 @@ namespace Authentication.API
         {
             //TODO Add policies
             services.AddAuthorization();
-
-            var jwtSettingsSection = configuration.GetSection("JwtSettings");
-            services.Configure<JwtSettings>(jwtSettingsSection);
-            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
-            if (jwtSettings == null) throw new Exception("JwtSettings not found in appsettings.json");
-            var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = true;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = jwtSettings.Audience,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-
-                };
-            });
-
-            //services.AddJwtAuthentication(configuration);
-            //services.AddAuthorization(PoliciesConfiguration.ConfigureAuthorization);
+            services.AddJwtAuthenticationConfiguration(configuration);
             return services;
         }
     }

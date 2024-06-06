@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Security.Settings;
+﻿using BuildingBlocks.Security.Data;
+using BuildingBlocks.Security.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -8,21 +9,17 @@ using System.Text;
 
 namespace BuildingBlocks.Security
 {
-    public class JwtUtils<TIdentityUser, TIdentityRole>
+    public class JwtBuilder<TIdentityUser, TIdentityRole>
                          where TIdentityUser : IdentityUser
                          where TIdentityRole : IdentityRole
     {
         private readonly UserManager<TIdentityUser> _userManager;
-        private readonly RoleManager<TIdentityRole> _roleManager;
         private readonly JwtSettings _jwtSettings;
-        private readonly JwtBuilderSettings _jwtBuilderSettings;
 
-        public JwtUtils(UserManager<TIdentityUser> userManager, RoleManager<TIdentityRole> roleManager, IOptions<JwtSettings> jwtSettings, IOptions<JwtBuilderSettings> jwtBuilderSettings)
+        public JwtBuilder(UserManager<TIdentityUser> userManager, IOptions<JwtSettings> jwtSettings)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _jwtSettings = jwtSettings.Value;
-            _jwtBuilderSettings = jwtBuilderSettings.Value;
         }
 
         public async Task<JwtToken> GetAccessAsync(string username)
@@ -114,24 +111,5 @@ namespace BuildingBlocks.Security
             else
                 await _userManager.AddClaimAsync(user, newLastRefreshTokenClaim);
         }
-
-        #region TokenValidation
-        public async Task<TokenValidationResult> ValidateTokenAsync(string token)
-        {
-            var handler = new JsonWebTokenHandler();
-
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey);
-            var result = await handler.ValidateTokenAsync(token, new TokenValidationParameters()
-            {
-                ValidIssuer = _jwtSettings.Issuer,
-                ValidAudience = _jwtSettings.Audience,
-                RequireSignedTokens = false,
-                IssuerSigningKey = new SymmetricSecurityKey(key)
-            });
-
-            return result;
-        }
-        #endregion
-
     }
 }

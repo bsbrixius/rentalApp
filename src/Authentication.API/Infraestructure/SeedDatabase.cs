@@ -1,5 +1,5 @@
 ﻿using Authentication.API.Domain;
-using Authentication.API.Domain.Utils;
+using BuildingBlocks.Security.Authorization;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

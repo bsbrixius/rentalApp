@@ -1,6 +1,6 @@
 ﻿namespace Authentication.API.Application.DTO.User
 {
-    public class RegisterUserRequest
+    public class RegisterUserDTO
     {
         public string Username { get; set; }
         public string Email { get; set; }

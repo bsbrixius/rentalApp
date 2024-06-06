@@ -1,6 +1,5 @@
-﻿namespace Authentication.API.Domain.Utils
+﻿namespace BuildingBlocks.Security.Authorization
 {
-
     public class UserRole
     {
         public static UserRole Admin => new UserRole(1, nameof(Admin));
