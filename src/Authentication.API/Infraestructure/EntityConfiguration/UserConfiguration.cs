@@ -1,4 +1,4 @@
-﻿using Authentication.Domain.Domain;
+﻿using Authentication.API.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

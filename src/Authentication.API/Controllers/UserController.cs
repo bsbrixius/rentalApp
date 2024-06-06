@@ -1,6 +1,7 @@
-﻿using Authentication.API.Application.Commands.PreRegisterUser;
-using Authentication.API.Application.Commands.RegisterUser;
+﻿using Authentication.API.Application.Commands.User.PreRegisterUser;
+using Authentication.API.Application.Commands.User.RegisterUser;
 using Authentication.API.Application.DTO.User;
+using Authentication.API.Application.Queries.User;
 using Authentication.API.Domain;
 using Authentication.API.Domain.Utils;
 using MediatR;
@@ -16,16 +17,19 @@ namespace Authentication.API.Controllers
         private readonly IMediator _mediator;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly IUserQueries _userQueries;
 
         public UserController(
             IMediator mediator,
             SignInManager<User> signInManager,
-            UserManager<User> userManager
+            UserManager<User> userManager,
+            IUserQueries userQueries
             )
         {
             _mediator = mediator;
             _signInManager = signInManager;
             _userManager = userManager;
+            _userQueries = userQueries;
         }
 
         [HttpGet("{id}")]
@@ -33,29 +37,14 @@ namespace Authentication.API.Controllers
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync([FromRoute] string id)
         {
-            var result = await _mediator.Send(new RegisterUserCommand
-            {
-                FirstName = registerUserDTO.FirstName,
-                LastName = registerUserDTO.LastName,
-                Username = registerUserDTO.Username,
-                Email = registerUserDTO.Email,
-                Password = registerUserDTO.Password,
-                BirthDay = registerUserDTO.BirthDay
-            });
+            var result = await _userQueries.GetByIdAsync(id);
             if (result == null) return NoContent();
-
-            return Ok();
-            //var user = await _userManager.FindByIdAsync(id);
-            //if (user is null) throw new NotFoundException();
-
-            //var roles = await _userManager.GetRolesAsync(user);
-
-            //return Ok(UserDTO.From(user, roles.First()));
+            return Ok(result);
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDTO registerUserDTO)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest registerUserDTO)
         {
             await _mediator.Send(new RegisterUserCommand
             {
@@ -71,7 +60,7 @@ namespace Authentication.API.Controllers
 
         [HttpPost("pre-register")]
         [Authorize(Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserDTO preRegisterUserDTO)
+        public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserRequest preRegisterUserDTO)
         {
             var result = await _mediator.Send(new PreRegisterUserCommand
             {

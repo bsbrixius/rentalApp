@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Authentication.API.Application.Commands.PreRegisterUser
+namespace Authentication.API.Application.Commands.User.PreRegisterUser
 {
     public class PreRegisterUserCommand : IRequest<string>
     {

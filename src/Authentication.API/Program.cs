@@ -9,17 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 //Log.Information(builder.Environment.EnvironmentName);
 //Log.Information("Configuring web host ({ApplicationContext})...", AppName);
 ////Autofac Modules
-//builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.UseAutofacIoC();
+
+
 var Configuration = builder.Configuration;
 
 builder.Services
-    .AddIoC(Configuration)
+    //.AddIoC(Configuration)
     .AddWebAppConfiguration(Configuration)
     .AddHealthChecks(Configuration)
     .AddDbContext(Configuration)
-    .AddSwagger(Configuration)
     .AddServices(Configuration)
-    .AddSecurity(Configuration);
+    .AddSecurity(Configuration)
+    .AddSwagger(Configuration);
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -32,14 +36,11 @@ if (app.Environment.IsDevelopment())
         var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
-        await dbContext.TrySeedDatabaseAsync();
+        await dbContext.TrySeedDatabaseAsync(scope.ServiceProvider);
     }
 
     app.UseSwagger();
-    app.UseReDoc(c =>
-    {
-        c.RoutePrefix = "swagger";
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -67,6 +68,6 @@ app.MapControllers();
 
 
 //TODO utilizar?
-//app.MapIdentityApi<User>();
+//app.MapGroup("api/auth").MapIdentityApi<User>();
 
 app.Run();

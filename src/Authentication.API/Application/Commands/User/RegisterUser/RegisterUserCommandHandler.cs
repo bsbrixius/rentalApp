@@ -1,16 +1,15 @@
-﻿using Authentication.API.Domain;
-using Authentication.API.Domain.Exceptions;
+﻿using Authentication.API.Domain.Exceptions;
 using Authentication.API.Domain.Expections;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Authentication.API.Application.Commands.RegisterUser
+namespace Authentication.API.Application.Commands.User.RegisterUser
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
     {
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<Domain.User> _userManager;
 
-        public RegisterUserCommandHandler(UserManager<User> userManager)
+        public RegisterUserCommandHandler(UserManager<Domain.User> userManager)
         {
             _userManager = userManager;
         }
@@ -28,8 +27,9 @@ namespace Authentication.API.Application.Commands.RegisterUser
                 if (!result.Succeeded)
                     throw new DomainException("Register password error: " + string.Join(';', result.Errors));
 
-                var jwtBuilder = new JwtBuilder<User, IdentityRole>(_userManager, _roleManager, _appJwtSettings, register.Email);
-                return Ok(await jwtBuilder.GenerateAccessAndRefreshToken());
+                //var jwtBuilder = new JwtBuilder<User, IdentityRole>(_userManager, _roleManager, _appJwtSettings, register.Email);
+                //return Ok(await jwtBuilder.GenerateAccessAndRefreshToken());
+                throw new NotImplementedException();
             }
         }
     }
