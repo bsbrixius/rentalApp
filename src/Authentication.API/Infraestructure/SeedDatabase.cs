@@ -2,7 +2,7 @@
 using BuildingBlocks.Security.Authorization;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Authentication.API.Infraestructure
@@ -21,45 +21,39 @@ namespace Authentication.API.Infraestructure
         {
             var bearerTokenOptions = serviceProvider.GetRequiredService<IOptionsMonitor<BearerTokenOptions>>();
 
-            var adminUser = new User("admin", "Admin", "Admin", new DateOnly(), "admin@rentalapp.com");
+            var adminUser = new User("admin-first-name", "admin-last-name", new DateOnly(), "admin@rentalapp.com");
             if (!context.Users.Any(x => x.Email == adminUser.Email))
             {
                 adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, "admin123");
-
-                var userStore = new UserStore<User, Role, AuthenticationContext>(context);
-                var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-
-                //var result = await userStore.CreateAsync(adminUser);
-                var result = await userManager.CreateAsync(adminUser, "admin123");
-
-                if (result.Succeeded)
-                {
-                    await userStore.AddToRoleAsync(adminUser, UserRole.Admin.NormalizedName);
-                }
+                var adminRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Admin.Name);
+                adminUser.Roles.Add(adminRole);
+                context.Users.Add(adminUser);
+                await context.SaveChangesAsync();
             }
         }
 
         private static async Task SeedRoles(AuthenticationContext context)
         {
-            var roleStore = new RoleStore<Role>(context);
+            //var roleStore = new RoleStore<Role>(context);
 
-            if (!context.Roles.Any(x => x.Name == UserRole.Admin.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.Admin.Name))
             {
-                var role = new Role() { Name = UserRole.Admin.Name, NormalizedName = UserRole.Admin.NormalizedName };
-                var result = await roleStore.CreateAsync(role);
+                var role = new Role(SystemRoles.Admin.Name);
+                var result = await context.AddAsync(role);
             }
 
-            if (!context.Roles.Any(x => x.Name == UserRole.CustomerService.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.CustomerService.Name))
             {
-                var role = new Role() { Name = UserRole.CustomerService.Name, NormalizedName = UserRole.CustomerService.NormalizedName };
-                var result = await roleStore.CreateAsync(role);
+                var role = new Role(SystemRoles.CustomerService.Name);
+                var result = await context.AddAsync(role);
             }
 
-            if (!context.Roles.Any(x => x.Name == UserRole.Driver.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.Driver.Name))
             {
-                var role = new Role() { Name = UserRole.Driver.Name, NormalizedName = UserRole.Driver.NormalizedName };
-                var result = await roleStore.CreateAsync(role);
+                var role = new Role(SystemRoles.Driver.Name);
+                var result = await context.AddAsync(role);
             }
+            await context.SaveChangesAsync();
         }
     }
 }

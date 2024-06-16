@@ -1,5 +1,5 @@
 ﻿using Authentication.API.Application.Commands.User.PreRegisterUser;
-using Authentication.API.Domain;
+using Authentication.API.Application.Settings;
 using Authentication.API.Infraestructure;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -7,11 +7,11 @@ using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.Security;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Authentication.API
 {
@@ -36,13 +36,14 @@ namespace Authentication.API
                 .AddApplicationPart(typeof(Program).Assembly)
                 .AddJsonOptions(options =>
                 {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
                 });
-            services.AddResponseCaching();
 
             //services.AddEndpointsApiExplorer();
 
+            services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
             services.Configure<ApiBehaviorOptions>(options => options.SuppressInferBindingSourcesForParameters = true);
 
             //services.AddFluentValidationAutoValidation();
@@ -69,21 +70,21 @@ namespace Authentication.API
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddIdentity<User, Role>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = false;
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequiredLength = 0;
-                options.Lockout.MaxFailedAccessAttempts = 5;
-            })
-                .AddEntityFrameworkStores<AuthenticationContext>()
-                .AddApiEndpoints()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<User, Role>(options =>
+            //{
+            //    options.User.RequireUniqueEmail = true;
+            //    options.SignIn.RequireConfirmedEmail = false;
+            //    options.Password.RequireDigit = true;
+            //    options.Password.RequireLowercase = false;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequiredUniqueChars = 0;
+            //    options.Password.RequiredLength = 0;
+            //    options.Lockout.MaxFailedAccessAttempts = 5;
+            //})
+            //    .AddEntityFrameworkStores<AuthenticationContext>()
+            //    .AddApiEndpoints()
+            //    .AddDefaultTokenProviders();
 
             // Add services to the container.
             services.AddDbContext<AuthenticationContext>();
@@ -137,8 +138,9 @@ namespace Authentication.API
 
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddResponseCaching();
             services.AddHttpContextAccessor();
-            services.AddSingleton<JwtBuilder<User, Role>>();
+            services.AddSingleton<JwtBuilder>();
             services.AddSingleton<JwtValidator>();
             return services;
         }

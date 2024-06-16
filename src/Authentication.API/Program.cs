@@ -1,5 +1,6 @@
 using Authentication.API;
 using Authentication.API.Infraestructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();
+        var usuarios = dbContext.Users.AsQueryable().Include(x => x.Roles).FirstOrDefault();
+        var roles = usuarios.Roles;
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
         await dbContext.TrySeedDatabaseAsync(scope.ServiceProvider);

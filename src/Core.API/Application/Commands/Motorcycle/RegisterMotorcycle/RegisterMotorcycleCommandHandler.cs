@@ -1,4 +1,4 @@
-﻿using Core.API.Application.Data.Repositories.Interfaces;
+﻿using Core.API.Application.Data.Repositories;
 using MediatR;
 
 namespace Core.API.Application.Commands.Motorcycle.RegisterMotorcycle

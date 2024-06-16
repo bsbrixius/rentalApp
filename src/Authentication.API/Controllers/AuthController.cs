@@ -14,14 +14,14 @@ namespace Authentication.API.Controllers
         private readonly IMediator _mediator;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        private readonly JwtBuilder<User, Role> _jwtUtils;
+        private readonly JwtBuilder _jwtUtils;
         private readonly JwtValidator _jwtValidator;
 
         public AuthController(
             IMediator mediator,
             SignInManager<User> signInManager,
             UserManager<User> userManager,
-            JwtBuilder<User, Role> jwtUtils,
+            JwtBuilder jwtUtils,
             JwtValidator jwtValidator
             )
         {
@@ -78,9 +78,9 @@ namespace Authentication.API.Controllers
                 return Unauthorized();
             }
 
-            if (user.LockoutEnabled)
-                if (user.LockoutEnd < DateTime.Now)
-                    return Forbid();
+            //if (user.LockoutEnabled)
+            //    if (user.LockoutEnd < DateTime.Now)
+            //        return Forbid();
 
             return Ok(await _jwtUtils.GetAccessAsync(email));
         }

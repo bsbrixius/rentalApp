@@ -25,8 +25,8 @@ namespace BuildingBlocks.Domain
             }
         }
 
-        private List<DomainEvent> _domainEvents;
-        public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
+        private List<DomainEvent> _domainEvents = new List<DomainEvent>();
+        public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
         protected Entity()
         {
             _Id = Guid.NewGuid();

@@ -1,36 +1,35 @@
-﻿using Authentication.API.Domain.Exceptions;
-using Authentication.API.Domain.Expections;
+﻿using Authentication.API.Application.Data.Repositories;
+using Authentication.API.Domain.Exceptions;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace Authentication.API.Application.Commands.User.RegisterUser
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
     {
-        private readonly UserManager<Domain.User> _userManager;
+        private readonly IUserRepository _userRepository;
 
-        public RegisterUserCommandHandler(UserManager<Domain.User> userManager)
+        public RegisterUserCommandHandler(IUserRepository userRepository)
         {
-            _userManager = userManager;
+            _userRepository = userRepository;
         }
 
         public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userRepository.FindByEmailAsync(request.Email);
             if (user != null)
                 throw new UserDomainException($"User already exists with Email: ${request.Email}");
 
-            if (!await _userManager.HasPasswordAsync(user))
-            {
-                var result = await _userManager.AddPasswordAsync(user, request.Password);
+            //if (!await _userManager.HasPasswordAsync(user))
+            //{
+            var success = await _userRepository.AddPasswordAsync(user, request.Password);
 
-                if (!result.Succeeded)
-                    throw new DomainException("Register password error: " + string.Join(';', result.Errors));
+            //if (success)
+            //    throw new DomainException("Register password error: " + string.Join(';', success.Errors));
 
-                //var jwtBuilder = new JwtBuilder<User, IdentityRole>(_userManager, _roleManager, _appJwtSettings, register.Email);
-                //return Ok(await jwtBuilder.GenerateAccessAndRefreshToken());
-                throw new NotImplementedException();
-            }
+            //var jwtBuilder = new JwtBuilder<User, IdentityRole>(_userManager, _roleManager, _appJwtSettings, register.Email);
+            //return Ok(await jwtBuilder.GenerateAccessAndRefreshToken());
+            throw new NotImplementedException();
+            //}
         }
     }
 }

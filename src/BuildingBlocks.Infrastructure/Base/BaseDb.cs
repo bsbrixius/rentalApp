@@ -25,13 +25,22 @@ namespace BuildingBlocks.Infrastructure.Base
 
             //modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
-        public override int SaveChanges()
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             ValidateEntities();
-            var savedEntities = base.SaveChanges();
-            PublishDomainEvents().Wait();
+            var savedEntities = await base.SaveChangesAsync(cancellationToken);
+            await PublishDomainEvents();
             return savedEntities;
         }
+
+        //public override int SaveChanges()
+        //{
+        //    ValidateEntities();
+        //    var savedEntities = base.SaveChanges();
+        //    PublishDomainEvents().Wait();
+        //    return savedEntities;
+        //}
 
         private async Task PublishDomainEvents()
         {

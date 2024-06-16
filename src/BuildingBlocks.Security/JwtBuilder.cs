@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Security.Data;
+using BuildingBlocks.Security.Domain;
 using BuildingBlocks.Security.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -9,14 +10,12 @@ using System.Text;
 
 namespace BuildingBlocks.Security
 {
-    public class JwtBuilder<TIdentityUser, TIdentityRole>
-                         where TIdentityUser : IdentityUser
-                         where TIdentityRole : IdentityRole
+    public class JwtBuilder
     {
-        private readonly UserManager<TIdentityUser> _userManager;
+        private readonly UserManager<UserBase> _userManager;
         private readonly JwtSettings _jwtSettings;
 
-        public JwtBuilder(UserManager<TIdentityUser> userManager, IOptions<JwtSettings> jwtSettings)
+        public JwtBuilder(UserManager<UserBase> userManager, IOptions<JwtSettings> jwtSettings)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
@@ -24,7 +23,7 @@ namespace BuildingBlocks.Security
 
         public async Task<JwtToken> GetAccessAsync(string username)
         {
-            var user = _userManager.Users.Where(x => x.NormalizedUserName == username.ToUpper()).FirstOrDefault();
+            var user = _userManager.Users.Where(x => x.Email == username.ToLower()).FirstOrDefault();
             if (user == null) throw new Exception($"User with username {username} not found.");
             var userRoles = await _userManager.GetRolesAsync(user);
             return new JwtToken()
@@ -32,16 +31,16 @@ namespace BuildingBlocks.Security
                 User = new JwtToken.UserData
                 {
                     Id = user.Id.ToString(),
-                    Email = user.NormalizedEmail,
+                    Email = user.Email,
                     Roles = userRoles.Select(x => x).ToList()
                 },
                 AcessToken = await GenerateAccessTokenAsync(user, userRoles),
-                RefreshToken = await GenerateRefreshTokenAsync(user, user.NormalizedEmail),
+                RefreshToken = await GenerateRefreshTokenAsync(user, user.Email),
                 Expires = DateTime.UtcNow.AddHours(_jwtSettings.Expiration)
             };
         }
 
-        private async Task<string> GenerateAccessTokenAsync(TIdentityUser user, IList<string> userRoles)
+        private async Task<string> GenerateAccessTokenAsync(UserBase user, IList<string> userRoles)
         {
             var claims = new ClaimsIdentity();
             claims.AddClaims(await _userManager.GetClaimsAsync(user));
@@ -53,8 +52,9 @@ namespace BuildingBlocks.Security
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), ClaimValueTypes.Integer64));
 
             var tokenHandler = new JsonWebTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey);
-            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = _jwtSettings.Issuer,
                 Audience = _jwtSettings.Audience,
@@ -64,12 +64,12 @@ namespace BuildingBlocks.Security
                 IssuedAt = DateTime.UtcNow,
                 TokenType = "at+jwt",
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            });
-
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
             return token;
         }
 
-        private async Task<string> GenerateRefreshTokenAsync(TIdentityUser user, string email)
+        private async Task<string> GenerateRefreshTokenAsync(UserBase user, string email)
         {
 
             var jti = Guid.NewGuid().ToString();
@@ -79,7 +79,7 @@ namespace BuildingBlocks.Security
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Jti, jti));
 
             var tokenHandler = new JsonWebTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey);
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = _jwtSettings.Issuer,
@@ -98,7 +98,7 @@ namespace BuildingBlocks.Security
             return token;
         }
 
-        private async Task UpdateLastGeneratedClaimAsync(TIdentityUser user, string jti)
+        private async Task UpdateLastGeneratedClaimAsync(UserBase user, string jti)
         {
             var claims = await _userManager.GetClaimsAsync(user);
 

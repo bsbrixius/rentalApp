@@ -59,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crosscutting.DemoDatabaseIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks.Security", "src\BuildingBlocks.Security\BuildingBlocks.Security.csproj", "{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Utils", "src\BuildingBlocks.Utils\BuildingBlocks.Utils.csproj", "{BDA230D0-4383-4622-9478-3B5183AA77D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDA230D0-4383-4622-9478-3B5183AA77D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDA230D0-4383-4622-9478-3B5183AA77D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDA230D0-4383-4622-9478-3B5183AA77D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDA230D0-4383-4622-9478-3B5183AA77D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,6 +161,7 @@ Global
 		{EC02083A-3B17-40C6-A4A3-1EC0AF82287E} = {8A4DEA37-55BA-44F1-86B5-4BF522EFE382}
 		{062E7991-E5C4-4134-8663-6B94C7ECD33A} = {62A55332-48AE-4AB3-AA0F-8CED1EDBC64F}
 		{2F70CCB5-FDE2-4EBD-87FB-BD3C8E101D87} = {E1C9EE02-3467-4879-87A5-69EE5680171B}
+		{BDA230D0-4383-4622-9478-3B5183AA77D4} = {E1C9EE02-3467-4879-87A5-69EE5680171B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45E9873A-6D04-46BD-9631-9E49CC323C6D}

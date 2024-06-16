@@ -1,18 +1,27 @@
 ﻿using Authentication.API.Domain;
+using Authentication.API.Infraestructure.EntityConfiguration;
 using BuildingBlocks.Infrastructure.Base;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.API.Infraestructure
 {
-    public class AuthenticationContext : IdentityDbContext<User, Role, string>
+    public class AuthenticationContext : BaseDb
     {
         public IConfiguration Configuration { get; }
         const string _schema = "identity";
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthenticationContext(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, DbContextOptions<AuthenticationContext> options) : base(options)
+        public AuthenticationContext(
+            IMediator mediator,
+            ILogger<DbContext> logger,
+            IHttpContextAccessor httpContextAccessor,
+            IConfiguration configuration,
+            DbContextOptions<AuthenticationContext> options
+            ) : base(mediator, logger, options)
         {
+            ArgumentNullException.ThrowIfNull(httpContextAccessor);
+            ArgumentNullException.ThrowIfNull(configuration);
             _httpContextAccessor = httpContextAccessor;
             Configuration = configuration;
         }
@@ -23,6 +32,7 @@ namespace Authentication.API.Infraestructure
         public DbSet<RoleClaim> RoleClaims { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }
         public DbSet<UserLogin> UserLogins { get; set; }
+        //public DbSet<UserRole> UserRoles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
@@ -32,12 +42,17 @@ namespace Authentication.API.Infraestructure
         {
             base.OnModelCreating(builder);
             builder.HasDefaultSchema(_schema);
-            builder.Entity<User>().ToTable("Users");
-            builder.Entity<UserClaim>().ToTable("UserClaims");
-            builder.Entity<Role>().ToTable("Roles");
-            builder.Entity<RoleClaim>().ToTable("RoleClaims");
-            builder.Entity<UserToken>().ToTable("UserTokens");
-            builder.Entity<UserLogin>().ToTable("UserLogins");
+            //builder.Entity<User>().ToTable("Users");
+            //builder.Entity<UserClaim>().ToTable("UserClaims");
+            //builder.Entity<Role>().ToTable("Roles");
+            //builder.Entity<RoleClaim>().ToTable("RoleClaims");
+            //builder.Entity<UserToken>().ToTable("UserTokens");
+            //builder.Entity<UserLogin>().ToTable("UserLogins");
+            //builder.Entity<UserRole>().ToTable("UserRoles");
+
+            builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new UserRoleConfiguration());
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {

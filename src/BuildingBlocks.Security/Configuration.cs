@@ -12,19 +12,21 @@ namespace BuildingBlocks.Security
 
         public static IServiceCollection AddJwtAuthenticationConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettingsSection = configuration.GetSection("JwtSettings");
-            services.Configure<JwtSettings>(jwtSettingsSection);
-            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
-            if (jwtSettings == null) throw new Exception("JwtSettings not found in appsettings.json");
-            var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
+            var appSettingsSection = configuration.GetSection("JwtSettings");
+            services.Configure<JwtSettings>(appSettingsSection);
+
+            var jwtSettings = appSettingsSection.Get<JwtSettings>();
+            if (jwtSettings == null) throw new ArgumentNullException(nameof(jwtSettings));
+            var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
 
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+            })
+            .AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = true;
+                x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -36,7 +38,6 @@ namespace BuildingBlocks.Security
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
-
                 };
             });
 

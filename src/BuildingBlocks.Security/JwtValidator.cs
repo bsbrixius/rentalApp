@@ -17,7 +17,7 @@ namespace BuildingBlocks.Security
         {
             var handler = new JsonWebTokenHandler();
 
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey);
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var result = await handler.ValidateTokenAsync(token, new TokenValidationParameters()
             {
                 ValidIssuer = _jwtSettings.Issuer,

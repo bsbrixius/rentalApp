@@ -1,30 +1,28 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Authentication.API.Application.Data.Repositories;
+using Authentication.API.Domain;
+using MediatR;
 
 namespace Authentication.API.Application.Commands.User.PreRegisterUser
 {
-    public class PreRegisterUserCommandHandler : IRequestHandler<PreRegisterUserCommand, string>
+    public class PreRegisterUserCommandHandler : IRequestHandler<PreRegisterUserCommand, Guid>
     {
-        private readonly UserManager<Domain.User> _userManager;
+        private readonly IUserRepository _userRepository;
 
-        public PreRegisterUserCommandHandler(UserManager<Domain.User> userManager)
+        public PreRegisterUserCommandHandler(IUserRepository userRepository)
         {
-            _userManager = userManager;
+            _userRepository = userRepository;
         }
-        public async Task<string> Handle(PreRegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(PreRegisterUserCommand request, CancellationToken cancellationToken)
         {
             var newUser = new Domain.User
             {
-                UserName = request.Username
+                Email = request.Email,
+                Roles = new List<Role> { new Role(request.Role) }
             };
-            var result = await _userManager.CreateAsync(newUser);
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(newUser, request.Role);
-                return newUser.Id;
-            }
-            //TODO implementar Errors
-            return null;
+
+            var result = await _userRepository.AddAsync(newUser);
+
+            return result;
         }
     }
 }

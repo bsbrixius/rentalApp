@@ -19,7 +19,7 @@ namespace Core.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = nameof(UserRole.Admin))]
+        [Authorize(Roles = nameof(SystemRoles.Admin))]
         public async Task<IActionResult> PostAsync([FromBody] RegisterMotorcycleDTO registerMotorcycleDTO)
         {
             await _mediator.Send(new RegisterMotorcycleCommand
