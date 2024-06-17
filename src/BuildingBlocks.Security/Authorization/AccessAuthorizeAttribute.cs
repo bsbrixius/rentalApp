@@ -1,30 +1,43 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace NeoLabs.Security.Authorization
 {
-    //TODO - Utilizar autenticador custom para ter maior controle sobre acesso aos controllers
     public class AccessAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
-        public string Roles { get; set; }
-        public string Context { get; set; }
-        public bool Read { get; set; }
-        public bool Write { get; set; }
-        public bool Manage { get; set; }
-        public bool Execute { get; set; }
-        public bool Delete { get; set; }
+        private readonly IList<string> _systemRoles;
+
+        //public string Roles { get; set; }
+        //public string Context { get; set; }
+        //public bool Read { get; set; }
+        //public bool Write { get; set; }
+        //public bool Manage { get; set; }
+        //public bool Execute { get; set; }
+        //public bool Delete { get; set; }
+        public AccessAuthorizeAttribute(params string[] systemRoles)
+        {
+            _systemRoles = systemRoles ?? [];
+        }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            if (context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any()) return;
+
             if (context.HttpContext.User.Identity.IsAuthenticated == false)
             {
                 context.Result = new UnauthorizedResult();
                 return;
             }
+
+            // authorization
+            //var account = (Account)context.HttpContext.Items["Account"];
+            //if (account == null || (_roles.Any() && !_roles.Contains(account.Role)))
+            //{
+            //    // not logged in or role not authorized
+            //    context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+            //}
 
             var userRoles = context.HttpContext.User.Claims.Where(x => x.Type == ClaimTypes.Role).FirstOrDefault().Value;
             if (userRoles.ToLower().Contains("admin"))
@@ -34,41 +47,41 @@ namespace NeoLabs.Security.Authorization
             {
 
             }
-            if (Context == null)
-            {
-                var controllerActionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-                Context = controllerActionDescriptor.ControllerName ?? string.Empty;
-            }
+            //if (Context == null)
+            //{
+            //    var controllerActionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            //    Context = controllerActionDescriptor.ControllerName ?? string.Empty;
+            //}
 
             //var contextPermissionFromToken = context.HttpContext.User.Claims
             //    .Where(x => x.Type == $"{Context}-{ContextPermissions.ContextPermission}").FirstOrDefault()?.Value;
 
-            var contextPermissionFromToken = context.HttpContext.User.Claims
-                .Where(x => x.Type == $"contextPermission").FirstOrDefault()?.Value;
+            //var contextPermissionFromToken = context.HttpContext.User.Claims
+            //    .Where(x => x.Type == $"contextPermission").FirstOrDefault()?.Value;
 
-            if (contextPermissionFromToken == null)
-            {
-                context.Result = new UnauthorizedResult();
-                return;
-            }
+            //if (contextPermissionFromToken == null)
+            //{
+            //    context.Result = new UnauthorizedResult();
+            //    return;
+            //}
 
-            if (!Read && !Write && !Manage && !Execute && !Delete)
-            {
-                return;
-            }
+            //if (!Read && !Write && !Manage && !Execute && !Delete)
+            //{
+            //    return;
+            //}
 
-            var contextPermission = JsonSerializer.Deserialize<List<ContextPermissionDto>>(contextPermissionFromToken)
-                .FirstOrDefault(x => x.Context == Context);
+            //var contextPermission = JsonSerializer.Deserialize<List<ContextPermissionDto>>(contextPermissionFromToken)
+            //    .FirstOrDefault(x => x.Context == Context);
 
-            if (Read && !contextPermission.Read ||
-                Write && !contextPermission.Write ||
-                Manage && !contextPermission.Manage ||
-                Execute && !contextPermission.Execute ||
-                Delete && !contextPermission.Delete)
-            {
-                context.Result = new UnauthorizedResult();
-                return;
-            }
+            //if (Read && !contextPermission.Read ||
+            //    Write && !contextPermission.Write ||
+            //    Manage && !contextPermission.Manage ||
+            //    Execute && !contextPermission.Execute ||
+            //    Delete && !contextPermission.Delete)
+            //{
+            //    context.Result = new UnauthorizedResult();
+            //    return;
+            //}
             return;
 
             context.Result = new UnauthorizedResult();

@@ -25,7 +25,7 @@ namespace Authentication.API.Infraestructure
             if (!context.Users.Any(x => x.Email == adminUser.Email))
             {
                 adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, "admin123");
-                var adminRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Admin.Name);
+                var adminRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Admin);
                 adminUser.Roles.Add(adminRole);
                 context.Users.Add(adminUser);
                 await context.SaveChangesAsync();
@@ -36,21 +36,21 @@ namespace Authentication.API.Infraestructure
         {
             //var roleStore = new RoleStore<Role>(context);
 
-            if (!context.Roles.Any(x => x.Name == SystemRoles.Admin.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.Admin))
             {
-                var role = new Role(SystemRoles.Admin.Name);
+                var role = new Role(SystemRoles.Admin);
                 var result = await context.AddAsync(role);
             }
 
-            if (!context.Roles.Any(x => x.Name == SystemRoles.CustomerService.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.CustomerService))
             {
-                var role = new Role(SystemRoles.CustomerService.Name);
+                var role = new Role(SystemRoles.CustomerService);
                 var result = await context.AddAsync(role);
             }
 
-            if (!context.Roles.Any(x => x.Name == SystemRoles.Driver.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.Driver))
             {
-                var role = new Role(SystemRoles.Driver.Name);
+                var role = new Role(SystemRoles.Driver);
                 var result = await context.AddAsync(role);
             }
             await context.SaveChangesAsync();

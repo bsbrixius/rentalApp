@@ -1,7 +1,7 @@
-﻿using BuildingBlocks.Security.Data;
+﻿using BuildingBlocks.Identity.Services;
+using BuildingBlocks.Security.Data;
 using BuildingBlocks.Security.Domain;
 using BuildingBlocks.Security.Settings;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -10,41 +10,44 @@ using System.Text;
 
 namespace BuildingBlocks.Security
 {
-    public class JwtBuilder
-    {
-        private readonly UserManager<UserBase> _userManager;
-        private readonly JwtSettings _jwtSettings;
+    public class JwtBuilder<TUser>
+        where TUser : UserBase
 
-        public JwtBuilder(UserManager<UserBase> userManager, IOptions<JwtSettings> jwtSettings)
+    {
+        private readonly JwtSettings _jwtSettings;
+        private readonly IUserService<TUser> _userService;
+
+        public JwtBuilder(
+            IUserService<TUser> userService,
+            IOptions<JwtSettings> jwtSettings)
         {
-            _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
+            _userService = userService;
         }
 
-        public async Task<JwtToken> GetAccessAsync(string username)
+        public async Task<JwtToken> CreateAccessAsync(string email)
         {
-            var user = _userManager.Users.Where(x => x.Email == username.ToLower()).FirstOrDefault();
-            if (user == null) throw new Exception($"User with username {username} not found.");
-            var userRoles = await _userManager.GetRolesAsync(user);
+            ArgumentNullException.ThrowIfNull(email);
+            var user = await _userService.FindByEmailAsync(email);
             return new JwtToken()
             {
                 User = new JwtToken.UserData
                 {
                     Id = user.Id.ToString(),
                     Email = user.Email,
-                    Roles = userRoles.Select(x => x).ToList()
+                    Roles = user.Roles.Select(x => x.Name).ToList()
                 },
-                AcessToken = await GenerateAccessTokenAsync(user, userRoles),
+                AcessToken = await GenerateAccessTokenAsync(user),//, roles, userClaims),
                 RefreshToken = await GenerateRefreshTokenAsync(user, user.Email),
                 Expires = DateTime.UtcNow.AddHours(_jwtSettings.Expiration)
             };
         }
 
-        private async Task<string> GenerateAccessTokenAsync(UserBase user, IList<string> userRoles)
+        private async Task<string> GenerateAccessTokenAsync(TUser user)//, IList<string> roles, params Claim[] userClaims)
         {
             var claims = new ClaimsIdentity();
-            claims.AddClaims(await _userManager.GetClaimsAsync(user));
-            claims.AddClaims(userRoles.Select(s => new Claim("role", s)));
+            claims.AddClaims(user.UserClaims.Select(x => new Claim(x.ClaimType, x.ClaimValue)).ToList());
+            claims.AddClaims(user.Roles.Select(x => new Claim("role", x.Name)).ToList());
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
@@ -69,7 +72,7 @@ namespace BuildingBlocks.Security
             return token;
         }
 
-        private async Task<string> GenerateRefreshTokenAsync(UserBase user, string email)
+        private async Task<string> GenerateRefreshTokenAsync(TUser user, string email)
         {
 
             var jti = Guid.NewGuid().ToString();
@@ -98,18 +101,16 @@ namespace BuildingBlocks.Security
             return token;
         }
 
-        private async Task UpdateLastGeneratedClaimAsync(UserBase user, string jti)
+        private async Task UpdateLastGeneratedClaimAsync(TUser user, string jti, params Claim[] userClaims)
         {
-            var claims = await _userManager.GetClaimsAsync(user);
-
             var newLastRefreshTokenClaim = new Claim("LastRefreshToken", jti);
 
-            var lastRefreshTokenClaim = claims.FirstOrDefault(f => f.Type == "LastRefreshToken");
+            var lastRefreshTokenClaim = userClaims.FirstOrDefault(f => f.Type == "LastRefreshToken");
 
             if (lastRefreshTokenClaim != null)
-                await _userManager.ReplaceClaimAsync(user, lastRefreshTokenClaim, newLastRefreshTokenClaim);
+                await _userService.ReplaceClaimAsync(user, lastRefreshTokenClaim, newLastRefreshTokenClaim);
             else
-                await _userManager.AddClaimAsync(user, newLastRefreshTokenClaim);
+                await _userService.AddClaimAsync(user, newLastRefreshTokenClaim);
         }
     }
 }

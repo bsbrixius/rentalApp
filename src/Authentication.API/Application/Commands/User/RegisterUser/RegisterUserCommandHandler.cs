@@ -1,27 +1,27 @@
-﻿using Authentication.API.Application.Data.Repositories;
-using Authentication.API.Domain.Exceptions;
+﻿using Authentication.API.Domain.Exceptions;
+using BuildingBlocks.Identity.Services;
 using MediatR;
 
 namespace Authentication.API.Application.Commands.User.RegisterUser
 {
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService<Domain.User> _userService;
 
-        public RegisterUserCommandHandler(IUserRepository userRepository)
+        public RegisterUserCommandHandler(IUserService<Domain.User> userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.FindByEmailAsync(request.Email);
+            var user = await _userService.FindByEmailAsync(request.Email);
             if (user != null)
                 throw new UserDomainException($"User already exists with Email: ${request.Email}");
 
             //if (!await _userManager.HasPasswordAsync(user))
             //{
-            var success = await _userRepository.AddPasswordAsync(user, request.Password);
+            var success = await _userService.AddPasswordAsync(user, request.Password);
 
             //if (success)
             //    throw new DomainException("Register password error: " + string.Join(';', success.Errors));

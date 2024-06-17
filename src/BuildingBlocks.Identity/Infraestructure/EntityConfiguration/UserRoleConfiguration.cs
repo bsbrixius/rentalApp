@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Authentication.API.Infraestructure.EntityConfiguration
 {
-    public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
+    internal class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {

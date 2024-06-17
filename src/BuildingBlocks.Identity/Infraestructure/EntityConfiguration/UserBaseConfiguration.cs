@@ -1,22 +1,14 @@
 ﻿using Authentication.API.Domain;
+using BuildingBlocks.Security.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Authentication.API.Infraestructure.EntityConfiguration
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    internal class UserBaseConfiguration : IEntityTypeConfiguration<UserBase>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<UserBase> builder)
         {
-            builder.Property(p => p.FirstName)
-                .HasMaxLength(50)
-                .IsRequired();
-            builder.Property(p => p.LastName)
-                .HasMaxLength(50)
-                .IsRequired();
-            builder.Property(p => p.Birthday)
-            .IsRequired();
-
             builder.HasMany(e => e.Roles)
                 .WithMany(e => e.Users)
                 .UsingEntity<UserRole>(
@@ -25,7 +17,7 @@ namespace Authentication.API.Infraestructure.EntityConfiguration
                     .WithMany()
                     .HasForeignKey(nameof(UserRole.RoleId)),
                 j => j
-                    .HasOne<User>()
+                    .HasOne<UserBase>()
                     .WithMany()
                     .HasForeignKey(nameof(UserRole.UserId)),
                 j =>

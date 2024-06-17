@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NeoLabs.Security.Authorization;
 
 namespace Authentication.API.Controllers
 {
@@ -59,7 +60,7 @@ namespace Authentication.API.Controllers
         }
 
         [HttpPost("pre-register")]
-        [Authorize(Roles = nameof(SystemRoles.Admin))]
+        [AccessAuthorize(SystemRoles.Admin)]
         public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserDTO preRegisterUserDTO)
         {
             var result = await _mediator.Send(new PreRegisterUserCommand

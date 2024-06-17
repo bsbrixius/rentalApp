@@ -14,14 +14,14 @@ namespace Authentication.API.Controllers
         private readonly IMediator _mediator;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        private readonly JwtBuilder _jwtUtils;
+        private readonly JwtBuilder<User> _jwtUtils;
         private readonly JwtValidator _jwtValidator;
 
         public AuthController(
             IMediator mediator,
             SignInManager<User> signInManager,
             UserManager<User> userManager,
-            JwtBuilder jwtUtils,
+            JwtBuilder<User> jwtUtils,
             JwtValidator jwtValidator
             )
         {
@@ -36,7 +36,7 @@ namespace Authentication.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> RegisterAsync([FromBody] Application.Data.Auth.LoginRequest loginRequest)
         {
-            var result = await _signInManager.PasswordSignInAsync(loginRequest.Username, loginRequest.Password, false, true);
+            var result = await _signInManager.PasswordSignInAsync(loginRequest.Email, loginRequest.Password, false, true);
 
             if (result.IsLockedOut)
             {
@@ -48,7 +48,7 @@ namespace Authentication.API.Controllers
                 return Unauthorized();
             }
 
-            return Ok(await _jwtUtils.GetAccessAsync(loginRequest.Username));
+            return Ok(await _jwtUtils.CreateAccessAsync(loginRequest.Email));
         }
 
         [HttpPost("refresh-token")]
@@ -82,7 +82,7 @@ namespace Authentication.API.Controllers
             //    if (user.LockoutEnd < DateTime.Now)
             //        return Forbid();
 
-            return Ok(await _jwtUtils.GetAccessAsync(email));
+            return Ok(await _jwtUtils.CreateAccessAsync(email));
         }
     }
 

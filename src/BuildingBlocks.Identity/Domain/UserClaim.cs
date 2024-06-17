@@ -1,11 +1,12 @@
 ﻿using BuildingBlocks.Domain;
+using BuildingBlocks.Security.Domain;
 
 namespace Authentication.API.Domain
 {
-    public class RoleClaim : Entity
+    public class UserClaim : Entity
     {
-        public string RoleId { get; set; }
-        public virtual Role Role { get; set; }
+        public Guid UserId { get; set; }
+        public virtual UserBase User { get; set; }
         public string ClaimType { get; set; }
         public string ClaimValue { get; set; }
     }

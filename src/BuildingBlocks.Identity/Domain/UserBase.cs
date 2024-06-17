@@ -1,9 +1,11 @@
-﻿using BuildingBlocks.Domain;
+﻿using Authentication.API.Domain;
+using BuildingBlocks.Domain;
 
 namespace BuildingBlocks.Security.Domain
 {
     public class UserBase : Entity
     {
+        public bool Active { get; set; } = false;
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; } = false;
         public string? PhoneNumber { get; set; }
@@ -24,5 +26,7 @@ namespace BuildingBlocks.Security.Domain
         /// A random value that must change whenever a user is persisted to the store
         /// </summary>
         public virtual string? ConcurrencyStamp { get; set; } = Guid.NewGuid().ToString();
+        public virtual List<Role> Roles { get; set; } = new();
+        public virtual List<UserClaim> UserClaims { get; set; } = new();
     }
 }

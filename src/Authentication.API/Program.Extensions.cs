@@ -1,9 +1,11 @@
 ﻿using Authentication.API.Application.Commands.User.PreRegisterUser;
 using Authentication.API.Application.Settings;
+using Authentication.API.Domain;
 using Authentication.API.Infraestructure;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
+using BuildingBlocks.Identity.Configuration;
 using BuildingBlocks.Security;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
@@ -57,38 +59,13 @@ namespace Authentication.API
 
             hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
-            //hcBuilder
-            //    .AddSqlServer(
-            //        configuration.GetConnectionString(""),
-            //        name: "",
-            //        tags: Array.Empty<string>());
-
             return services;
         }
 
 
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-
-            //services.AddIdentity<User, Role>(options =>
-            //{
-            //    options.User.RequireUniqueEmail = true;
-            //    options.SignIn.RequireConfirmedEmail = false;
-            //    options.Password.RequireDigit = true;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequiredUniqueChars = 0;
-            //    options.Password.RequiredLength = 0;
-            //    options.Lockout.MaxFailedAccessAttempts = 5;
-            //})
-            //    .AddEntityFrameworkStores<AuthenticationContext>()
-            //    .AddApiEndpoints()
-            //    .AddDefaultTokenProviders();
-
-            // Add services to the container.
-            services.AddDbContext<AuthenticationContext>();
-            //builder.Services.AddDbContext<AuthenticationContext>(options => options.UseInMemoryDatabase(nameof(AuthenticationContext)));
+            services.AddIdentityBase<User, AuthenticationContext>();
 
             return services;
         }
@@ -140,7 +117,7 @@ namespace Authentication.API
         {
             services.AddResponseCaching();
             services.AddHttpContextAccessor();
-            services.AddSingleton<JwtBuilder>();
+            services.AddSingleton<JwtBuilder<User>>();
             services.AddSingleton<JwtValidator>();
             return services;
         }

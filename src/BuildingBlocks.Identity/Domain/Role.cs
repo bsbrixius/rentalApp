@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Domain;
+using BuildingBlocks.Security.Domain;
 
 namespace Authentication.API.Domain
 {
@@ -12,6 +13,7 @@ namespace Authentication.API.Domain
         }
         public string Name { get; set; }
         public string NormalizedName { get; set; }
-        public virtual List<User> Users { get; set; }
+        public virtual List<UserBase> Users { get; set; }
+        public virtual List<RoleClaim> RoleClaims { get; set; }
     }
 }

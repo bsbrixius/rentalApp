@@ -1,6 +1,6 @@
 using Authentication.API;
 using Authentication.API.Infraestructure;
-using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,14 +30,21 @@ if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
     {
+        var teste0 = scope.ServiceProvider.GetRequiredService<IMediator>();
+        var teste1 = scope.ServiceProvider.GetRequiredService<ILogger<AuthenticationContext>>();
+        var teste2 = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>();
+        var teste3 = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+        //scope.ServiceProvider.GetRequiredService<IUserRepository<User>>();
+        //scope.ServiceProvider.GetRequiredService<IUserClaimRepository<User>>();
+        //scope.ServiceProvider.GetRequiredService<IUserService<User>>();
+        //var teste4 = scope.ServiceProvider.GetRequiredService<DbContextOptions<AuthenticationBaseContext<User>>>();
+
+
         var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();
-        var usuarios = dbContext.Users.AsQueryable().Include(x => x.Roles).FirstOrDefault();
-        var roles = usuarios.Roles;
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
         await dbContext.TrySeedDatabaseAsync(scope.ServiceProvider);
     }
-
     app.UseSwagger();
     app.UseSwaggerUI();
 }

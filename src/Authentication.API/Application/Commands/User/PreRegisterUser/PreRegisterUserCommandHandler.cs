@@ -1,28 +1,21 @@
-﻿using Authentication.API.Application.Data.Repositories;
-using Authentication.API.Domain;
+﻿using Authentication.API.Domain;
+using BuildingBlocks.Identity.Services;
 using MediatR;
 
 namespace Authentication.API.Application.Commands.User.PreRegisterUser
 {
     public class PreRegisterUserCommandHandler : IRequestHandler<PreRegisterUserCommand, Guid>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService<Domain.User> _userService;
 
-        public PreRegisterUserCommandHandler(IUserRepository userRepository)
+        public PreRegisterUserCommandHandler(IUserService<Domain.User> userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
         public async Task<Guid> Handle(PreRegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var newUser = new Domain.User
-            {
-                Email = request.Email,
-                Roles = new List<Role> { new Role(request.Role) }
-            };
-
-            var result = await _userRepository.AddAsync(newUser);
-
-            return result;
+            var newUser = new Domain.User(request.Email, new Role(request.Role));
+            return await _userService.RegisterUserAsync(newUser);
         }
     }
 }
