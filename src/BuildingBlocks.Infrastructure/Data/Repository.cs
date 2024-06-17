@@ -15,6 +15,7 @@ namespace BuildingBlocks.Infrastructure.Data
 
         public Repository(TDbContext context)
         {
+            _context = context;
             _dbSet = context.Set<TEntity>();
         }
 

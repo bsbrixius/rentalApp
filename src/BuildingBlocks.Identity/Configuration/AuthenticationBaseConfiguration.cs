@@ -18,6 +18,8 @@ namespace BuildingBlocks.Identity.Configuration
             services.TryAddScoped<IUserRepository<TUser>, UserRepository<TUser>>();
             services.TryAddScoped<IUserClaimRepository<TUser>, UserClaimRepository<TUser>>();
             services.TryAddScoped<IUserService<TUser>, UserService<TUser>>();
+            services.TryAddScoped<ILoginService<TUser>, LoginService<TUser>>();
+
             return services;
         }
 
@@ -26,10 +28,12 @@ namespace BuildingBlocks.Identity.Configuration
             where TDbContext : AuthenticationBaseContext<TUser>
         {
             services.AddHttpContextAccessor();
+            services.TryAddSingleton<AuthenticationBaseContext<TUser>, TDbContext>();
             services.AddDbContext<TDbContext>();
             services.TryAddScoped<IUserRepository<TUser>, UserRepository<TUser>>();
             services.TryAddScoped<IUserClaimRepository<TUser>, UserClaimRepository<TUser>>();
             services.TryAddScoped<IUserService<TUser>, UserService<TUser>>();
+            services.TryAddScoped<ILoginService<TUser>, LoginService<TUser>>();
             return services;
         }
 

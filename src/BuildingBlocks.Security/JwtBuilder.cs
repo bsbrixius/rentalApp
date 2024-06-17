@@ -37,17 +37,20 @@ namespace BuildingBlocks.Security
                     Email = user.Email,
                     Roles = user.Roles.Select(x => x.Name).ToList()
                 },
-                AcessToken = await GenerateAccessTokenAsync(user),//, roles, userClaims),
+                AcessToken = await GenerateAccessTokenAsync(user),
                 RefreshToken = await GenerateRefreshTokenAsync(user, user.Email),
                 Expires = DateTime.UtcNow.AddHours(_jwtSettings.Expiration)
             };
         }
 
-        private async Task<string> GenerateAccessTokenAsync(TUser user)//, IList<string> roles, params Claim[] userClaims)
+        private async Task<string> GenerateAccessTokenAsync(TUser user)
         {
             var claims = new ClaimsIdentity();
-            claims.AddClaims(user.UserClaims.Select(x => new Claim(x.ClaimType, x.ClaimValue)).ToList());
-            claims.AddClaims(user.Roles.Select(x => new Claim("role", x.Name)).ToList());
+            var userClaims = await _userService.GetClaimsAsync(user);
+            var roles = await _userService.GetUserRolesAsync(user);
+
+            claims.AddClaims(userClaims);
+            claims.AddClaims(roles.Select(x => new Claim("role", x.Name)).ToList());
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
@@ -76,8 +79,9 @@ namespace BuildingBlocks.Security
         {
 
             var jti = Guid.NewGuid().ToString();
-            var claims = new ClaimsIdentity();
+            var userClaims = await _userService.GetClaimsAsync(user);
 
+            var claims = new ClaimsIdentity();
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Email, email));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Jti, jti));
 
@@ -96,7 +100,7 @@ namespace BuildingBlocks.Security
             });
 
 
-            await UpdateLastGeneratedClaimAsync(user, jti);
+            await UpdateLastGeneratedClaimAsync(user, jti, userClaims.ToArray());
 
             return token;
         }

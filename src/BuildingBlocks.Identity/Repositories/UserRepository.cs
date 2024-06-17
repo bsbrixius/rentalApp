@@ -8,7 +8,7 @@ namespace Authentication.API.Application.Data.Repositories
     public interface IUserRepository<TUser> : IRepository<TUser>
         where TUser : UserBase
     {
-        Task<bool> UpdatePasswordHashAsync(UserBase user, string password);
+        Task<bool> UpdatePasswordHashAsync(TUser user, string password);
     }
     public class UserRepository<TUser> : Repository<TUser, AuthenticationBaseContext<TUser>>, IUserRepository<TUser>
         where TUser : UserBase
@@ -19,16 +19,16 @@ namespace Authentication.API.Application.Data.Repositories
         }
 
 
-        public async Task<bool> UpdatePasswordHashAsync(UserBase user, string password)
+        public async Task<bool> UpdatePasswordHashAsync(TUser user, string password)
         {
-            var passwordHasher = new PasswordHasher<UserBase>();
+            var passwordHasher = new PasswordHasher<TUser>();
             var hash = passwordHasher.HashPassword(user, password);
             user.PasswordHash = hash;
             SetNewSecurityStamp(user);
             return await CommitAsync();
         }
 
-        private void SetNewSecurityStamp(UserBase user)
+        private void SetNewSecurityStamp(TUser user)
         {
             user.SecurityStamp = Guid.NewGuid().ToString();
         }
