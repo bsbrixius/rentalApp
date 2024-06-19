@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 namespace Authentication.API.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;

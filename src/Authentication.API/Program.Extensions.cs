@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.Identity.Configuration;
+using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
@@ -30,9 +31,11 @@ namespace Authentication.API
             services
                 .AddControllers(options =>
                 {
+                    options.AllowEmptyInputInBodyModelBinding = true;
                     //options.Filters.Add(typeof(DomainExceptionFilter));
                     //options.Filters.Add(typeof(ValidateModelStateFilter));
                     //options.Filters.Add(new AuthorizeFilter(Policies.NotAnonymous));
+                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                     options.Filters.Add(new ProducesAttribute("application/json"));
                 })
                 .AddApplicationPart(typeof(Program).Assembly)
@@ -44,13 +47,17 @@ namespace Authentication.API
                     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
                 });
 
-            //services.AddEndpointsApiExplorer();
-
             services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
             services.Configure<ApiBehaviorOptions>(options => options.SuppressInferBindingSourcesForParameters = true);
 
             //services.AddFluentValidationAutoValidation();
-
+            //services.AddApiVersioning(config =>
+            //{
+            //    config.DefaultApiVersion = new ApiVersion(1, 0);
+            //    config.AssumeDefaultVersionWhenUnspecified = true;
+            //    config.ReportApiVersions = true;
+            //    config.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
+            //});
             return services;
         }
 
@@ -97,7 +104,7 @@ namespace Authentication.API
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer ABCDEFGHI\"",
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 {
