@@ -49,7 +49,6 @@ app.UseCors(x => x
     .AllowCredentials()); // allow credentials
 
 app.UseResponseCaching();
-
 app.UseRouting();
 
 //app.ConfigureExceptionHandler(logger, env);
@@ -60,8 +59,6 @@ app.UseAuthorization();
 //app.UseHealthChecks("/health", GetHealthCheckOptions());
 
 app.MapControllers();
-
-
 //TODO utilizar?
 //app.MapGroup("api/auth").MapIdentityApi<User>();
 
