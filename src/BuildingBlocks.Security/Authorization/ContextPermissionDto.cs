@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NeoLabs.Security.Authorization
+namespace BuildingBlocks.Security.Authorization
 {
     public class ContextPermissionDto
     {

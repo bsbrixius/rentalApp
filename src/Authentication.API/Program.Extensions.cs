@@ -8,6 +8,7 @@ using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.Identity.Configuration;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
+using BuildingBlocks.Security.Authorization;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace Authentication.API
                     //options.Filters.Add(typeof(DomainExceptionFilter));
                     //options.Filters.Add(typeof(ValidateModelStateFilter));
                     //options.Filters.Add(new AuthorizeFilter(Policies.NotAnonymous));
+                    options.Filters.Add<AccessAuthorizeAttribute>();
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                     options.Filters.Add(new ProducesAttribute("application/json"));
                 })
@@ -150,8 +152,8 @@ namespace Authentication.API
         public static IServiceCollection AddSecurity(this IServiceCollection services, IConfiguration configuration)
         {
             //TODO Add policies
-            services.AddAuthorization();
             services.AddJwtAuthenticationConfiguration(configuration);
+            //services.AddAuthorization();
             return services;
         }
     }

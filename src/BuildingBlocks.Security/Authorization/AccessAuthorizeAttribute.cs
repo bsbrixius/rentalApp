@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Security.Claims;
 
-namespace NeoLabs.Security.Authorization
+namespace BuildingBlocks.Security.Authorization
 {
     public class AccessAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {

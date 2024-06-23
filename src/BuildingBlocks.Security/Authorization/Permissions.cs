@@ -1,4 +1,4 @@
-﻿namespace NeoLabs.Security
+﻿namespace BuildingBlocks.Security.Authorization
 {
     public static class Permissions
     {
