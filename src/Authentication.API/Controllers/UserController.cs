@@ -50,6 +50,7 @@ namespace Authentication.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDTO registerUserDTO)
         {
             await _mediator.Send(new RegisterUserCommand
@@ -66,14 +67,15 @@ namespace Authentication.API.Controllers
 
         [HttpPost("pre-register")]
         [Authorize(Roles = SystemRoles.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserDTO preRegisterUserDTO)
         {
-            var result = await _mediator.Send(new PreRegisterUserCommand
+            await _mediator.Send(new PreRegisterUserCommand
             {
                 Email = preRegisterUserDTO.Email,
                 Role = preRegisterUserDTO.Role
             });
-            return CreatedAtRoute(nameof(GetByIdAsync), new { id = result });
+            return Created();
         }
     }
 }

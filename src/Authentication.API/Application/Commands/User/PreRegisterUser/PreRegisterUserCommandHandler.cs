@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Authentication.API.Application.Commands.User.PreRegisterUser
 {
-    public class PreRegisterUserCommandHandler : IRequestHandler<PreRegisterUserCommand, Guid>
+    public class PreRegisterUserCommandHandler : IRequestHandler<PreRegisterUserCommand>
     {
         private readonly IUserService<Domain.User> _userService;
 
@@ -12,10 +12,10 @@ namespace Authentication.API.Application.Commands.User.PreRegisterUser
         {
             _userService = userService;
         }
-        public async Task<Guid> Handle(PreRegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task Handle(PreRegisterUserCommand request, CancellationToken cancellationToken)
         {
             var newUser = new Domain.User(request.Email, new Role(request.Role));
-            return await _userService.RegisterUserAsync(newUser);
+            await _userService.RegisterUserAsync(newUser);
         }
     }
 }

@@ -35,6 +35,7 @@ namespace Core.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = nameof(SystemRoles.Admin))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Post([FromBody] RegisterMotorcycleRequest registerMotorcycleDTO)
         {
             await _mediator.Send(new RegisterMotorcycleCommand
@@ -43,7 +44,7 @@ namespace Core.API.Controllers
                 Plate = registerMotorcycleDTO.Plate,
                 Year = registerMotorcycleDTO.Year
             });
-            return Ok();
+            return Created();
         }
     }
 }

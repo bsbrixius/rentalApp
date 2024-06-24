@@ -1,8 +1,8 @@
-﻿using BuildingBlocks.Domain;
+﻿using BuildingBlocks.Infrastructure.Base;
 
 namespace Core.API.Domain
 {
-    public class Driver : Entity
+    public class Driver : AuditableEntity
     {
         public string Name { get; set; }
         public string CNPJ { get; set; }

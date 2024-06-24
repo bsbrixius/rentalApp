@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -47,6 +48,7 @@ namespace BuildingBlocks.Infrastructure.Filters
                     break;
                 case DomainException:
                 case ValidationException:
+                case DbUpdateException:
                     HandleInternalServerError(context);
                     break;
             }

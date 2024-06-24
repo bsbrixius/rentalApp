@@ -3,13 +3,13 @@ using MediatR;
 
 namespace Core.API.Application.Commands.Motorcycle
 {
-    public sealed class RegisterMotorcycleCommand : IRequest<Guid>
+    public sealed class RegisterMotorcycleCommand : IRequest
     {
         public required uint Year { get; set; }
         public required string Model { get; set; }
         public required string Plate { get; set; }
 
-        internal sealed class RegisterMotorcycleCommandHandler : IRequestHandler<RegisterMotorcycleCommand, Guid>
+        internal sealed class RegisterMotorcycleCommandHandler : IRequestHandler<RegisterMotorcycleCommand>
         {
             private readonly IMotorcycleRepository _motorcycleRepository;
 
@@ -18,11 +18,12 @@ namespace Core.API.Application.Commands.Motorcycle
                 _motorcycleRepository = motorcycleRepository;
             }
 
-            public async Task<Guid> Handle(RegisterMotorcycleCommand request, CancellationToken cancellationToken)
+            public async Task Handle(RegisterMotorcycleCommand request, CancellationToken cancellationToken)
             {
                 var newMotorcycle = new Domain.Motorcycle(request.Year, request.Model, request.Plate);
 
-                return await _motorcycleRepository.AddAsync(newMotorcycle);
+                await _motorcycleRepository.AddAsync(newMotorcycle);
+                await _motorcycleRepository.SaveChangesAsync();
             }
         }
     }

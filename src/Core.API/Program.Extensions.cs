@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
+using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
 using Core.API.Application.Commands.Motorcycle;
 using Core.Infrastructure;
@@ -32,6 +33,7 @@ namespace Core.API
                     //options.Filters.Add(typeof(DomainExceptionFilter));
                     //options.Filters.Add(typeof(ValidateModelStateFilter));
                     //options.Filters.Add(new AuthorizeFilter(Policies.NotAnonymous));
+                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                     options.Filters.Add(new ProducesAttribute("application/json"));
                 })
                 .AddApplicationPart(typeof(Program).Assembly)
@@ -133,7 +135,7 @@ namespace Core.API
             hostBuilder.ConfigureContainer<ContainerBuilder>(
                builder =>
                {
-                   builder.RegisterModule(new MediatorModule());
+                   builder.RegisterModule(new AppModule());
                    builder.RegisterMediatR(mediatrConfiguration);
                });
 

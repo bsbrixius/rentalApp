@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace BuildingBlocks.API.Core.AutofacModules
 {
-    public class MediatorModule : Autofac.Module
+    public class AppModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {

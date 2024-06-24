@@ -1,9 +1,9 @@
-﻿using BuildingBlocks.Domain;
+﻿using BuildingBlocks.Infrastructure.Base;
 using Core.API.Domain.Events.Motorcycle;
 
 namespace Core.API.Domain
 {
-    public class Motorcycle : Entity
+    public class Motorcycle : AuditableEntity
     {
         public Motorcycle(uint year, string model, string plate) : base()
         {

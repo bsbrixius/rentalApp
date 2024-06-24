@@ -141,7 +141,7 @@ namespace Authentication.API
             hostBuilder.ConfigureContainer<ContainerBuilder>(
                builder =>
                {
-                   builder.RegisterModule(new MediatorModule());
+                   builder.RegisterModule(new AppModule());
                    builder.RegisterMediatR(mediatrConfiguration);
                });
 
