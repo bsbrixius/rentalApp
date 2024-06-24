@@ -87,31 +87,30 @@ namespace Core.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "JWTToken_Auth_API",
+                    Title = typeof(Program).Assembly.FullName,
                     Version = "v1"
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
+                    Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                    Description = "Please enter a valid token",
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                    {
-                        new OpenApiSecurityScheme {
-                            Reference = new OpenApiReference {
-                                Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                            }
-                        },
-                        new string[] {}
+                {
+                    new OpenApiSecurityScheme {
+                        Reference = new OpenApiReference {
+                            Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
                     }
                 });
             });
-
             return services;
         }
 
@@ -179,8 +178,8 @@ namespace Core.API
         public static IServiceCollection AddSecurity(this IServiceCollection services, IConfiguration configuration)
         {
             //TODO Add policies
-            services.AddAuthorization();
             services.AddJwtAuthenticationConfiguration(configuration);
+            services.AddAuthorization();
             return services;
         }
     }

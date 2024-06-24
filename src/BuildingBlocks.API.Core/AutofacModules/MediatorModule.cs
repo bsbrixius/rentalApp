@@ -11,15 +11,35 @@ namespace BuildingBlocks.API.Core.AutofacModules
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
                 .AsImplementedInterfaces();
 
+            //Repositories
+            var repositories = Assembly
+                .GetEntryAssembly()
+                .GetTypes()
+                .Where(x =>
+                x.FullName.EndsWith($"Repository") &&
+                x.IsInterface == false)
+                .ToArray();
+            builder.RegisterTypes(repositories).AsImplementedInterfaces();
+
+            //Queries
+            var queries = Assembly
+                .GetEntryAssembly()
+                .GetTypes()
+                .Where(x =>
+                x.FullName.EndsWith($"Queries") &&
+                x.IsInterface == false)
+                .ToArray();
+            builder.RegisterTypes(queries).AsImplementedInterfaces();
+
             //Commands
-            var commandhandlers = Assembly
+            var commandHandlers = Assembly
                 .GetEntryAssembly()
                 .GetTypes()
                 .Where(x =>
                 x.FullName.EndsWith($"CommandHandler") &&
                 x.IsInterface == false)
                 .ToArray();
-            builder.RegisterTypes(commandhandlers).AsImplementedInterfaces();
+            builder.RegisterTypes(commandHandlers).AsImplementedInterfaces();
 
             //DomainEventHandlers
             var domainEventHandlers = Assembly

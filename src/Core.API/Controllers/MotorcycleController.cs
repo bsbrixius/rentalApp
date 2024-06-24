@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Security.Authorization;
+﻿using BuildingBlocks.API.Core.Data.Pagination;
+using BuildingBlocks.Security.Authorization;
 using Core.API.Application.Commands.Motorcycle;
 using Core.API.Application.Data.DTOs.Motorcycle;
 using Core.API.Application.Query.Motorcycle;
@@ -20,16 +21,16 @@ namespace Core.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(PaginatedResult<MotorcycleDTO>), StatusCodes.Status200OK)]
         [Authorize(Roles = nameof(SystemRoles.Admin))]
         public async Task<IActionResult> Get([FromQuery] SearchMotorcycleRequest searchMotorcycleRequest)
         {
-            await _mediator.Send(new SearchMotorcycleQuery
+            return Ok(await _mediator.Send(new SearchMotorcycleQuery
             {
                 Page = searchMotorcycleRequest.Page,
                 PageSize = searchMotorcycleRequest.PageSize,
                 Plate = searchMotorcycleRequest.Plate
-            });
-            return Ok();
+            }));
         }
 
         [HttpPost]

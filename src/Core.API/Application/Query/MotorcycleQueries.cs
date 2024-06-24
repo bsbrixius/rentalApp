@@ -22,7 +22,7 @@ namespace Core.API.Application.Query
         public async Task<PaginatedResult<MotorcycleDTO>> SearchMotorcycleAsync(SearchMotorcycleQuery queryRequest)
         {
             var query = _motorcycleRepository.QueryNoTrack;
-            if (string.IsNullOrEmpty(queryRequest.Plate))
+            if (!string.IsNullOrEmpty(queryRequest.Plate))
             {
                 query = query.Where(x => EF.Functions.Like(x.Plate, $"{queryRequest.Plate}"));
             }

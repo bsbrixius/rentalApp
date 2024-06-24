@@ -28,7 +28,7 @@ namespace Authentication.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginatedResult<UserDTO>), StatusCodes.Status200OK)]
         [Authorize]
         public async Task<IActionResult> Get([FromQuery] PaginatedRequest paginatedRequest)
         {

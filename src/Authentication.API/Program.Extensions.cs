@@ -95,7 +95,7 @@ namespace Authentication.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "JWTToken_Auth_API",
+                    Title = typeof(Program).Assembly.FullName,
                     Version = "v1"
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
