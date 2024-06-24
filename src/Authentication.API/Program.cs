@@ -36,7 +36,7 @@ if (app.Environment.IsDevelopment())
         var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
-        await dbContext.TrySeedDatabaseAsync(scope.ServiceProvider);
+        await dbContext.TrySeedDatabaseAsync();
     }
     app.UseSwagger();
     app.UseSwaggerUI();

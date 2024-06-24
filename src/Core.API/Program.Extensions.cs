@@ -2,7 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.Security;
-using Core.API.Application.Commands.Motorcycle.RegisterMotorcycle;
+using Core.API.Application.Commands.Motorcycle;
 using Core.Infrastructure;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;

@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Security.Authorization;
-using Core.API.Application.Commands.Motorcycle.RegisterMotorcycle;
+using Core.API.Application.Commands.Motorcycle;
 using Core.API.Application.Data.DTOs.Motorcycle;
+using Core.API.Application.Query.Motorcycle;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,22 @@ namespace Core.API.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        [Authorize(Roles = nameof(SystemRoles.Admin))]
+        public async Task<IActionResult> Get([FromQuery] SearchMotorcycleRequest searchMotorcycleRequest)
+        {
+            await _mediator.Send(new SearchMotorcycleQuery
+            {
+                Page = searchMotorcycleRequest.Page,
+                PageSize = searchMotorcycleRequest.PageSize,
+                Plate = searchMotorcycleRequest.Plate
+            });
+            return Ok();
+        }
+
         [HttpPost]
         [Authorize(Roles = nameof(SystemRoles.Admin))]
-        public async Task<IActionResult> PostAsync([FromBody] RegisterMotorcycleDTO registerMotorcycleDTO)
+        public async Task<IActionResult> Post([FromBody] RegisterMotorcycleRequest registerMotorcycleDTO)
         {
             await _mediator.Send(new RegisterMotorcycleCommand
             {

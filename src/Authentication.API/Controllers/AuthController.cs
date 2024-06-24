@@ -43,6 +43,7 @@ namespace Authentication.API.Controllers
             {
                 return Unauthorized();
             }
+            var oi = await _jwtUtils.CreateAccessAsync(loginRequest.Email);
 
             return Ok(await _jwtUtils.CreateAccessAsync(loginRequest.Email));
         }
@@ -69,7 +70,7 @@ namespace Authentication.API.Controllers
             }
             var claims = await _userService.GetClaimsAsync(user);
 
-            if (!claims.Any(c => c.Type == "LastRefreshToken" && c.Value == result.Claims[JwtRegisteredClaimNames.Jti].ToString()))
+            if (!claims.Any(c => c.Type == CustomClaim.LastRefreshToken && c.Value == result.Claims[JwtRegisteredClaimNames.Jti].ToString()))
             {
                 return Unauthorized();
             }

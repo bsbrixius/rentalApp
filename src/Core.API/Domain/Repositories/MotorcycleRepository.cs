@@ -1,8 +1,7 @@
 ﻿using BuildingBlocks.Infrastructure.Data;
-using Core.API.Domain;
 using Core.Infrastructure;
 
-namespace Core.API.Application.Data.Repositories
+namespace Core.API.Domain.Repositories
 {
     public interface IMotorcycleRepository : IRepository<Motorcycle>
     {

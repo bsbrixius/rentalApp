@@ -109,9 +109,9 @@ namespace BuildingBlocks.Security
 
         private async Task UpdateLastGeneratedClaimAsync(TUser user, string jti, params Claim[] userClaims)
         {
-            var newLastRefreshTokenClaim = new Claim("LastRefreshToken", jti);
+            var newLastRefreshTokenClaim = new Claim(CustomClaim.LastRefreshToken, jti);
 
-            var lastRefreshTokenClaim = userClaims.FirstOrDefault(f => f.Type == "LastRefreshToken");
+            var lastRefreshTokenClaim = userClaims.FirstOrDefault(f => f.Type == CustomClaim.LastRefreshToken);
 
             if (lastRefreshTokenClaim != null)
                 await _userService.ReplaceClaimAsync(user, lastRefreshTokenClaim, newLastRefreshTokenClaim);

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Core.Infrastructure.EntityConfiguration
 {
-    public class DriverEntityTypeConfiguration : BaseEntityTypeConfiguration<Driver>
+    public class DriverConfiguration : BaseEntityTypeConfiguration<Driver>
     {
         public override void Configure(EntityTypeBuilder<Driver> builder)
         {

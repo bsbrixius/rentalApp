@@ -1,27 +1,24 @@
 ﻿using Authentication.API.Domain;
 using BuildingBlocks.Security.Authorization;
-using Microsoft.AspNetCore.Authentication.BearerToken;
+using BuildingBlocks.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Authentication.API.Infraestructure
 {
-    public static class AuthenticationContextSeed
+    public static class SeedDatabase
     {
-        public static async Task TrySeedDatabaseAsync(this AuthenticationContext context, IServiceProvider serviceProvider)
+        public static async Task TrySeedDatabaseAsync(this AuthenticationContext context)
         {
             await SeedRoles(context);
-            await SeedUsers(context, serviceProvider);
+            await SeedUsers(context);
 
             await context.SaveChangesAsync();
         }
 
-        private static async Task SeedUsers(AuthenticationContext context, IServiceProvider serviceProvider)
+        private static async Task SeedUsers(AuthenticationContext context)
         {
-            var bearerTokenOptions = serviceProvider.GetRequiredService<IOptionsMonitor<BearerTokenOptions>>();
-
-            var adminUser = new User("admin-first-name", "admin-last-name", new DateOnly(), "admin@rentalapp.com");
+            var adminUser = new User("admin-first-name", "admin-last-name", DateTime.UtcNow.ToDateOnly(), "admin@rentalapp.com");
             if (!context.Users.Any(x => x.Email == adminUser.Email))
             {
                 adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, "admin123");
@@ -34,8 +31,6 @@ namespace Authentication.API.Infraestructure
 
         private static async Task SeedRoles(AuthenticationContext context)
         {
-            //var roleStore = new RoleStore<Role>(context);
-
             if (!context.Roles.Any(x => x.Name == SystemRoles.Admin))
             {
                 var role = new Role(SystemRoles.Admin);

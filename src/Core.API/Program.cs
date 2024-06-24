@@ -1,4 +1,5 @@
 using Core.API;
+using Core.API.Infraestructure;
 using Core.Infrastructure;
 using Serilog;
 
@@ -33,9 +34,7 @@ if (app.Environment.IsDevelopment())
         var dbContext = scope.ServiceProvider.GetRequiredService<CoreContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
-
-        //dbContext.TryInitializeDatabaseTables(app.Configuration);
-        //dbContext.TrySeedDatabase(app.Configuration);
+        await dbContext.TrySeedDatabaseAsync();
     }
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -52,14 +51,12 @@ app.UseCors(x => x
     .AllowCredentials()); // allow credentials
 
 app.UseResponseCaching();
-
-app.UseRouting();
-
-//app.ConfigureExceptionHandler(logger, env);
-
 app.UseAuthentication();
+app.UseRouting();
+//app.ConfigureExceptionHandler(logger, env);
+//app.UseMiddleware<JwtMiddleware>();
 app.UseAuthorization();
-
+//app.UseHealthChecks("/health", GetHealthCheckOptions());
 app.MapControllers();
 
 app.Run();

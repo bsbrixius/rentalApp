@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Application\Data\Repositories\" />
-    <Folder Include="Application\DomainEvents\" />
+    <Folder Include="Application\DomainEvents\Handling\" />
     <Folder Include="Infraestructure\EntityConfiguration\" />
   </ItemGroup>
 
