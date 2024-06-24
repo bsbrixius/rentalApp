@@ -8,7 +8,6 @@ using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.Identity.Configuration;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
-using BuildingBlocks.Security.Authorization;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +35,7 @@ namespace Authentication.API
                     //options.Filters.Add(typeof(DomainExceptionFilter));
                     //options.Filters.Add(typeof(ValidateModelStateFilter));
                     //options.Filters.Add(new AuthorizeFilter(Policies.NotAnonymous));
-                    options.Filters.Add<AccessAuthorizeAttribute>();
+                    //options.Filters.Add<AccessAuthorizeAttribute>();
                     options.Filters.Add(typeof(HttpGlobalExceptionFilter));
                     options.Filters.Add(new ProducesAttribute("application/json"));
                 })
@@ -102,11 +101,11 @@ namespace Authentication.API
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
+                    Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer ABCDEFGHI\"",
+                    Description = "Please enter a valid token",
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 {
@@ -153,7 +152,7 @@ namespace Authentication.API
         {
             //TODO Add policies
             services.AddJwtAuthenticationConfiguration(configuration);
-            //services.AddAuthorization();
+            services.AddAuthorization();
             return services;
         }
     }

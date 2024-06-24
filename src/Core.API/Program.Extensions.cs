@@ -42,8 +42,6 @@ namespace Core.API
                 });
             services.AddResponseCaching();
 
-            //services.AddEndpointsApiExplorer();
-
             services.Configure<ApiBehaviorOptions>(options => options.SuppressInferBindingSourcesForParameters = true);
 
             //services.AddFluentValidationAutoValidation();

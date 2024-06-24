@@ -1,13 +1,16 @@
 using Authentication.API;
+using Authentication.API.Application.Queries.User;
 using Authentication.API.Infraestructure;
+using BuildingBlocks.API.Core;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var AppName = typeof(Program).Assembly.FullName;
-//builder.Host.AddSerilogCore();
-//Log.Information("Starting web host");
-//Log.Information(builder.Environment.EnvironmentName);
-//Log.Information("Configuring web host ({ApplicationContext})...", AppName);
+var AppName = typeof(Program).Assembly.FullName;
+builder.Host.AddSerilogCore();
+Log.Information("Starting web host");
+Log.Information(builder.Environment.EnvironmentName);
+Log.Information("Configuring web host ({ApplicationContext})...", AppName);
 
 ////Autofac Modules
 builder.Host.UseAutofacIoC();
@@ -22,6 +25,7 @@ builder.Services
     .AddSecurity(Configuration)
     .AddSwagger(Configuration);
 
+builder.Services.AddScoped<IUserQueries, UserQueries>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,17 +53,12 @@ app.UseCors(x => x
     .AllowCredentials()); // allow credentials
 
 app.UseResponseCaching();
-app.UseRouting();
-
-//app.ConfigureExceptionHandler(logger, env);
-
 app.UseAuthentication();
+app.UseRouting();
+//app.ConfigureExceptionHandler(logger, env);
+//app.UseMiddleware<JwtMiddleware>();
 app.UseAuthorization();
-
 //app.UseHealthChecks("/health", GetHealthCheckOptions());
-
 app.MapControllers();
-//TODO utilizar?
-//app.MapGroup("api/auth").MapIdentityApi<User>();
 
 app.Run();

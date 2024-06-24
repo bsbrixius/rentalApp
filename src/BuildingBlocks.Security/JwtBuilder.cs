@@ -54,11 +54,13 @@ namespace BuildingBlocks.Security
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-            claims.AddClaim(new Claim(JwtRegisteredClaimNames.Nbf, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString()));
-            claims.AddClaim(new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), ClaimValueTypes.Integer64));
+            claims.AddClaim(new Claim(JwtRegisteredClaimNames.Nbf, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()));
+            claims.AddClaim(new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64));
 
             var tokenHandler = new JsonWebTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
+            credentials.Key.KeyId = Guid.NewGuid().ToString();
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -69,7 +71,7 @@ namespace BuildingBlocks.Security
                 NotBefore = DateTime.UtcNow,
                 IssuedAt = DateTime.UtcNow,
                 TokenType = "at+jwt",
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = credentials
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return token;
@@ -96,7 +98,7 @@ namespace BuildingBlocks.Security
                 NotBefore = DateTime.UtcNow,
                 IssuedAt = DateTime.UtcNow,
                 TokenType = "rt+jwt",
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             });
 
 

@@ -7,7 +7,6 @@ using BuildingBlocks.Security.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NeoLabs.Security.Authorization;
 
 namespace Authentication.API.Controllers
 {
@@ -30,7 +29,7 @@ namespace Authentication.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
-        [AccessAuthorize]
+        [Authorize]
         public async Task<IActionResult> Get([FromQuery] PaginatedRequest paginatedRequest)
         {
             var result = await _userQueries.GetPaginated(paginatedRequest);
@@ -41,7 +40,7 @@ namespace Authentication.API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
-        [AccessAuthorize]
+        [Authorize]
         public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
         {
             var result = await _userQueries.GetByIdAsync(id);
@@ -66,7 +65,7 @@ namespace Authentication.API.Controllers
         }
 
         [HttpPost("pre-register")]
-        [AccessAuthorize(SystemRoles.Admin)]
+        [Authorize(Roles = SystemRoles.Admin)]
         public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserDTO preRegisterUserDTO)
         {
             var result = await _mediator.Send(new PreRegisterUserCommand
