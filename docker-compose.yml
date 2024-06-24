@@ -12,7 +12,7 @@ services:
       - rabbitmq
       - postgres
     ports:
-      - "8090:8080"
+      - "7010:8080"
     networks:
       - postgres
 
@@ -26,9 +26,8 @@ services:
     depends_on:
       - rabbitmq
       - postgres
-      - core.api
     ports:
-      - "8080:8080"
+      - "7000:8080"
     networks:
       - postgres
 

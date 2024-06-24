@@ -1,65 +1,54 @@
 ﻿using Authentication.API.Domain;
-using Authentication.API.Domain.Utils;
-using Microsoft.AspNetCore.Authentication.BearerToken;
+using BuildingBlocks.Security.Authorization;
+using BuildingBlocks.Utils;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.API.Infraestructure
 {
-    public static class AuthenticationContextSeed
+    public static class SeedDatabase
     {
-        public static async Task TrySeedDatabaseAsync(this AuthenticationContext context, IServiceProvider serviceProvider)
+        public static async Task TrySeedDatabaseAsync(this AuthenticationContext context)
         {
             await SeedRoles(context);
-            await SeedUsers(context, serviceProvider);
+            await SeedUsers(context);
 
             await context.SaveChangesAsync();
         }
 
-        private static async Task SeedUsers(AuthenticationContext context, IServiceProvider serviceProvider)
+        private static async Task SeedUsers(AuthenticationContext context)
         {
-            var bearerTokenOptions = serviceProvider.GetRequiredService<IOptionsMonitor<BearerTokenOptions>>();
-
-            var adminUser = new User("admin", "Admin", "Admin", new DateOnly(), "admin@rentalapp.com");
+            var adminUser = new User("admin-first-name", "admin-last-name", DateTime.UtcNow.ToDateOnly(), "admin@rentalapp.com");
             if (!context.Users.Any(x => x.Email == adminUser.Email))
             {
                 adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, "admin123");
-
-                var userStore = new UserStore<User, Role, AuthenticationContext>(context);
-                var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-
-                //var result = await userStore.CreateAsync(adminUser);
-                var result = await userManager.CreateAsync(adminUser, "admin123");
-
-                if (result.Succeeded)
-                {
-                    await userStore.AddToRoleAsync(adminUser, UserRole.Admin.NormalizedName);
-                }
+                var adminRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Admin);
+                adminUser.Roles.Add(adminRole);
+                context.Users.Add(adminUser);
+                await context.SaveChangesAsync();
             }
         }
 
         private static async Task SeedRoles(AuthenticationContext context)
         {
-            var roleStore = new RoleStore<Role>(context);
-
-            if (!context.Roles.Any(x => x.Name == UserRole.Admin.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.Admin))
             {
-                var role = new Role() { Name = UserRole.Admin.Name, NormalizedName = UserRole.Admin.NormalizedName };
-                var result = await roleStore.CreateAsync(role);
+                var role = new Role(SystemRoles.Admin);
+                var result = await context.AddAsync(role);
             }
 
-            if (!context.Roles.Any(x => x.Name == UserRole.CustomerService.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.CustomerService))
             {
-                var role = new Role() { Name = UserRole.CustomerService.Name, NormalizedName = UserRole.CustomerService.NormalizedName };
-                var result = await roleStore.CreateAsync(role);
+                var role = new Role(SystemRoles.CustomerService);
+                var result = await context.AddAsync(role);
             }
 
-            if (!context.Roles.Any(x => x.Name == UserRole.Driver.Name))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.Driver))
             {
-                var role = new Role() { Name = UserRole.Driver.Name, NormalizedName = UserRole.Driver.NormalizedName };
-                var result = await roleStore.CreateAsync(role);
+                var role = new Role(SystemRoles.Driver);
+                var result = await context.AddAsync(role);
             }
+            await context.SaveChangesAsync();
         }
     }
 }

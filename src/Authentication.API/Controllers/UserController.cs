@@ -2,40 +2,46 @@
 using Authentication.API.Application.Commands.User.RegisterUser;
 using Authentication.API.Application.DTO.User;
 using Authentication.API.Application.Queries.User;
-using Authentication.API.Domain;
-using Authentication.API.Domain.Utils;
+using BuildingBlocks.API.Core.Data.Pagination;
+using BuildingBlocks.Security.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication.API.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
         private readonly IUserQueries _userQueries;
 
         public UserController(
             IMediator mediator,
-            SignInManager<User> signInManager,
-            UserManager<User> userManager,
             IUserQueries userQueries
             )
         {
             _mediator = mediator;
-            _signInManager = signInManager;
-            _userManager = userManager;
             _userQueries = userQueries;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(PaginatedResult<UserDTO>), StatusCodes.Status200OK)]
+        [Authorize]
+        public async Task<IActionResult> Get([FromQuery] PaginatedRequest paginatedRequest)
+        {
+            var result = await _userQueries.GetPaginated(paginatedRequest);
+            if (result == null) return NoContent();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetByIdAsync([FromRoute] string id)
+        [Authorize]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
         {
             var result = await _userQueries.GetByIdAsync(id);
             if (result == null) return NoContent();
@@ -44,7 +50,8 @@ namespace Authentication.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest registerUserDTO)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDTO registerUserDTO)
         {
             await _mediator.Send(new RegisterUserCommand
             {
@@ -59,15 +66,16 @@ namespace Authentication.API.Controllers
         }
 
         [HttpPost("pre-register")]
-        [Authorize(Roles = nameof(UserRole.Admin))]
-        public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserRequest preRegisterUserDTO)
+        [Authorize(Roles = SystemRoles.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> PreRegisterAsync([FromBody] PreRegisterUserDTO preRegisterUserDTO)
         {
-            var result = await _mediator.Send(new PreRegisterUserCommand
+            await _mediator.Send(new PreRegisterUserCommand
             {
-                Username = preRegisterUserDTO.Username,
+                Email = preRegisterUserDTO.Email,
                 Role = preRegisterUserDTO.Role
             });
-            return CreatedAtRoute(nameof(GetByIdAsync), new { id = result });
+            return Created();
         }
     }
 }

@@ -1,21 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BuildingBlocks.Security.Domain;
 
 namespace Authentication.API.Domain
 {
-    public class User : IdentityUser
+    public class User : UserBase
     {
+
         public User()
         {
-            Id = Guid.NewGuid().ToString();
+        }
+        public User(string email, params Role[] roles)
+        {
+            Email = email;
+            Roles = roles.ToList();
         }
 
-        public User(string username, string firstName, string lastName, DateOnly birthday, string email, bool active = true)
+        public User(string firstName, string lastName, DateOnly birthday, string email, bool active = true)
         {
-            Id = Guid.NewGuid().ToString();
-            UserName = username;
-            NormalizedUserName = username.ToLower();
-            Email = email;
-            NormalizedEmail = email.ToLower();
+            Email = email.ToLower();
             FirstName = firstName;
             LastName = lastName;
             Birthday = birthday;
@@ -26,6 +27,5 @@ namespace Authentication.API.Domain
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateOnly? Birthday { get; set; }
-        public bool Active { get; set; }
     }
 }
