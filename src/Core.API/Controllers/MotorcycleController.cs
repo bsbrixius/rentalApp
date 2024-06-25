@@ -1,8 +1,8 @@
 ﻿using BuildingBlocks.API.Core.Data.Pagination;
 using BuildingBlocks.Security.Authorization;
-using Core.API.Application.Commands.Motorcycle;
-using Core.API.Application.Data.DTOs.Motorcycle;
-using Core.API.Application.Query.Motorcycle;
+using Core.Application.Commands.Motorcycle;
+using Core.Application.Data.DTOs.Motorcycle;
+using Core.Application.Query.Motorcycle;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

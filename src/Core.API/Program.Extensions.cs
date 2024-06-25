@@ -3,8 +3,9 @@ using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
-using Core.API.Application.Commands.Motorcycle;
-using Core.Infrastructure;
+using Core.Application.Commands.Motorcycle;
+using Core.Infraestructure;
+using Crosscutting.EventBus.RabbitMq;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -89,7 +90,7 @@ namespace Core.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = typeof(Program).Assembly.FullName,
+                    Title = typeof(Program).Assembly.GetName().Name,
                     Version = "v1"
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -121,6 +122,7 @@ namespace Core.API
             services.AddControllers();
             services.AddHttpContextAccessor();
             services.AddSingleton<JwtValidator>();
+            services.AddRabbitMqBroker();
             //builder.Services.AddRabbitMqBroker();
             return services;
         }

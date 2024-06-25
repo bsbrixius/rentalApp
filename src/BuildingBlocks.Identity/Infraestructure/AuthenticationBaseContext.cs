@@ -6,24 +6,20 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Reflection;
 
 namespace Authentication.API.Infraestructure
 {
     public class AuthenticationBaseContext<TUser> : BaseDb
         where TUser : UserBase
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AuthenticationBaseContext(
             IMediator mediator,
-            ILogger<AuthenticationBaseContext<TUser>> logger,
+            ILogger<DbContext> logger,
             IHttpContextAccessor httpContextAccessor,
             DbContextOptions options
-            ) : base(mediator, logger, options)
+            ) : base(mediator, logger, httpContextAccessor, options)
         {
-            ArgumentNullException.ThrowIfNull(httpContextAccessor);
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<TUser> Users { get; set; }
@@ -46,33 +42,6 @@ namespace Authentication.API.Infraestructure
             builder.ApplyConfiguration(new UserBaseConfiguration());
             builder.ApplyConfiguration(new UserRoleConfiguration());
             base.OnModelCreating(builder);
-        }
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var entries = ChangeTracker
-                .Entries()
-                .Where(e => e.Entity is AuditableEntity && (
-                        e.State == EntityState.Added
-                        || e.State == EntityState.Modified));
-
-            foreach (var entityEntry in entries)
-            {
-                if (entityEntry.State == EntityState.Added)
-                {
-                    ((AuditableEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
-                    ((AuditableEntity)entityEntry.Entity).CreatedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? Assembly.GetCallingAssembly().FullName;
-                }
-                else
-                {
-                    Entry((AuditableEntity)entityEntry.Entity).Property(p => p.CreatedAt).IsModified = false;
-                    Entry((AuditableEntity)entityEntry.Entity).Property(p => p.CreatedBy).IsModified = false;
-                }
-
-                ((AuditableEntity)entityEntry.Entity).UpdatedAt = DateTime.UtcNow;
-                ((AuditableEntity)entityEntry.Entity).UpdatedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? Assembly.GetCallingAssembly().FullName;
-            }
-
-            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

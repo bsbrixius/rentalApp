@@ -6,7 +6,7 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var AppName = typeof(Program).Assembly.FullName;
+var AppName = typeof(Program).Assembly.GetName().Name;
 builder.Host.AddSerilogCore();
 Log.Information("Starting web host");
 Log.Information(builder.Environment.EnvironmentName);

@@ -1,12 +1,12 @@
 using Core.API;
 using Core.API.Infraestructure;
-using Core.Infrastructure;
+using Core.Infraestructure;
 using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-var AppName = typeof(Program).Assembly.FullName;
+var AppName = typeof(Program).Assembly.GetName().Name;
 builder.Host.UseSerilogCore();
 Log.Information("Starting web host");
 Log.Information(builder.Environment.EnvironmentName);
@@ -26,7 +26,6 @@ builder.Services
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())

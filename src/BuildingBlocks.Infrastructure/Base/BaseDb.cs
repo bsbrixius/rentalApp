@@ -1,9 +1,11 @@
 ﻿using BuildingBlocks.Domain;
 using BuildingBlocks.EventSourcing;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text;
 
 namespace BuildingBlocks.Infrastructure.Base
@@ -12,22 +14,53 @@ namespace BuildingBlocks.Infrastructure.Base
     {
         private readonly IMediator _mediator;
         private readonly ILogger<DbContext> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BaseDb(IMediator mediator, ILogger<DbContext> logger, DbContextOptions options) : base(options)
+        public BaseDb(
+            IMediator mediator,
+            ILogger<DbContext> logger,
+            IHttpContextAccessor httpContextAccessor,
+            DbContextOptions options
+            ) : base(options)
         {
             _mediator = mediator;
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<DomainEvent>();
-
             //modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is AuditableEntity && (
+                        e.State == EntityState.Added
+                        || e.State == EntityState.Modified));
+
+            foreach (var entityEntry in entries)
+            {
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((AuditableEntity)entityEntry.Entity).CreatedAt = DateTime.UtcNow;
+                    ((AuditableEntity)entityEntry.Entity).CreatedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? Assembly.GetEntryAssembly().GetName().Name;
+                }
+                else
+                {
+                    Entry((AuditableEntity)entityEntry.Entity).Property(p => p.CreatedAt).IsModified = false;
+                    Entry((AuditableEntity)entityEntry.Entity).Property(p => p.CreatedBy).IsModified = false;
+                }
+                if (entityEntry.State == EntityState.Modified)
+                {
+                    ((AuditableEntity)entityEntry.Entity).UpdatedAt = DateTime.UtcNow;
+                    ((AuditableEntity)entityEntry.Entity).UpdatedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? Assembly.GetEntryAssembly().GetName().Name;
+                }
+            }
+
             ValidateEntities();
             var savedEntities = await base.SaveChangesAsync(cancellationToken);
             await PublishDomainEvents();

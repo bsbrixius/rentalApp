@@ -1,5 +1,5 @@
-﻿using Core.API.Domain;
-using Core.Infrastructure;
+﻿using Core.Domain;
+using Core.Infraestructure;
 
 namespace Core.API.Infraestructure
 {
