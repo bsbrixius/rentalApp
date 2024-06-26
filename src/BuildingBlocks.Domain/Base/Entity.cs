@@ -1,6 +1,6 @@
-﻿using BuildingBlocks.EventSourcing;
+﻿using BuildingBlocks.Domain.Events;
 
-namespace BuildingBlocks.Domain
+namespace BuildingBlocks.Domain.Base
 {
     public interface IEntity
     {

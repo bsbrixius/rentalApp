@@ -1,5 +1,5 @@
 ﻿using BuildingBlocks.Infrastructure.Configuration;
-using Core.Domain;
+using Core.Domain.Aggregates.Driver;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Core.Infraestructure.EntityConfiguration

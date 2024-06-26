@@ -1,6 +1,6 @@
 ﻿using Authentication.API.Domain;
 using Authentication.API.Infraestructure.EntityConfiguration;
-using BuildingBlocks.Infrastructure.Base;
+using BuildingBlocks.Domain.Base;
 using BuildingBlocks.Security.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;

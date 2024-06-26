@@ -1,4 +1,4 @@
-﻿using Core.Domain;
+﻿using Core.Domain.Aggregates.Motorcycle;
 using Core.Infraestructure;
 
 namespace Core.API.Infraestructure

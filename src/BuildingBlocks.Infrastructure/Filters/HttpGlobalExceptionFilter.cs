@@ -1,5 +1,4 @@
-﻿using Authentication.API.Domain.Expections;
-using BuildingBlocks.Infrastructure.Domain.Exceptions;
+﻿using BuildingBlocks.Infrastructure.Exceptions;
 using BuildingBlocks.Infrastructure.ResponseDetails;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;

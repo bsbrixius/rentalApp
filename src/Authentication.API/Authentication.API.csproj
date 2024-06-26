@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BuildingBlocks.API.Core\BuildingBlocks.API.Core.csproj" />
+    <ProjectReference Include="..\BuildingBlocks.Common\BuildingBlocks.Common.csproj" />
     <ProjectReference Include="..\BuildingBlocks.Identity\BuildingBlocks.Identity.csproj" />
     <ProjectReference Include="..\BuildingBlocks.Infrastructure\BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\BuildingBlocks.Security\BuildingBlocks.Security.csproj" />

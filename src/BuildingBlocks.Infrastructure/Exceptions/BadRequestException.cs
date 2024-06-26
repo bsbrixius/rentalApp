@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.Infrastructure.Domain.Exceptions
+﻿namespace BuildingBlocks.Infrastructure.Exceptions
 {
     public class BadRequestException : Exception
     {

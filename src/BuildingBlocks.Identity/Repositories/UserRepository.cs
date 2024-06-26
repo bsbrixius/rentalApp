@@ -1,5 +1,5 @@
 ﻿using Authentication.API.Infraestructure;
-using BuildingBlocks.Infrastructure.Data;
+using BuildingBlocks.Domain.Repositories;
 using BuildingBlocks.Security.Domain;
 using Microsoft.AspNetCore.Identity;
 

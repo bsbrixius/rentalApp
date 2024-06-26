@@ -1,8 +1,7 @@
 ﻿using BuildingBlocks.API.Core.Data.Pagination;
 using Core.Application.Data.DTOs.Motorcycle;
 using Core.Application.Query.Motorcycle;
-using Core.Infraestructure.Repositories;
-using Microsoft.EntityFrameworkCore;
+using Core.Domain.Aggregates.Motorcycle;
 
 namespace Core.Application.Query
 {
@@ -10,24 +9,17 @@ namespace Core.Application.Query
     {
         Task<PaginatedResult<MotorcycleDTO>> SearchMotorcycleAsync(SearchMotorcycleQuery searchMotorcycleQuery);
     }
-    //TODO: Implement IMotorcycleQueryRepository
     public class MotorcycleQueries : IMotorcycleQueries
     {
-        private readonly IMotorcycleRepository _motorcycleRepository;
-        public MotorcycleQueries(IMotorcycleRepository motorcycleRepository)
+        private readonly IMotorcycleQueryRepository _motorcycleQueryRepository;
+        public MotorcycleQueries(IMotorcycleQueryRepository motorcycleQueryRepository)
         {
-            _motorcycleRepository = motorcycleRepository;
+            _motorcycleQueryRepository = motorcycleQueryRepository;
         }
 
         public async Task<PaginatedResult<MotorcycleDTO>> SearchMotorcycleAsync(SearchMotorcycleQuery queryRequest)
         {
-            var query = _motorcycleRepository.QueryNoTrack;
-            if (!string.IsNullOrEmpty(queryRequest.Plate))
-            {
-                query = query.Where(x => EF.Functions.Like(x.Plate, $"{queryRequest.Plate}"));
-            }
-            var paginatedUsers = await query.PaginateAsync(queryRequest.Page, queryRequest.PageSize, MotorcycleDTO.From);
-            return paginatedUsers;
+            return await _motorcycleQueryRepository.SearchBy(queryRequest.Plate).PaginateAsync(queryRequest.Page, queryRequest.PageSize, MotorcycleDTO.From);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.Domain;
 
-namespace BuildingBlocks.Infrastructure.Base
+namespace BuildingBlocks.Domain.Base
 {
     public abstract class AuditableEntity : Entity
     {

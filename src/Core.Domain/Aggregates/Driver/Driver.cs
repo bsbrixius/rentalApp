@@ -1,6 +1,6 @@
-﻿using BuildingBlocks.Infrastructure.Base;
+﻿using BuildingBlocks.Domain.Base;
 
-namespace Core.Domain
+namespace Core.Domain.Aggregates.Driver
 {
     public class Driver : AuditableEntity
     {

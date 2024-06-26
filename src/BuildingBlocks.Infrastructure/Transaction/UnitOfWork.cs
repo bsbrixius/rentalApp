@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Infrastructure.Base;
+﻿using BuildingBlocks.Domain.Base;
 using BuildingBlocks.Infrastructure.Data;
 
 namespace BuildingBlocks.Infrastructure.Transaction

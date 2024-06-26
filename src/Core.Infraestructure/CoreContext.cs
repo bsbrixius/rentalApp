@@ -1,5 +1,6 @@
-﻿using BuildingBlocks.Infrastructure.Base;
-using Core.Domain;
+﻿using BuildingBlocks.Domain.Base;
+using Core.Domain.Aggregates.Driver;
+using Core.Domain.Aggregates.Motorcycle;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

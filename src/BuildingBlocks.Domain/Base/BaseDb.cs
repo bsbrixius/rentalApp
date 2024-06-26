@@ -1,5 +1,4 @@
-﻿using BuildingBlocks.Domain;
-using BuildingBlocks.EventSourcing;
+﻿using BuildingBlocks.Domain.Events;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text;
 
-namespace BuildingBlocks.Infrastructure.Base
+namespace BuildingBlocks.Domain.Base
 {
     public class BaseDb : DbContext
     {

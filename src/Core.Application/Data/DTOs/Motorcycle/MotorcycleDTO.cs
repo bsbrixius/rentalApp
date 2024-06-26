@@ -7,7 +7,7 @@
         public string Model { get; set; }
         public string Plate { get; set; }
 
-        public static MotorcycleDTO From(Domain.Motorcycle motorcycle)
+        public static MotorcycleDTO From(Domain.Aggregates.Motorcycle.Motorcycle motorcycle)
         {
             return new MotorcycleDTO
             {

@@ -1,5 +1,4 @@
-﻿using BuildingBlocks.Domain;
-using BuildingBlocks.Infrastructure.Base;
+﻿using BuildingBlocks.Domain.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

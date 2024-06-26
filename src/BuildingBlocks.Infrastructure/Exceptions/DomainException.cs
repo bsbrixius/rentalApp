@@ -1,4 +1,4 @@
-﻿namespace Authentication.API.Domain.Expections
+﻿namespace BuildingBlocks.Infrastructure.Exceptions
 {
     public class DomainException : Exception
     {

@@ -1,15 +1,15 @@
 ﻿
-using BuildingBlocks.EventSourcing;
+using BuildingBlocks.Domain.Events;
 
 namespace Core.Domain.Events.Motorcycle
 {
     public class MotorcycleRegisteredDomainEvent : DomainEvent
     {
-        public MotorcycleRegisteredDomainEvent(Domain.Motorcycle motorcycle)
+        public MotorcycleRegisteredDomainEvent(Domain.Aggregates.Motorcycle.Motorcycle motorcycle)
         {
             Motorcycle = motorcycle;
         }
 
-        public Domain.Motorcycle Motorcycle { get; private set; }
+        public Aggregates.Motorcycle.Motorcycle Motorcycle { get; private set; }
     }
 }

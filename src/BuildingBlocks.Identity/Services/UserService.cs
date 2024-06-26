@@ -1,7 +1,7 @@
 ﻿using Authentication.API.Application.Data.Repositories;
 using Authentication.API.Domain;
-using Authentication.API.Domain.Expections;
 using BuildingBlocks.Identity.Repositories;
+using BuildingBlocks.Infrastructure.Exceptions;
 using BuildingBlocks.Security.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;

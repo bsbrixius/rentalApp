@@ -20,7 +20,7 @@ namespace Core.Application.Commands.Motorcycle
 
             public async Task Handle(RegisterMotorcycleCommand request, CancellationToken cancellationToken)
             {
-                var newMotorcycle = new Domain.Motorcycle(request.Year, request.Model, request.Plate);
+                var newMotorcycle = new Domain.Aggregates.Motorcycle.Motorcycle(request.Year, request.Model, request.Plate);
 
                 await _motorcycleRepository.AddAsync(newMotorcycle);
                 await _motorcycleRepository.SaveChangesAsync();
