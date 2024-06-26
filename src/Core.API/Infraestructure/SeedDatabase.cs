@@ -16,7 +16,7 @@ namespace Core.API.Infraestructure
         {
             var motorcycles = new List<Motorcycle>()
             {
-                new Motorcycle(2021, "Harley-Davidson Sportster", "XYZ1234"),
+                new Motorcycle(2024, "Harley-Davidson Sportster", "XYZ1234"),
                 new Motorcycle(2019, "Honda CBR600RR", "ABC5678"),
                 new Motorcycle(2022, "Yamaha YZF-R1", "DEF9012"),
                 new Motorcycle(2018, "Kawasaki Ninja ZX-10R", "GHI3456"),

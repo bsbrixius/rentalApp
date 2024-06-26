@@ -1,10 +1,12 @@
 using Crosscutting.EventBus.RabbitMq;
 using Crosscutting.EventStore.Postgres;
+using Crosscutting.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEventStoreForPostgres();
 builder.Services.AddRabbitMqBroker();
+builder.Services.AddMailService();
 
 var app = builder.Build();
 

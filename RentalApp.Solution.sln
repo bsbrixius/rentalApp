@@ -49,15 +49,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crosscutting.EventBus.Rabbi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Worker", "Worker", "{6856CBF9-6FB2-4DD1-A5F0-1DFFB331D467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker.Api", "src\Worker.Api\Worker.Api.csproj", "{077A4B59-9A07-4899-A528-426825D828A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker.Api", "src\Worker.Api\Worker.Api.csproj", "{077A4B59-9A07-4899-A528-426825D828A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Domain", "src\Core.Domain\Core.Domain.csproj", "{B632EA97-623B-457D-B266-6375E7C2F13C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Application", "src\Core.Application\Core.Application.csproj", "{69DF3D1B-4D78-4AFF-8CB0-7B58E84C63A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "src\Core.Application\Core.Application.csproj", "{69DF3D1B-4D78-4AFF-8CB0-7B58E84C63A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Infraestructure", "src\Core.Infraestructure\Core.Infraestructure.csproj", "{D7CDF3EC-F90B-4E89-8893-8C89368C39D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infraestructure", "src\Core.Infraestructure\Core.Infraestructure.csproj", "{D7CDF3EC-F90B-4E89-8893-8C89368C39D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crosscutting.EventStore.Postgres", "src\Crosscutting.EventStore.Postgres\Crosscutting.EventStore.Postgres.csproj", "{B41585AE-5E10-4921-B326-401BAE0DC15C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crosscutting.EventStore.Postgres", "src\Crosscutting.EventStore.Postgres\Crosscutting.EventStore.Postgres.csproj", "{B41585AE-5E10-4921-B326-401BAE0DC15C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crosscutting.Mail", "src\Crosscutting.Mail\Crosscutting.Mail.csproj", "{4B1B1F13-547F-4B06-81F2-558FB08450D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,6 +135,10 @@ Global
 		{B41585AE-5E10-4921-B326-401BAE0DC15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B41585AE-5E10-4921-B326-401BAE0DC15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B41585AE-5E10-4921-B326-401BAE0DC15C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B1B1F13-547F-4B06-81F2-558FB08450D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B1B1F13-547F-4B06-81F2-558FB08450D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B1B1F13-547F-4B06-81F2-558FB08450D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B1B1F13-547F-4B06-81F2-558FB08450D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +169,7 @@ Global
 		{69DF3D1B-4D78-4AFF-8CB0-7B58E84C63A0} = {3C99AD81-F09C-4AEA-8EC1-A632C90B705A}
 		{D7CDF3EC-F90B-4E89-8893-8C89368C39D1} = {3C99AD81-F09C-4AEA-8EC1-A632C90B705A}
 		{B41585AE-5E10-4921-B326-401BAE0DC15C} = {62A55332-48AE-4AB3-AA0F-8CED1EDBC64F}
+		{4B1B1F13-547F-4B06-81F2-558FB08450D7} = {62A55332-48AE-4AB3-AA0F-8CED1EDBC64F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45E9873A-6D04-46BD-9631-9E49CC323C6D}
