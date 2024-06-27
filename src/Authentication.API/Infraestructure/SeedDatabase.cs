@@ -43,9 +43,9 @@ namespace Authentication.API.Infraestructure
                 var result = await context.AddAsync(role);
             }
 
-            if (!context.Roles.Any(x => x.Name == SystemRoles.Driver))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.Renter))
             {
-                var role = new Role(SystemRoles.Driver);
+                var role = new Role(SystemRoles.Renter);
                 var result = await context.AddAsync(role);
             }
             await context.SaveChangesAsync();

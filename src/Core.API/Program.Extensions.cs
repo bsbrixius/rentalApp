@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
+using BuildingBlocks.API.Core.Security;
 using BuildingBlocks.API.Core.Swagger;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
@@ -194,7 +195,7 @@ namespace Core.API
         {
             //TODO Add policies
             services.AddJwtAuthenticationConfiguration(configuration);
-            services.AddAuthorization();
+            services.AddAuthorization(PoliciesConfiguration.ConfigureAuthorization);
             return services;
         }
     }
