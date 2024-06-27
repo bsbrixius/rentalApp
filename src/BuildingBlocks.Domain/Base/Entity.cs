@@ -1,13 +1,7 @@
-﻿using BuildingBlocks.Domain.Events;
-
-namespace BuildingBlocks.Domain.Base
+﻿namespace BuildingBlocks.Domain.Base
 {
     public interface IEntity
     {
-        //IEntity ApplyEvent(Event payload);
-        //List<Event> GetUncommittedEvents();
-        //IEntity AddEvent(Event uncommittedEvent);
-        //void ClearUncommittedEvents();
     }
 
     public abstract class Entity : IEntity
@@ -25,27 +19,9 @@ namespace BuildingBlocks.Domain.Base
             }
         }
 
-        private List<DomainEvent> _domainEvents = new List<DomainEvent>();
-        public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
         protected Entity()
         {
             _Id = Guid.NewGuid();
-        }
-
-        public void AddDomainEvent(DomainEvent eventItem)
-        {
-            _domainEvents = _domainEvents ?? new List<DomainEvent>();
-            _domainEvents.Add(eventItem);
-        }
-
-        public void RemoveDomainEvent(DomainEvent eventItem)
-        {
-            _domainEvents?.Remove(eventItem);
-        }
-
-        public void ClearDomainEvents()
-        {
-            _domainEvents?.Clear();
         }
     }
 }

@@ -2,7 +2,7 @@
 using Core.Domain.Aggregates.Motorcycle;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.Infraestructure.Queries
+namespace Core.Data.Queries
 {
     public class MotorcycleQueryRepository : QueryRepository<Motorcycle, CoreContext>, IMotorcycleQueryRepository
     {

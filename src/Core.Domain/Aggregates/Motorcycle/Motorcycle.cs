@@ -3,11 +3,10 @@ using Core.Domain.Events.Motorcycle;
 
 namespace Core.Domain.Aggregates.Motorcycle
 {
-    public class Motorcycle : AuditableEntity
+    public class Motorcycle : AggregateRoot
     {
         string oldPattern = @"^[A-Z]{3}-[0-9]{4}$";
         string pattern = @"^[A-Z]{3}[0-9][A-Z][0-9]{2}$";
-
 
         public Motorcycle(uint year, string model, string plate) : base()
         {

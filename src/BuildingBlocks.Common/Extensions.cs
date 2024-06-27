@@ -20,6 +20,7 @@ namespace BuildingBlocks.API.Core.Data.Pagination
         }
 
         public async static Task<PaginatedResult<T>> PaginateAsync<T>(this IQueryable<T> query, int pageNumber, int pageSize)
+        //public async static Task<PaginatedResult<T>> PaginateAsync<T>(this IQueryable<T> query, int pageNumber, int pageSize, Func<T,bool> orderBy)
         {
             Guard.Against.Null(query, nameof(query));
             Guard.Against.NegativeOrZero(pageNumber, nameof(pageNumber));

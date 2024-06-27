@@ -4,7 +4,7 @@ using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
 using Core.Application.Commands.Motorcycle;
-using Core.Infraestructure;
+using Core.Data;
 using Crosscutting.EventBus.RabbitMq;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
@@ -123,7 +123,6 @@ namespace Core.API
             services.AddHttpContextAccessor();
             services.AddSingleton<JwtValidator>();
             services.AddRabbitMqBroker();
-            //builder.Services.AddRabbitMqBroker();
             return services;
         }
 

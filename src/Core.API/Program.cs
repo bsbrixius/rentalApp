@@ -1,6 +1,6 @@
 using Core.API;
 using Core.API.Infraestructure;
-using Core.Infraestructure;
+using Core.Data;
 using Serilog;
 
 

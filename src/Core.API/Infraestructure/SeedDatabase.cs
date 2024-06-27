@@ -1,5 +1,5 @@
-﻿using Core.Domain.Aggregates.Motorcycle;
-using Core.Infraestructure;
+﻿using Core.Data;
+using Core.Domain.Aggregates.Motorcycle;
 
 namespace Core.API.Infraestructure
 {

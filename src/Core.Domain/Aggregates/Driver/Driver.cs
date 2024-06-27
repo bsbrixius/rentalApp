@@ -2,7 +2,7 @@
 
 namespace Core.Domain.Aggregates.Driver
 {
-    public class Driver : AuditableEntity
+    public class Driver : AggregateRoot
     {
         public string Name { get; set; }
         public string CNPJ { get; set; }

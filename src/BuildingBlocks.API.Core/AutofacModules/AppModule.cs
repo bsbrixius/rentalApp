@@ -11,52 +11,14 @@ namespace BuildingBlocks.API.Core.AutofacModules
             builder.RegisterAssemblyTypes(typeof(IMediator).GetTypeInfo().Assembly)
                 .AsImplementedInterfaces();
 
-            //Repositories
-            var repositories = Assembly
-                .GetEntryAssembly()
-                .GetTypes()
-                .Where(x =>
-                x.FullName.EndsWith($"Repository") &&
-                x.IsInterface == false)
-                .ToArray();
-            builder.RegisterTypes(repositories).AsImplementedInterfaces();
+            var assemblyPrefixName = Assembly.GetEntryAssembly().GetName().Name.Split('.').FirstOrDefault();
+            ArgumentNullException.ThrowIfNull(assemblyPrefixName, nameof(assemblyPrefixName));
 
-            //Queries
-            var queries = Assembly
-                .GetEntryAssembly()
-                .GetTypes()
-                .Where(x =>
-                x.FullName.EndsWith($"Queries") &&
-                x.IsInterface == false)
-                .ToArray();
-            builder.RegisterTypes(queries).AsImplementedInterfaces();
+            var currentDomainAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.StartsWith(assemblyPrefixName)).ToArray();
 
-            //Commands
-            var commandHandlers = Assembly
-                .GetEntryAssembly()
-                .GetTypes()
-                .Where(x =>
-                x.FullName.EndsWith($"CommandHandler") &&
-                x.IsInterface == false)
-                .ToArray();
-            builder.RegisterTypes(commandHandlers).AsImplementedInterfaces();
-
-            //DomainEventHandlers
-            var domainEventHandlers = Assembly
-                .GetEntryAssembly()
-                .GetTypes()
-                .Where(x =>
-                x.FullName.EndsWith($"DomainEventHandler") &&
-                x.IsInterface == false)
-                .ToArray();
-            builder.RegisterTypes(domainEventHandlers).AsImplementedInterfaces();
-
-            //Validators
-            var validators = Assembly
-                .GetEntryAssembly()
-                .GetTypes()
-                .Where(x => x.Name.EndsWith("Validator")).ToArray();
-            builder.RegisterTypes(validators).AsImplementedInterfaces();
+            builder.RegisterAssemblyTypes(currentDomainAssemblies)
+                .Where(x => x.IsInterface == false)
+                .AsImplementedInterfaces();
         }
     }
 }

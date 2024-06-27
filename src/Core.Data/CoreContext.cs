@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Core.Infraestructure
+namespace Core.Data
 {
     public class CoreContext : BaseDb
     {

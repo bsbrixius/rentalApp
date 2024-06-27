@@ -66,18 +66,10 @@ namespace BuildingBlocks.Domain.Base
             return savedEntities;
         }
 
-        //public override int SaveChanges()
-        //{
-        //    ValidateEntities();
-        //    var savedEntities = base.SaveChanges();
-        //    PublishDomainEvents().Wait();
-        //    return savedEntities;
-        //}
-
         private async Task PublishDomainEvents()
         {
             var entities = ChangeTracker
-                .Entries<Entity>()
+                .Entries<IAggregateRoot>()
                 .Select(x => x.Entity)
                 .Where(e => e.DomainEvents.Count > 0);
 

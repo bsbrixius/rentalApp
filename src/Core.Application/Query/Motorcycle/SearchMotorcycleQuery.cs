@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.API.Core.Data.Pagination;
 using Core.Application.Data.DTOs.Motorcycle;
+using Core.Domain.Aggregates.Motorcycle;
 using MediatR;
 
 namespace Core.Application.Query.Motorcycle
@@ -10,15 +11,15 @@ namespace Core.Application.Query.Motorcycle
 
         internal sealed class SearchMotorcycleQueryHandler : IRequestHandler<SearchMotorcycleQuery, PaginatedResult<MotorcycleDTO>>
         {
-            private readonly IMotorcycleQueries _motorcycleQueries;
+            private readonly IMotorcycleQueryRepository _motorcycleQueryRepository;
 
-            public SearchMotorcycleQueryHandler(IMotorcycleQueries motorcycleQueries)
+            public SearchMotorcycleQueryHandler(IMotorcycleQueryRepository motorcycleQueryRepository)
             {
-                _motorcycleQueries = motorcycleQueries;
+                _motorcycleQueryRepository = motorcycleQueryRepository;
             }
             public async Task<PaginatedResult<MotorcycleDTO>> Handle(SearchMotorcycleQuery request, CancellationToken cancellationToken)
             {
-                return await _motorcycleQueries.SearchMotorcycleAsync(request);
+                return await _motorcycleQueryRepository.SearchBy(request.Plate).PaginateAsync(request.Page, request.PageSize, MotorcycleDTO.From);
             }
         }
     }
