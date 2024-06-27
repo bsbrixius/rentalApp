@@ -1,5 +1,5 @@
 ﻿using Authentication.API.Domain;
-using BuildingBlocks.Domain;
+using BuildingBlocks.Domain.Base;
 
 namespace BuildingBlocks.Security.Domain
 {

@@ -15,6 +15,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BuildingBlocks.API.Core\BuildingBlocks.API.Core.csproj" />
+    <ProjectReference Include="..\BuildingBlocks.Domain\BuildingBlocks.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Events\" />
   </ItemGroup>
 
 </Project>

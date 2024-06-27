@@ -95,7 +95,7 @@ namespace Authentication.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = typeof(Program).Assembly.FullName,
+                    Title = typeof(Program).Assembly.GetName().Name,
                     Version = "v1"
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()

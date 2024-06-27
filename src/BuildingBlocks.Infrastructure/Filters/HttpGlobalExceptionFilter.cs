@@ -1,5 +1,4 @@
-﻿using Authentication.API.Domain.Expections;
-using BuildingBlocks.Infrastructure.Domain.Exceptions;
+﻿using BuildingBlocks.Infrastructure.Exceptions;
 using BuildingBlocks.Infrastructure.ResponseDetails;
 using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +34,8 @@ namespace BuildingBlocks.Infrastructure.Filters
                     HandleForbiddenException(context);
                     break;
                 case BadRequestException:
+                case DomainException:
+                case ArgumentException:
                     HandleBadRequestException(context);
                     break;
                 case ConflictException:
@@ -46,7 +47,6 @@ namespace BuildingBlocks.Infrastructure.Filters
                 case UnauthorizedException:
                     HandleUnauthorizedException(context);
                     break;
-                case DomainException:
                 case ValidationException:
                 case DbUpdateException:
                     HandleInternalServerError(context);

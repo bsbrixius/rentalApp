@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
@@ -22,10 +23,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BuildingBlocks.API.Core\BuildingBlocks.API.Core.csproj" />
+    <ProjectReference Include="..\BuildingBlocks.Common\BuildingBlocks.Common.csproj" />
     <ProjectReference Include="..\BuildingBlocks.Eventbus\BuildingBlocks.Eventbus.csproj" />
     <ProjectReference Include="..\BuildingBlocks.EventSourcing\BuildingBlocks.EventSourcing.csproj" />
     <ProjectReference Include="..\BuildingBlocks.Infrastructure\BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\BuildingBlocks.Security\BuildingBlocks.Security.csproj" />
+    <ProjectReference Include="..\Core.Application\Core.Application.csproj" />
+    <ProjectReference Include="..\Core.Data\Core.Data.csproj" />
+    <ProjectReference Include="..\Crosscutting.EventBus.RabbitMq\Crosscutting.EventBus.RabbitMq.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Renter\Controller\" />
   </ItemGroup>
 
 </Project>

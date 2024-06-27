@@ -1,10 +1,12 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
+using BuildingBlocks.API.Core.Swagger;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
-using Core.API.Application.Commands.Motorcycle;
-using Core.Infrastructure;
+using Core.Application.Commands.Motorcycle;
+using Core.Data;
+using Crosscutting.EventBus.RabbitMq;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +44,16 @@ namespace Core.API
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
                 });
+            //services.AddApiVersioning(config =>
+            //{
+            //    config.RouteConstraintName = "apiVersion";
+            //    config.DefaultApiVersion = new ApiVersion(1, 0);
+            //    config.AssumeDefaultVersionWhenUnspecified = true;
+            //    config.ReportApiVersions = true;
+            //    config.ApiVersionReader = ApiVersionReader.Combine(
+            //        new UrlSegmentApiVersionReader(),
+            //        new HeaderApiVersionReader("X-Api-Version"));
+            //});
             services.AddResponseCaching();
 
             services.Configure<ApiBehaviorOptions>(options => options.SuppressInferBindingSourcesForParameters = true);
@@ -89,7 +101,7 @@ namespace Core.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = typeof(Program).Assembly.FullName,
+                    Title = typeof(Program).Assembly.GetName().Name,
                     Version = "v1"
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -112,6 +124,7 @@ namespace Core.API
                     new string[] {}
                     }
                 });
+                c.SchemaFilter<EnumSchemaFilter>();
             });
             return services;
         }
@@ -121,7 +134,7 @@ namespace Core.API
             services.AddControllers();
             services.AddHttpContextAccessor();
             services.AddSingleton<JwtValidator>();
-            //builder.Services.AddRabbitMqBroker();
+            services.AddRabbitMqBroker();
             return services;
         }
 

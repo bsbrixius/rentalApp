@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Domain;
+﻿using BuildingBlocks.Domain.Base;
 
 namespace Authentication.API.Domain
 {

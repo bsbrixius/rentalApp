@@ -1,4 +1,4 @@
-﻿using Authentication.API.Domain.Expections;
+﻿using BuildingBlocks.Infrastructure.Exceptions;
 
 namespace Authentication.API.Domain.Exceptions
 {

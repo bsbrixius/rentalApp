@@ -15,6 +15,7 @@ services:
       - "7010:8080"
     networks:
       - postgres
+      - rabbitmq_net
 
   authentication.api:
     image: ${DOCKER_REGISTRY-}authenticationapi
@@ -30,6 +31,7 @@ services:
       - "7000:8080"
     networks:
       - postgres
+      - rabbitmq_net
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -38,10 +40,13 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - rabbitmq_net
+    restart: unless-stopped
 
   postgres:
     container_name: postgres_container
@@ -74,12 +79,57 @@ services:
       - postgres
     restart: unless-stopped
 
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: unless-stopped
+    ports:
+      # Web interface
+      - '5000:80'
+      # SMTP server port
+      - '25:25'
+      # IMAP server port
+      - '143:143'
+    volumes:
+        - smtp4dev-data:/smtp4dev
+    environment:
+      #Specifies the URLs the web UI will use inside the container.
+      - ServerOptions__Urls=http://*:80
+
+      #Specifies the server hostname. Used in auto-generated TLS certificate if enabled.
+      - ServerOptions__HostName=smtp4dev
+    networks:
+      - smtp4devlan
+
+  worker.api:
+    image: ${DOCKER_REGISTRY-}workerapi
+    build:
+      context: .
+      dockerfile: src/Worker.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      - rabbitmq
+      - postgres
+      - smtp4dev
+    ports:
+      - "7020:8080"
+    networks:
+      - smtp4devlan
+      - postgres
+      - rabbitmq_net
+
 networks:
+  smtp4devlan:
+    driver: bridge
   postgres:
+    driver: bridge
+  rabbitmq_net:
     driver: bridge
 
 volumes:
+    smtp4dev-data:
     rabbitmq_data:
         driver: local
     postgres:
     pgadmin:
+
