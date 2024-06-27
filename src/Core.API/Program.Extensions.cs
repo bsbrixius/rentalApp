@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
+using BuildingBlocks.API.Core.Swagger;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
 using Core.Application.Commands.Motorcycle;
@@ -43,6 +44,16 @@ namespace Core.API
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
                 });
+            //services.AddApiVersioning(config =>
+            //{
+            //    config.RouteConstraintName = "apiVersion";
+            //    config.DefaultApiVersion = new ApiVersion(1, 0);
+            //    config.AssumeDefaultVersionWhenUnspecified = true;
+            //    config.ReportApiVersions = true;
+            //    config.ApiVersionReader = ApiVersionReader.Combine(
+            //        new UrlSegmentApiVersionReader(),
+            //        new HeaderApiVersionReader("X-Api-Version"));
+            //});
             services.AddResponseCaching();
 
             services.Configure<ApiBehaviorOptions>(options => options.SuppressInferBindingSourcesForParameters = true);
@@ -113,6 +124,7 @@ namespace Core.API
                     new string[] {}
                     }
                 });
+                c.SchemaFilter<EnumSchemaFilter>();
             });
             return services;
         }

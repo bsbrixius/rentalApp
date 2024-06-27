@@ -3,36 +3,67 @@ namespace BuildingBlocks.API.Core.Data.Pagination
 {
     public static class Extensions
     {
-        public async static Task<PaginatedResult<T>> PaginateAsync<T, TEntity>(this IQueryable<TEntity> query, int pageNumber, int pageSize, Func<TEntity, T> fromConverter)
+        public async static Task<PaginatedResult<T>> PaginateAsync<T, TEntity>(this IQueryable<TEntity> queriable, int pageNumber, int pageSize, Func<TEntity, T> fromConverter, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
+            where T : class
+            where TEntity : class
         {
-            Guard.Against.Null(query, nameof(query));
+            Guard.Against.Null(queriable, nameof(queriable));
             Guard.Against.NegativeOrZero(pageNumber, nameof(pageNumber));
             Guard.Against.NegativeOrZero(pageSize, nameof(pageSize));
 
-            var itemsQuery = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            var totalItems = queriable.Count();
+            if (totalItems > 0)
+            {
+                if (orderBy != null)
+                    queriable = orderBy(queriable);
+
+                var items = queriable.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+                return new PaginatedResult<T>
+                {
+                    Items = items.Select(x => fromConverter(x)).ToList(),
+                    PageSize = pageSize,
+                    Page = pageNumber,
+                    TotalItems = totalItems
+                };
+            }
             return new PaginatedResult<T>
             {
-                Items = itemsQuery.Select(x => fromConverter(x)).ToList(),
+                Items = new List<T>(),
                 PageSize = pageSize,
                 Page = pageNumber,
-                TotalItems = null
+                TotalItems = 0
             };
         }
 
-        public async static Task<PaginatedResult<T>> PaginateAsync<T>(this IQueryable<T> query, int pageNumber, int pageSize)
-        //public async static Task<PaginatedResult<T>> PaginateAsync<T>(this IQueryable<T> query, int pageNumber, int pageSize, Func<T,bool> orderBy)
+        public async static Task<PaginatedResult<T>> PaginateAsync<T>(this IQueryable<T> queriable, int pageNumber, int pageSize, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
+            where T : class
         {
-            Guard.Against.Null(query, nameof(query));
+            Guard.Against.Null(queriable, nameof(queriable));
             Guard.Against.NegativeOrZero(pageNumber, nameof(pageNumber));
             Guard.Against.NegativeOrZero(pageSize, nameof(pageSize));
 
-            var items = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var totalItems = queriable.Count();
+            if (totalItems > 0)
+            {
+                if (orderBy != null)
+                    queriable = orderBy(queriable);
+
+                var items = queriable.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+                return new PaginatedResult<T>
+                {
+                    Items = items,
+                    PageSize = pageSize,
+                    Page = pageNumber,
+                    TotalItems = totalItems
+                };
+            }
             return new PaginatedResult<T>
             {
-                Items = items,
+                Items = new List<T>(),
                 PageSize = pageSize,
                 Page = pageNumber,
-                TotalItems = null
+                TotalItems = 0
             };
         }
     }

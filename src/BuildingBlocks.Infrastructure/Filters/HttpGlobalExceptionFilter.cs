@@ -34,6 +34,8 @@ namespace BuildingBlocks.Infrastructure.Filters
                     HandleForbiddenException(context);
                     break;
                 case BadRequestException:
+                case DomainException:
+                case ArgumentException:
                     HandleBadRequestException(context);
                     break;
                 case ConflictException:
@@ -45,7 +47,6 @@ namespace BuildingBlocks.Infrastructure.Filters
                 case UnauthorizedException:
                     HandleUnauthorizedException(context);
                     break;
-                case DomainException:
                 case ValidationException:
                 case DbUpdateException:
                     HandleInternalServerError(context);

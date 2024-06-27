@@ -7,10 +7,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.API.Controllers
+namespace Core.API.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[area]/[controller]")]
     public class MotorcycleController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -23,6 +24,7 @@ namespace Core.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(PaginatedResult<MotorcycleDTO>), StatusCodes.Status200OK)]
         [Authorize(Roles = nameof(SystemRoles.Admin))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] SearchMotorcycleRequest searchMotorcycleRequest)
         {
             return Ok(await _mediator.Send(new SearchMotorcycleQuery
@@ -35,7 +37,9 @@ namespace Core.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = nameof(SystemRoles.Admin))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Post([FromBody] RegisterMotorcycleRequest registerMotorcycleDTO)
         {
             await _mediator.Send(new RegisterMotorcycleCommand
@@ -45,6 +49,21 @@ namespace Core.API.Controllers
                 Year = registerMotorcycleDTO.Year
             });
             return Created();
+        }
+
+        [HttpPatch("{id}/plate")]
+        [Authorize(Roles = nameof(SystemRoles.Admin))]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Patch([FromRoute] Guid id, [FromBody] UpdateMotorcyclePlateRequest updateMotorcyclePlateRequest)
+        {
+            await _mediator.Send(new UpdateMotorcycleCommand
+            {
+                Id = id,
+                Plate = updateMotorcyclePlateRequest.Plate
+            });
+            return NoContent();
         }
     }
 }
