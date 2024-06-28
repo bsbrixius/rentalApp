@@ -5,7 +5,11 @@ namespace Authentication.API.Domain
 {
     public class Role : Entity
     {
-        protected Role() { }
+        protected Role()
+        {
+            Users = new List<UserBase>();
+            RoleClaims = new List<RoleClaim>();
+        }
         public Role(string name)
         {
             Name = name;

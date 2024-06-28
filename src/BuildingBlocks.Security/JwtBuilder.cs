@@ -51,6 +51,7 @@ namespace BuildingBlocks.Security
 
             claims.AddClaims(userClaims);
             claims.AddClaims(roles.Select(x => new Claim("role", x.Name)).ToList());
+            claims.AddClaims(roles.SelectMany(x => x.RoleClaims).Select(x => new Claim(x.ClaimType, x.ClaimValue)).ToList());
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             claims.AddClaim(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
