@@ -1,9 +1,9 @@
 ﻿using BuildingBlocks.Domain.Repositories;
-using Core.Domain.Aggregates.Motorcycle;
 
-namespace Core.Infraestructure.Repositories
+namespace Core.Domain.Aggregates.Motorcycle
 {
     public interface IMotorcycleRepository : IRepository<Motorcycle>
     {
+        bool HasAnyRent(Guid id);
     }
 }

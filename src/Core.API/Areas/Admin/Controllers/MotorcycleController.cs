@@ -65,5 +65,15 @@ namespace Core.API.Areas.Admin.Controllers
             });
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policy = Policies.Roles.Admin.Delete)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            await _mediator.Send(new RemoveMotorcycleCommand { Id = id });
+            return NoContent();
+        }
     }
 }

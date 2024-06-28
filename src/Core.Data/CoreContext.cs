@@ -1,6 +1,7 @@
 ﻿using BuildingBlocks.Domain.Base;
-using Core.Domain.Aggregates.Driver;
 using Core.Domain.Aggregates.Motorcycle;
+using Core.Domain.Aggregates.Rent;
+using Core.Domain.Aggregates.Renter;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,8 @@ namespace Core.Data
             optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
         }
 
-        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Rent> Rents { get; set; }
+        public DbSet<Renter> Renters { get; set; }
         public DbSet<Motorcycle> Motorcycles { get; set; }
 
     }

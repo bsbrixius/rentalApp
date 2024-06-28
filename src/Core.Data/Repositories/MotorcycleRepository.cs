@@ -1,6 +1,5 @@
 ﻿using BuildingBlocks.Domain.Repositories;
 using Core.Domain.Aggregates.Motorcycle;
-using Core.Infraestructure.Repositories;
 
 namespace Core.Data.Repositories
 {
@@ -8,6 +7,11 @@ namespace Core.Data.Repositories
     {
         public MotorcycleRepository(CoreContext context) : base(context)
         {
+        }
+
+        public bool HasAnyRent(Guid id)
+        {
+            return _dbSet.Any(x => x.Rents.Any());
         }
     }
 }

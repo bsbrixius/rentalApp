@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Core.Data.EntityConfiguration
 {
-    public class MotorcycleConfiguration : BaseEntityTypeConfiguration<Motorcycle>
+    public class MotorcycleConfiguration : AuditableEntityTypeConfiguration<Motorcycle>
     {
         public override void Configure(EntityTypeBuilder<Motorcycle> builder)
         {
@@ -12,7 +12,6 @@ namespace Core.Data.EntityConfiguration
             builder.Property(m => m.Model).IsRequired();
             builder.Property(m => m.Plate).IsRequired();
             builder.HasIndex(m => m.Plate).IsUnique();
-
             base.Configure(builder);
         }
     }

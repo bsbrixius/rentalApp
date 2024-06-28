@@ -55,8 +55,17 @@ namespace BuildingBlocks.Domain.Base
                 }
                 if (entityEntry.State == EntityState.Modified)
                 {
-                    ((AuditableEntity)entityEntry.Entity).UpdatedAt = DateTime.UtcNow;
-                    ((AuditableEntity)entityEntry.Entity).UpdatedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? Assembly.GetEntryAssembly().GetName().Name;
+
+                    if (Entry((AuditableEntity)entityEntry.Entity).Property(p => p.IsDeleted).IsModified && Entry((AuditableEntity)entityEntry.Entity).Property(p => p.IsDeleted).CurrentValue)
+                    {
+                        ((AuditableEntity)entityEntry.Entity).DeletedAt = DateTime.UtcNow;
+                        ((AuditableEntity)entityEntry.Entity).DeletedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? Assembly.GetEntryAssembly().GetName().Name;
+                    }
+                    else
+                    {
+                        ((AuditableEntity)entityEntry.Entity).UpdatedAt = DateTime.UtcNow;
+                        ((AuditableEntity)entityEntry.Entity).UpdatedBy = _httpContextAccessor?.HttpContext?.User?.Identity?.Name ?? Assembly.GetEntryAssembly().GetName().Name;
+                    }
                 }
             }
 

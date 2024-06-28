@@ -1,12 +1,12 @@
 ﻿using BuildingBlocks.Infrastructure.Configuration;
-using Core.Domain.Aggregates.Driver;
+using Core.Domain.Aggregates.Renter;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Core.Data.EntityConfiguration
 {
-    public class DriverConfiguration : BaseEntityTypeConfiguration<Driver>
+    public class RenterConfiguration : AuditableEntityTypeConfiguration<Renter>
     {
-        public override void Configure(EntityTypeBuilder<Driver> builder)
+        public override void Configure(EntityTypeBuilder<Renter> builder)
         {
             builder.Property(d => d.Name).IsRequired();
             builder.Property(d => d.CNPJ).IsRequired();

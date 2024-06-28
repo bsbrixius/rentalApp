@@ -9,8 +9,12 @@ namespace Core.Domain.Aggregates.Motorcycle
     {
         string oldPattern = @"^[A-Z]{3}[0-9]{4}$";
         string pattern = @"^[A-Z]{3}[0-9][A-Z][0-9]{2}$";
+        public Motorcycle() : base()
+        {
+            Rents = new List<Rent.Rent>();
+        }
 
-        public Motorcycle(uint year, string model, string plate) : base()
+        public Motorcycle(uint year, string model, string plate) : this()
         {
             Year = year;
             Model = model;
@@ -18,10 +22,15 @@ namespace Core.Domain.Aggregates.Motorcycle
             AddMotorcycleRegisteredDomainEvent();
         }
 
-
         public uint Year { get; set; }
         public string Model { get; set; }
         public string Plate { get; private set; }
+        public virtual List<Rent.Rent> Rents { get; set; }
+
+        public void SoftDelete()
+        {
+            IsDeleted = true;
+        }
 
         public void SetPlate(string newPlate)
         {
