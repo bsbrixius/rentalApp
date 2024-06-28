@@ -34,18 +34,35 @@ namespace Authentication.API.Infraestructure
             if (!context.Roles.Any(x => x.Name == SystemRoles.Admin))
             {
                 var role = new Role(SystemRoles.Admin);
+                role.RoleClaims = new List<RoleClaim>
+                {
+                    new RoleClaim(Claims.Admin.ReadAccess, ClaimValues.Read),
+                    new RoleClaim(Claims.Admin.WriteAccess, ClaimValues.Write),
+                    new RoleClaim(Claims.Admin.DeleteAccess, ClaimValues.Delete)
+                };
                 var result = await context.AddAsync(role);
             }
 
             if (!context.Roles.Any(x => x.Name == SystemRoles.CustomerService))
             {
                 var role = new Role(SystemRoles.CustomerService);
+                role.RoleClaims = new List<RoleClaim>
+                {
+                    new RoleClaim(Claims.CustomerService.ReadAccess, ClaimValues.Read),
+                    new RoleClaim(Claims.CustomerService.WriteAccess, ClaimValues.Write),
+                    new RoleClaim(Claims.CustomerService.DeleteAccess, ClaimValues.Delete)
+                };
                 var result = await context.AddAsync(role);
             }
 
-            if (!context.Roles.Any(x => x.Name == SystemRoles.Driver))
+            if (!context.Roles.Any(x => x.Name == SystemRoles.Renter))
             {
-                var role = new Role(SystemRoles.Driver);
+                var role = new Role(SystemRoles.Renter);
+                role.RoleClaims = new List<RoleClaim>
+                {
+                    new RoleClaim(Claims.Renter.ReadAccess, ClaimValues.Read),
+                    new RoleClaim(Claims.Renter.WriteAccess, ClaimValues.Write),
+                };
                 var result = await context.AddAsync(role);
             }
             await context.SaveChangesAsync();

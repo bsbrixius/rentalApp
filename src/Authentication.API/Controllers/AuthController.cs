@@ -43,7 +43,6 @@ namespace Authentication.API.Controllers
             {
                 return Unauthorized();
             }
-            var oi = await _jwtUtils.CreateAccessAsync(loginRequest.Email);
 
             return Ok(await _jwtUtils.CreateAccessAsync(loginRequest.Email));
         }

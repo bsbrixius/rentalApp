@@ -9,6 +9,17 @@ namespace Authentication.API.Infraestructure.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
+            builder.HasKey(r => r.Id);
+
+            // Properties
+            builder.Property(r => r.Name)
+                .IsRequired()
+                .HasMaxLength(128);
+
+            builder.Property(r => r.NormalizedName)
+                .IsRequired()
+                .HasMaxLength(128);
+
             builder.HasMany(e => e.Users)
                 .WithMany(e => e.Roles)
                 .UsingEntity<UserRole>(
@@ -24,8 +35,12 @@ namespace Authentication.API.Infraestructure.EntityConfiguration
                 {
                     j.HasKey(x => new { x.UserId, x.RoleId });
                     j.ToTable("UserRole", "identity");
-
                 });
+
+            builder.HasMany(r => r.RoleClaims)
+                .WithOne(rc => rc.Role)
+                .HasForeignKey(rc => rc.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using BuildingBlocks.API.Core.Data.Pagination;
-using BuildingBlocks.Security.Authorization;
+using BuildingBlocks.API.Core.Security;
 using Core.Application.Commands.Motorcycle;
 using Core.Application.Data.DTOs.Motorcycle;
 using Core.Application.Query.Motorcycle;
@@ -23,7 +23,7 @@ namespace Core.API.Areas.Admin.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(PaginatedResult<MotorcycleDTO>), StatusCodes.Status200OK)]
-        [Authorize(Roles = nameof(SystemRoles.Admin))]
+        [Authorize(Policy = Policies.Roles.Admin.Read)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] SearchMotorcycleRequest searchMotorcycleRequest)
         {
@@ -36,7 +36,7 @@ namespace Core.API.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = nameof(SystemRoles.Admin))]
+        [Authorize(Policy = Policies.Roles.Admin.Write)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -52,7 +52,7 @@ namespace Core.API.Areas.Admin.Controllers
         }
 
         [HttpPatch("{id}/plate")]
-        [Authorize(Roles = nameof(SystemRoles.Admin))]
+        [Authorize(Policy = Policies.Roles.Admin.Write)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

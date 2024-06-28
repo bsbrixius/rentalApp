@@ -2,8 +2,8 @@
 {
     public class SystemRoles
     {
-        public const string Admin = nameof(Admin);
-        public const string CustomerService = nameof(CustomerService);
-        public const string Driver = nameof(Driver);
+        public const string Admin = "admin";
+        public const string CustomerService = "customerService";
+        public const string Renter = "renter";
     }
 }

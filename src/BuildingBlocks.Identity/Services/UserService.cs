@@ -5,6 +5,7 @@ using BuildingBlocks.Infrastructure.Exceptions;
 using BuildingBlocks.Security.Domain;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Z.EntityFramework.Plus;
 
 namespace BuildingBlocks.Identity.Services
 {
@@ -84,8 +85,11 @@ namespace BuildingBlocks.Identity.Services
         public async Task<List<Role>> GetUserRolesAsync(TUser user)
         {
             return await _userRepository.QueryNoTrack
+                .Include(x => x.Roles)
+                .ThenInclude(x => x.RoleClaims)
                 .Where(x => x.Id == user.Id)
-                .SelectMany(x => x.Roles).ToListAsync();
+                .SelectMany(x => x.Roles)
+                .ToListAsync();
         }
     }
 
