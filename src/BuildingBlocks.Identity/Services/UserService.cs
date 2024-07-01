@@ -13,6 +13,7 @@ namespace BuildingBlocks.Identity.Services
         where TUser : UserBase
     {
         Task<Guid> RegisterUserAsync(TUser user);
+        Task<bool> IsEmailAvailableAsync(string email);
         Task<TUser?> FindByEmailAsync(string email);
         Task<TUser?> FindByIdAsync(Guid id);
         Task<bool> AddPasswordAsync(TUser user, string password);
@@ -21,19 +22,23 @@ namespace BuildingBlocks.Identity.Services
         Task<bool> AddClaimAsync(TUser user, Claim newClaim);
         Task<List<Claim>> GetClaimsAsync(TUser user);
         Task<List<Role>> GetUserRolesAsync(TUser user);
+        Task PreRegisterUserWithRoleAsync(string email, string roleName);
     }
     public class UserService<TUser> : IUserService<TUser>
         where TUser : UserBase
     {
         private readonly IUserRepository<TUser> _userRepository;
         private readonly IUserClaimRepository<TUser> _userClaimRepository;
+        private readonly IRoleRepository _roleRepository;
 
         public UserService(
             IUserRepository<TUser> userRepository,
-            IUserClaimRepository<TUser> userClaimRepository)
+            IUserClaimRepository<TUser> userClaimRepository,
+            IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
             _userClaimRepository = userClaimRepository;
+            _roleRepository = roleRepository;
         }
 
         public async Task<bool> AddClaimAsync(TUser user, Claim newClaim)
@@ -90,6 +95,23 @@ namespace BuildingBlocks.Identity.Services
                 .Where(x => x.Id == user.Id)
                 .SelectMany(x => x.Roles)
                 .ToListAsync();
+        }
+
+        public async Task<bool> IsEmailAvailableAsync(string email)
+        {
+            return await _userRepository.QueryNoTrack.AnyAsync(x => x.Email == email);
+        }
+
+        public async Task PreRegisterUserWithRoleAsync(string email, string roleName)
+        {
+            var role = await _roleRepository.QueryNoTrack.FirstOrDefaultAsync(x => x.Name == roleName);
+            if (role == null)
+            {
+                throw new NotFoundException($"Role with name {roleName} not found.");
+            }
+            var newUser = new UserBase(email, role);
+            await _userRepository.AddAsync((TUser)newUser);
+            await _userRepository.CommitAsync();
         }
     }
 

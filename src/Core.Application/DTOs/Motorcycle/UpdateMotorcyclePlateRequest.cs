@@ -1,4 +1,4 @@
-﻿namespace Core.Application.Data.DTOs.Motorcycle
+﻿namespace Core.Application.DTOs.Motorcycle
 {
     public class UpdateMotorcyclePlateRequest
     {

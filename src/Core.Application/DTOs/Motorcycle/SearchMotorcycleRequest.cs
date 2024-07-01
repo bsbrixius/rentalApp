@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.API.Core.Data.Pagination;
 using BuildingBlocks.Common.Enums;
 
-namespace Core.Application.Data.DTOs.Motorcycle
+namespace Core.Application.DTOs.Motorcycle
 {
     public class SearchMotorcycleRequest : PaginatedRequest
     {

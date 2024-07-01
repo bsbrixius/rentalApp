@@ -18,7 +18,7 @@ namespace Authentication.API.Infraestructure
 
         private static async Task SeedUsers(AuthenticationContext context)
         {
-            var adminUser = new User("admin-first-name", "admin-last-name", DateTime.UtcNow.ToDateOnly(), "admin@rentalapp.com");
+            var adminUser = new User("admin@rentalapp.com", "admin-fullname", DateTime.UtcNow.ToDateOnly());
             if (!context.Users.Any(x => x.Email == adminUser.Email))
             {
                 adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, "admin123");

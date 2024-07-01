@@ -8,6 +8,16 @@ namespace Core.Domain.Aggregates.Renter
         {
             Rents = new List<Rent.Rent>();
         }
+
+        public Renter(Guid userId, string name, string CNPJ, DateOnly birthdate) : this()
+        {
+            UserId = userId;
+            Name = name;
+            this.CNPJ = CNPJ;
+            Birthdate = birthdate;
+        }
+
+        public Guid UserId { get; set; }
         public string Name { get; set; }
         public string CNPJ { get; set; }
         public DateOnly Birthdate { get; set; }

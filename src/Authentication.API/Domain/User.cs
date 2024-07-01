@@ -5,27 +5,24 @@ namespace Authentication.API.Domain
     public class User : UserBase
     {
 
-        public User()
+        public User() : base()
         {
         }
-        public User(string email, params Role[] roles)
+        public User(string email, params Role[] roles) : this()
         {
             Email = email;
             Roles = roles.ToList();
         }
 
-        public User(string firstName, string lastName, DateOnly birthday, string email, bool active = true)
+        public User(string email, string? fullName, DateOnly? birthday, bool active = true) : this()
         {
             Email = email.ToLower();
-            FirstName = firstName;
-            LastName = lastName;
+            FullName = fullName;
             Birthday = birthday;
-            SecurityStamp = Guid.NewGuid().ToString();
             Active = active;
         }
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string? FullName { get; set; }
         public DateOnly? Birthday { get; set; }
     }
 }

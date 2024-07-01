@@ -19,6 +19,7 @@ namespace BuildingBlocks.Identity.Configuration
             services.TryAddScoped<IUserClaimRepository<TUser>, UserClaimRepository<TUser>>();
             services.TryAddScoped<IUserService<TUser>, UserService<TUser>>();
             services.TryAddScoped<ILoginService<TUser>, LoginService<TUser>>();
+            services.TryAddScoped<IIdentityService, IdentityService>();
 
             return services;
         }
@@ -34,6 +35,7 @@ namespace BuildingBlocks.Identity.Configuration
             services.TryAddScoped<IUserClaimRepository<TUser>, UserClaimRepository<TUser>>();
             services.TryAddScoped<IUserService<TUser>, UserService<TUser>>();
             services.TryAddScoped<ILoginService<TUser>, LoginService<TUser>>();
+            services.TryAddScoped<IIdentityService, IdentityService>();
             return services;
         }
 

@@ -18,7 +18,6 @@ namespace Authentication.API.Application.Data.Repositories
         {
         }
 
-
         public async Task<bool> UpdatePasswordHashAsync(TUser user, string password)
         {
             var passwordHasher = new PasswordHasher<TUser>();
