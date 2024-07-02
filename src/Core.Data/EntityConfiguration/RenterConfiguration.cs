@@ -11,13 +11,18 @@ namespace Core.Data.EntityConfiguration
             builder.HasIndex(builder => builder.CNPJ).IsUnique();
             builder.HasIndex(builder => builder.UserId);
 
-            builder.Property(d => d.UserId).IsRequired();
-            builder.Property(d => d.Name).IsRequired();
-            builder.Property(d => d.CNPJ).IsRequired();
-            builder.Property(d => d.Birthdate).IsRequired();
-            builder.Property(d => d.CNH).IsRequired();
-            builder.Property(d => d.CNHCategory).IsRequired();
-            builder.Property(d => d.CNHUrl).IsRequired();
+            builder.Property(x => x.UserId).IsRequired();
+            builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.CNPJ).IsRequired();
+            builder.Property(x => x.Birthdate).IsRequired();
+
+            builder.OwnsOne(x => x.CNH, ownedBuilder =>
+            {
+                ownedBuilder.HasIndex(y => y.Number).IsUnique(true);
+                ownedBuilder.Property(y => y.Number).HasMaxLength(11);
+                ownedBuilder.Property(y => y.Type);
+                ownedBuilder.Property(y => y.Url);
+            });
             base.Configure(builder);
         }
     }

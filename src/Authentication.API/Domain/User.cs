@@ -24,5 +24,16 @@ namespace Authentication.API.Domain
 
         public string? FullName { get; set; }
         public DateOnly? Birthday { get; set; }
+
+        public void UpdateUser(string? fullName, DateOnly? birthday)
+        {
+            FullName = fullName;
+            Birthday = birthday;
+        }
+
+        public void ActivateUser()
+        {
+            Active = true;
+        }
     }
 }

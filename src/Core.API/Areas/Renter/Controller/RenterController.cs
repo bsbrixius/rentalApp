@@ -13,6 +13,7 @@ namespace Core.API.Areas.Renter.Controller
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
     [Authorize(Roles = SystemRoles.Renter)]
+    [ApiExplorerSettings(GroupName = "Renter")]
     public class RenterController : ControllerBase
     {
         private readonly IMediator _mediator;

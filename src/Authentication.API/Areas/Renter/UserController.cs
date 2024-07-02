@@ -14,6 +14,7 @@ namespace Authentication.API.Areas.Renter
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
     [Authorize(Roles = SystemRoles.Renter)]
+    [ApiExplorerSettings(GroupName = "Renter")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -67,7 +68,7 @@ namespace Authentication.API.Areas.Renter
                 FullName = registerUserDTO.FullName,
                 Email = registerUserDTO.Email,
                 Password = registerUserDTO.Password,
-                BirthDay = registerUserDTO.BirthDay
+                Birthday = registerUserDTO.BirthDay
             });
             return Ok();
         }

@@ -14,6 +14,7 @@ namespace Authentication.API.Areas.Admin
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
     [Authorize(Roles = SystemRoles.Admin)]
+    [ApiExplorerSettings(GroupName = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -57,7 +58,7 @@ namespace Authentication.API.Areas.Admin
                 FullName = registerUserDTO.FullName,
                 Email = registerUserDTO.Email,
                 Password = registerUserDTO.Password,
-                BirthDay = registerUserDTO.BirthDay
+                Birthday = registerUserDTO.BirthDay
             });
             return Ok();
         }

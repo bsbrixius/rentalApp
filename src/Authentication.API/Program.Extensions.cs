@@ -6,12 +6,15 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.API.Core.Security;
+using BuildingBlocks.API.Core.Swagger;
 using BuildingBlocks.Identity.Configuration;
+using BuildingBlocks.Identity.Services;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;
@@ -79,6 +82,12 @@ namespace Authentication.API
 
             return services;
         }
+        public class ControllerInfo
+        {
+            public Type ControllerType { get; set; }
+            public ApiExplorerSettingsAttribute ApiExplorerSettings { get; set; }
+            public AreaAttribute Area { get; set; }
+        }
 
         public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
         {
@@ -94,11 +103,10 @@ namespace Authentication.API
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = typeof(Program).Assembly.GetName().Name,
-                    Version = "v1"
-                });
+
+                c.DocumentFilter<LowercaseDocumentFilter>();
+                c.SwaggerDocByArea();
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -127,6 +135,7 @@ namespace Authentication.API
         {
             services.AddResponseCaching();
             services.AddHttpContextAccessor();
+            services.TryAddScoped<IIdentityService, IdentityService>();
             services.AddSingleton<JwtBuilder<User>>();
             services.AddSingleton<JwtValidator>();
             return services;

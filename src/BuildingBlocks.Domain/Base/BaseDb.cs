@@ -91,10 +91,6 @@ namespace BuildingBlocks.Domain.Base
             var tasks = domainEvents
                 .Select(async (domainEvent) =>
                 {
-                    //_logger.LogInformation("---- Sending domain event: {DomainEventName}: {@DomainEvent}",
-                    //    domainEvent.GetGenericTypeName(),
-                    //    domainEvent);
-
                     await _mediator.Publish(domainEvent);
                 });
 

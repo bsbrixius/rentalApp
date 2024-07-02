@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Domain.Base;
+using Core.Domain.ValueObjects;
 
 namespace Core.Domain.Aggregates.Renter
 {
@@ -21,9 +22,7 @@ namespace Core.Domain.Aggregates.Renter
         public string Name { get; set; }
         public string CNPJ { get; set; }
         public DateOnly Birthdate { get; set; }
-        public string CNH { get; set; }//ValueObject CNH
-        public string CNHCategory { get; set; }//ValueObject CNH
-        public string CNHUrl { get; set; }//ValueObject CNH
+        public CNH? CNH { get; set; }
         public virtual List<Rent.Rent> Rents { get; set; }
     }
 }

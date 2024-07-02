@@ -49,6 +49,7 @@ namespace BuildingBlocks.Infrastructure.Filters
                     break;
                 case ValidationException:
                 case DbUpdateException:
+                default:
                     HandleInternalServerError(context);
                     break;
             }

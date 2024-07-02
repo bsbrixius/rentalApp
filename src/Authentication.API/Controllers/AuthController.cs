@@ -62,7 +62,7 @@ namespace Authentication.API.Controllers
             {
                 return Unauthorized();
             }
-            var user = await _userService.FindByEmailAsync(email);
+            var user = await _userService.GetByEmailAsync(email);
             if (user == null)
             {
                 return Unauthorized();

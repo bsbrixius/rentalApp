@@ -1,13 +1,15 @@
-﻿namespace Core.Application.DTOs.Renter
+﻿using Core.Domain.Enums;
+
+namespace Core.Application.DTOs.Renter
 {
     public class RenterDTO
     {
         public string Name { get; set; }
         public string CNPJ { get; set; }
         public DateOnly Birthdate { get; set; }
-        public string CNH { get; set; }//ValueObject CNH
-        public string CNHCategory { get; set; }//ValueObject CNH
-        public string CNHUrl { get; set; }//ValueObject CNH
+        public string CNH { get; set; }
+        public CNHCategoryType CNHType { get; set; }
+        public string CNHUrl { get; set; }
 
 
         public static RenterDTO? From(Domain.Aggregates.Renter.Renter? renter)
@@ -18,9 +20,9 @@
                 Name = renter.Name,
                 CNPJ = renter.CNPJ,
                 Birthdate = renter.Birthdate,
-                CNH = renter.CNH,
-                CNHCategory = renter.CNHCategory,
-                CNHUrl = renter.CNHUrl
+                CNH = renter.CNH.Number,
+                CNHType = renter.CNH.Type,
+                CNHUrl = renter.CNH.Url
             };
         }
     }
