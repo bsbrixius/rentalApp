@@ -1,9 +1,9 @@
 ﻿using BuildingBlocks.API.Core.Data.Pagination;
 using BuildingBlocks.Common.Enums;
-using Core.Application.Data.DTOs.Motorcycle;
+using Core.Application.DTOs.Motorcycle;
 using Core.Domain.Aggregates.Motorcycle;
 using MediatR;
-using static Core.Application.Data.DTOs.Motorcycle.SearchMotorcycleRequest;
+using static Core.Application.DTOs.Motorcycle.SearchMotorcycleRequest;
 
 namespace Core.Application.Query.Motorcycle
 {

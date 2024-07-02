@@ -28,7 +28,7 @@ namespace BuildingBlocks.Security
         public async Task<JwtToken> CreateAccessAsync(string email)
         {
             ArgumentNullException.ThrowIfNull(email);
-            var user = await _userService.FindByEmailAsync(email);
+            var user = await _userService.GetByEmailAsync(email);
             return new JwtToken()
             {
                 User = new JwtToken.UserData

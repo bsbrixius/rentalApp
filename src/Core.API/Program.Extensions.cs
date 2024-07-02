@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
 using BuildingBlocks.API.Core.Security;
 using BuildingBlocks.API.Core.Swagger;
+using BuildingBlocks.Identity.Services;
 using BuildingBlocks.Infrastructure.Filters;
 using BuildingBlocks.Security;
 using Core.Application.Commands.Motorcycle;
@@ -11,6 +12,7 @@ using Crosscutting.EventBus.RabbitMq;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -100,11 +102,9 @@ namespace Core.API
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = typeof(Program).Assembly.GetName().Name,
-                    Version = "v1"
-                });
+                c.DocumentFilter<LowercaseDocumentFilter>();
+                c.SwaggerDocByArea();
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -135,6 +135,7 @@ namespace Core.API
             services.AddControllers();
             services.AddHttpContextAccessor();
             services.AddSingleton<JwtValidator>();
+            services.TryAddScoped<IIdentityService, IdentityService>();
             services.AddRabbitMqBroker();
             return services;
         }

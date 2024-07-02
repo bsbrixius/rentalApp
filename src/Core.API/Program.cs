@@ -1,3 +1,4 @@
+using BuildingBlocks.API.Core.Swagger;
 using Core.API;
 using Core.API.Infraestructure;
 using Core.Data;
@@ -36,7 +37,11 @@ if (app.Environment.IsDevelopment())
         await dbContext.TrySeedDatabaseAsync();
     }
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.ShowCommonExtensions();
+        c.SwaggerEndpointByArea();
+    });
 }
 
 app.UseHttpsRedirection();

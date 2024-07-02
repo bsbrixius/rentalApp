@@ -11,7 +11,7 @@ namespace BuildingBlocks.Identity.Configuration
     public static class AuthenticationBaseConfiguration
     {
         public static IServiceCollection AddIdentityBase<TUser>(this IServiceCollection services)
-            where TUser : UserBase
+            where TUser : UserBase, new()
         {
             services.AddHttpContextAccessor();
             services.AddDbContext<AuthenticationBaseContext<TUser>>();
@@ -19,12 +19,14 @@ namespace BuildingBlocks.Identity.Configuration
             services.TryAddScoped<IUserClaimRepository<TUser>, UserClaimRepository<TUser>>();
             services.TryAddScoped<IUserService<TUser>, UserService<TUser>>();
             services.TryAddScoped<ILoginService<TUser>, LoginService<TUser>>();
+            services.TryAddScoped<IRoleRepository, RoleRepository<TUser>>();
+            services.TryAddScoped<IIdentityService, IdentityService>();
 
             return services;
         }
 
         public static IServiceCollection AddIdentityBase<TUser, TDbContext>(this IServiceCollection services)
-            where TUser : UserBase
+            where TUser : UserBase, new()
             where TDbContext : AuthenticationBaseContext<TUser>
         {
             services.AddHttpContextAccessor();
@@ -34,6 +36,8 @@ namespace BuildingBlocks.Identity.Configuration
             services.TryAddScoped<IUserClaimRepository<TUser>, UserClaimRepository<TUser>>();
             services.TryAddScoped<IUserService<TUser>, UserService<TUser>>();
             services.TryAddScoped<ILoginService<TUser>, LoginService<TUser>>();
+            services.TryAddScoped<IRoleRepository, RoleRepository<TUser>>();
+            services.TryAddScoped<IIdentityService, IdentityService>();
             return services;
         }
 

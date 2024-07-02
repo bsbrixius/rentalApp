@@ -63,7 +63,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks.Common", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks.Domain", "src\BuildingBlocks.Domain\BuildingBlocks.Domain.csproj", "{BB68850F-4183-4481-B29A-F9ABD63A2658}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Data", "src\Core.Data\Core.Data.csproj", "{7B6E9904-E218-4A36-90A1-AD23FB14BAB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Data", "src\Core.Data\Core.Data.csproj", "{7B6E9904-E218-4A36-90A1-AD23FB14BAB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{8B6EE55F-CFAF-4BDC-B0A7-B70603E702E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crosscutting.StorageService.Base", "src\Crosscutting.StorageService.Base\Crosscutting.StorageService.Base.csproj", "{0E366B17-FE21-4C2D-9735-611A3097009E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crosscutting.StorageService.MinIO", "src\Crosscutting.StorageService.MinIO\Crosscutting.StorageService.MinIO.csproj", "{70983C69-D48F-4D0D-818B-DE17C9D5F567}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,6 +157,14 @@ Global
 		{7B6E9904-E218-4A36-90A1-AD23FB14BAB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B6E9904-E218-4A36-90A1-AD23FB14BAB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B6E9904-E218-4A36-90A1-AD23FB14BAB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E366B17-FE21-4C2D-9735-611A3097009E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E366B17-FE21-4C2D-9735-611A3097009E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E366B17-FE21-4C2D-9735-611A3097009E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E366B17-FE21-4C2D-9735-611A3097009E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70983C69-D48F-4D0D-818B-DE17C9D5F567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70983C69-D48F-4D0D-818B-DE17C9D5F567}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70983C69-D48F-4D0D-818B-DE17C9D5F567}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70983C69-D48F-4D0D-818B-DE17C9D5F567}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +198,9 @@ Global
 		{E906BA12-C96C-4863-89ED-7FECBB15D933} = {E1C9EE02-3467-4879-87A5-69EE5680171B}
 		{BB68850F-4183-4481-B29A-F9ABD63A2658} = {E1C9EE02-3467-4879-87A5-69EE5680171B}
 		{7B6E9904-E218-4A36-90A1-AD23FB14BAB3} = {3C99AD81-F09C-4AEA-8EC1-A632C90B705A}
+		{8B6EE55F-CFAF-4BDC-B0A7-B70603E702E0} = {62A55332-48AE-4AB3-AA0F-8CED1EDBC64F}
+		{0E366B17-FE21-4C2D-9735-611A3097009E} = {8B6EE55F-CFAF-4BDC-B0A7-B70603E702E0}
+		{70983C69-D48F-4D0D-818B-DE17C9D5F567} = {8B6EE55F-CFAF-4BDC-B0A7-B70603E702E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45E9873A-6D04-46BD-9631-9E49CC323C6D}

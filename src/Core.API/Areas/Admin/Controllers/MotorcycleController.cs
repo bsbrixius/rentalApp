@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.API.Core.Data.Pagination;
 using BuildingBlocks.API.Core.Security;
 using Core.Application.Commands.Motorcycle;
-using Core.Application.Data.DTOs.Motorcycle;
+using Core.Application.DTOs.Motorcycle;
 using Core.Application.Query.Motorcycle;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +12,7 @@ namespace Core.API.Areas.Admin.Controllers
     [Area("Admin")]
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
+    [ApiExplorerSettings(GroupName = "Admin")]
     public class MotorcycleController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -63,6 +64,16 @@ namespace Core.API.Areas.Admin.Controllers
                 Id = id,
                 Plate = updateMotorcyclePlateRequest.Plate
             });
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policy = Policies.Roles.Admin.Delete)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            await _mediator.Send(new RemoveMotorcycleCommand { Id = id });
             return NoContent();
         }
     }

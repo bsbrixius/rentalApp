@@ -1,6 +1,4 @@
-﻿using BuildingBlocks.Domain;
-
-namespace BuildingBlocks.Domain.Base
+﻿namespace BuildingBlocks.Domain.Base
 {
     public abstract class AuditableEntity : Entity
     {
@@ -8,5 +6,8 @@ namespace BuildingBlocks.Domain.Base
         public DateTime CreatedAt { get; set; }
         public string? UpdatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        public string? DeletedBy { get; set; }
+        public DateTime? DeletedAt { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

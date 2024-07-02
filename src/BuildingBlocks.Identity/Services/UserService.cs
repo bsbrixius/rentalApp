@@ -13,7 +13,8 @@ namespace BuildingBlocks.Identity.Services
         where TUser : UserBase
     {
         Task<Guid> RegisterUserAsync(TUser user);
-        Task<TUser?> FindByEmailAsync(string email);
+        Task<bool> IsEmailAvailableAsync(string email);
+        Task<TUser?> GetByEmailAsync(string email);
         Task<TUser?> FindByIdAsync(Guid id);
         Task<bool> AddPasswordAsync(TUser user, string password);
         Task<bool> UpdatePassword(TUser user, string hash);
@@ -21,19 +22,23 @@ namespace BuildingBlocks.Identity.Services
         Task<bool> AddClaimAsync(TUser user, Claim newClaim);
         Task<List<Claim>> GetClaimsAsync(TUser user);
         Task<List<Role>> GetUserRolesAsync(TUser user);
+        Task PreRegisterUserWithRoleAsync(string email, string roleName);
     }
     public class UserService<TUser> : IUserService<TUser>
-        where TUser : UserBase
+        where TUser : UserBase, new()
     {
         private readonly IUserRepository<TUser> _userRepository;
         private readonly IUserClaimRepository<TUser> _userClaimRepository;
+        private readonly IRoleRepository _roleRepository;
 
         public UserService(
             IUserRepository<TUser> userRepository,
-            IUserClaimRepository<TUser> userClaimRepository)
+            IUserClaimRepository<TUser> userClaimRepository,
+            IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
             _userClaimRepository = userClaimRepository;
+            _roleRepository = roleRepository;
         }
 
         public async Task<bool> AddClaimAsync(TUser user, Claim newClaim)
@@ -55,9 +60,9 @@ namespace BuildingBlocks.Identity.Services
             return await _userRepository.UpdatePasswordHashAsync(user, password);
         }
 
-        public async Task<TUser?> FindByEmailAsync(string email)
+        public async Task<TUser?> GetByEmailAsync(string email)
         {
-            return await _userRepository.QueryNoTrack.FirstOrDefaultAsync(u => u.Email == email);
+            return await _userRepository.GetByEmailAsync(email);
         }
 
         public async Task<Guid> RegisterUserAsync(TUser user)
@@ -90,6 +95,26 @@ namespace BuildingBlocks.Identity.Services
                 .Where(x => x.Id == user.Id)
                 .SelectMany(x => x.Roles)
                 .ToListAsync();
+        }
+
+        public async Task<bool> IsEmailAvailableAsync(string email)
+        {
+            return !(await _userRepository.QueryNoTrack.AnyAsync(x => x.Email == email));
+        }
+
+        public async Task PreRegisterUserWithRoleAsync(string email, string roleName)
+        {
+            var role = await _roleRepository.GetByNameAsync(roleName);
+            if (role == null)
+            {
+                throw new NotFoundException($"Role with name {roleName} not found.");
+            }
+            var user = new TUser();
+            user.Email = email;
+            user.Roles = new List<Role> { role };
+
+            await _userRepository.AddAsync(user);
+            await _userRepository.CommitAsync();
         }
     }
 

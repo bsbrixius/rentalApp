@@ -1,5 +1,5 @@
 ﻿using BuildingBlocks.Infrastructure.Exceptions;
-using Core.Infraestructure.Repositories;
+using Core.Domain.Aggregates.Motorcycle;
 using MediatR;
 
 namespace Core.Application.Commands.Motorcycle

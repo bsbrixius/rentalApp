@@ -33,8 +33,4 @@
     <ProjectReference Include="..\Crosscutting.EventBus.RabbitMq\Crosscutting.EventBus.RabbitMq.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Renter\Controller\" />
-  </ItemGroup>
-
 </Project>
