@@ -15,7 +15,7 @@ namespace Core.Data.Queries
             return await QueryNoTrack.FirstOrDefaultAsync(x => x.Plate == plate);
         }
 
-        public IQueryable<Motorcycle> SearchBy(string? plate)
+        public IQueryable<Motorcycle> SearchByPlate(string? plate)
         {
             var sql = string.Format(
                 "SELECT * FROM \"Motorcycles\" WHERE \"Plate\" LIKE '%{0}%'",

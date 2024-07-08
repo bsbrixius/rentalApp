@@ -23,7 +23,13 @@ namespace Core.Application.Query.Motorcycle
             }
             public async Task<PaginatedResult<MotorcycleDTO>> Handle(SearchMotorcycleQuery request, CancellationToken cancellationToken)
             {
-                var query = _motorcycleQueryRepository.SearchBy(request.Plate);
+                var query = _motorcycleQueryRepository.QueryNoTrack;
+
+                if (!string.IsNullOrWhiteSpace(request.Plate))
+                    query = _motorcycleQueryRepository.SearchByPlate(request.Plate);
+
+                query = query.Where(x => !x.IsDeleted);
+
                 switch (request.OrderBy)
                 {
                     case OrderByType.Year:

@@ -38,7 +38,7 @@ namespace Core.API.Areas.Admin.Controllers
 
         [HttpPost]
         [Authorize(Policy = Policies.Roles.Admin.Write)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Post([FromBody] RegisterMotorcycleRequest registerMotorcycleDTO)

@@ -13,10 +13,10 @@ Log.Information("Starting web host");
 Log.Information(builder.Environment.EnvironmentName);
 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
 
-////Autofac Modules
-builder.Host.UseAutofacIoC();
-
 var Configuration = builder.Configuration;
+////Autofac Modules
+builder.Host.UseAutofacIoC(Configuration);
+
 builder.Services
     .AddWebAppConfiguration(Configuration)
     .AddHealthChecks(Configuration)
@@ -27,6 +27,16 @@ builder.Services
 
 var app = builder.Build();
 
+//if (app.Environment.IsEnvironment("Testing"))
+//{
+//    using (var scope = app.Services.CreateScope())
+//    {
+//        var dbContext = scope.ServiceProvider.GetRequiredService<CoreContext>();
+//        dbContext.Database.EnsureDeleted();
+//        dbContext.Database.EnsureCreated();
+//        await dbContext.TrySeedDevelopmentDatabaseAsync();
+//    }
+//}
 if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
@@ -34,7 +44,7 @@ if (app.Environment.IsDevelopment())
         var dbContext = scope.ServiceProvider.GetRequiredService<CoreContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
-        await dbContext.TrySeedDatabaseAsync();
+        await dbContext.TrySeedDevelopmentDatabaseAsync();
     }
     app.UseSwagger();
     app.UseSwaggerUI(c =>
@@ -64,3 +74,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

@@ -140,7 +140,7 @@ namespace Core.API
             return services;
         }
 
-        public static IHostBuilder UseAutofacIoC(this IHostBuilder hostBuilder)
+        public static IHostBuilder UseAutofacIoC(this IHostBuilder hostBuilder, IConfiguration configuration)
         {
             var mediatrConfiguration = MediatRConfigurationBuilder
             .Create(typeof(RegisterMotorcycleCommand).Assembly)
@@ -150,7 +150,7 @@ namespace Core.API
             hostBuilder.ConfigureContainer<ContainerBuilder>(
                builder =>
                {
-                   builder.RegisterModule(new AppModule());
+                   builder.RegisterModule(new AppModule(configuration));
                    builder.RegisterMediatR(mediatrConfiguration);
                });
 

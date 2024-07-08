@@ -1,4 +1,5 @@
 ﻿using Core.Domain.Aggregates.Motorcycle;
+using FluentValidation;
 using MediatR;
 
 namespace Core.Application.Commands.Motorcycle
@@ -25,6 +26,16 @@ namespace Core.Application.Commands.Motorcycle
                 await _motorcycleRepository.AddAsync(newMotorcycle);
                 await _motorcycleRepository.SaveChangesAsync();
             }
+        }
+    }
+
+    public class RegisterMotorcycleCommandValidator : AbstractValidator<RegisterMotorcycleCommand>
+    {
+        public RegisterMotorcycleCommandValidator()
+        {
+            RuleFor(x => x.Year).GreaterThan((uint)2000);
+            RuleFor(x => x.Model).NotEmpty().NotNull();
+            RuleFor(x => x.Plate).NotEmpty().NotNull();
         }
     }
 }

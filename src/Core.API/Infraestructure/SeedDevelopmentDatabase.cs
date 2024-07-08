@@ -3,9 +3,9 @@ using Core.Domain.Aggregates.Motorcycle;
 
 namespace Core.API.Infraestructure
 {
-    public static class SeedDatabase
+    public static class SeedDevelopmentDatabase
     {
-        public static async Task TrySeedDatabaseAsync(this CoreContext context)
+        public static async Task TrySeedDevelopmentDatabaseAsync(this CoreContext context)
         {
             await SeedMotorcycles(context);
 

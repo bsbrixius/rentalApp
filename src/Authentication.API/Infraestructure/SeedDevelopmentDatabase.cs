@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.API.Infraestructure
 {
-    public static class SeedDatabase
+    public static class SeedDevelopmentDatabase
     {
-        public static async Task TrySeedDatabaseAsync(this AuthenticationContext context)
+        public static async Task TrySeedDevelopmentDatabaseAsync(this AuthenticationContext context)
         {
             await SeedRoles(context);
             await SeedUsers(context);
@@ -50,7 +50,7 @@ namespace Authentication.API.Infraestructure
                 {
                     new RoleClaim(Claims.CustomerService.ReadAccess, ClaimValues.Read),
                     new RoleClaim(Claims.CustomerService.WriteAccess, ClaimValues.Write),
-                    new RoleClaim(Claims.CustomerService.DeleteAccess, ClaimValues.Delete)
+                    //new RoleClaim(Claims.CustomerService.DeleteAccess, ClaimValues.Delete)
                 };
                 var result = await context.AddAsync(role);
             }
