@@ -16,6 +16,11 @@ namespace Core.Data.EntityConfiguration
             builder.Property(x => x.CNPJ).IsRequired();
             builder.Property(x => x.Birthdate).IsRequired();
 
+            builder.HasOne(x => x.CurrentMotorcycle)
+                .WithMany()
+                .HasForeignKey(x => x.CurrentMotorcycleId)
+                .IsRequired(false);
+
             builder.OwnsOne(x => x.CNH, ownedBuilder =>
             {
                 ownedBuilder.HasIndex(y => y.Number).IsUnique(true);

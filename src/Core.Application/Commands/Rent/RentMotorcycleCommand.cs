@@ -50,6 +50,9 @@ namespace Core.Application.Commands.Rent
                 if (renter.CNH.Type == CNHCategoryType.B)
                     throw new ConflictException($"Renter CNH Type is not permited to rent");
 
+                if (renter.CurrentMotorcycleId.HasValue)
+                    throw new ConflictException($"Renter already has a rented motorcycle");
+
                 var todayStartAt = DateTime.Today.ToDateOnly();
 
                 var motorcycle = await _motorcycleRepository.GetAvailableAtAsync(todayStartAt);

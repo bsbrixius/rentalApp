@@ -33,7 +33,7 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();
-        dbContext.Database.EnsureDeleted();
+        //dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
         await dbContext.TrySeedDevelopmentDatabaseAsync();
     }
