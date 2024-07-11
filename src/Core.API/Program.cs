@@ -13,10 +13,10 @@ Log.Information("Starting web host");
 Log.Information(builder.Environment.EnvironmentName);
 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
 
-////Autofac Modules
-builder.Host.UseAutofacIoC();
-
 var Configuration = builder.Configuration;
+////Autofac Modules
+builder.Host.UseAutofacIoC(Configuration);
+
 builder.Services
     .AddWebAppConfiguration(Configuration)
     .AddHealthChecks(Configuration)
@@ -32,9 +32,9 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<CoreContext>();
-        dbContext.Database.EnsureDeleted();
+        //dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
-        await dbContext.TrySeedDatabaseAsync();
+        await dbContext.TrySeedDevelopmentDatabaseAsync();
     }
     app.UseSwagger();
     app.UseSwaggerUI(c =>
@@ -57,10 +57,10 @@ app.UseCors(x => x
 app.UseResponseCaching();
 app.UseAuthentication();
 app.UseRouting();
-//app.ConfigureExceptionHandler(logger, env);
-//app.UseMiddleware<JwtMiddleware>();
 app.UseAuthorization();
 //app.UseHealthChecks("/health", GetHealthCheckOptions());
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

@@ -3,9 +3,9 @@ using Core.Domain.Aggregates.Motorcycle;
 
 namespace Core.API.Infraestructure
 {
-    public static class SeedDatabase
+    public static class SeedDevelopmentDatabase
     {
-        public static async Task TrySeedDatabaseAsync(this CoreContext context)
+        public static async Task TrySeedDevelopmentDatabaseAsync(this CoreContext context)
         {
             await SeedMotorcycles(context);
 
@@ -22,7 +22,14 @@ namespace Core.API.Infraestructure
                 new Motorcycle(2018, "Kawasaki Ninja ZX-10R", "GHI3456"),
                 new Motorcycle(2020, "Ducati Panigale V4", "JKL7890")
             };
-            await context.Motorcycles.AddRangeAsync(motorcycles);
+
+            foreach (var motorcycle in motorcycles)
+            {
+                if (!context.Motorcycles.Any(x => x.Plate == motorcycle.Plate))
+                {
+                    await context.Motorcycles.AddAsync(motorcycle);
+                }
+            }
             await context.SaveChangesAsync();
         }
     }

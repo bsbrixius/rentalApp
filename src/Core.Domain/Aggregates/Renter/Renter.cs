@@ -24,5 +24,22 @@ namespace Core.Domain.Aggregates.Renter
         public DateOnly Birthdate { get; set; }
         public CNH? CNH { get; set; }
         public virtual List<Rent.Rent> Rents { get; set; }
+        public Guid? CurrentMotorcycleId { get; set; }
+        public virtual Motorcycle.Motorcycle? CurrentMotorcycle { get; set; }
+
+        public void UpdateCNH(CNH cnh)
+        {
+            CNH = cnh;
+        }
+
+        public void AddRent(Rent.Rent rent)
+        {
+            Rents.Add(rent);
+        }
+
+        public void SetCurrentMotorcycle(Motorcycle.Motorcycle motorcycle)
+        {
+            CurrentMotorcycleId = motorcycle.Id;
+        }
     }
 }

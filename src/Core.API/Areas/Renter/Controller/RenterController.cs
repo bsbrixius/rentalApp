@@ -13,7 +13,6 @@ namespace Core.API.Areas.Renter.Controller
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
     [Authorize(Roles = SystemRoles.Renter)]
-    [ApiExplorerSettings(GroupName = "Renter")]
     public class RenterController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -37,10 +36,23 @@ namespace Core.API.Areas.Renter.Controller
         {
             var result = await _mediator.Send(new GetRenterQuery
             {
-                Id = _identityService.GetUserId()
+                UserId = _identityService.GetUserId()
             });
             if (result == null) return NoContent();
             return Ok(result);
+        }
+
+        [HttpGet("cnh")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCNH()
+        {
+            var result = await _mediator.Send(new GetRenterCNHQuery
+            {
+                UserId = _identityService.GetUserId()
+            });
+            if (result == null) return NoContent();
+            return Ok(new { cnhUrl = result });
         }
 
         [HttpPost("register")]
@@ -58,7 +70,7 @@ namespace Core.API.Areas.Renter.Controller
         }
 
         [HttpPatch("cnh")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> UpdateCNH([FromForm] UpdateRenterCNHRequest registerRenterRequest)
         {
             await _mediator.Send(new UpdateRenterCNHCommand
@@ -68,7 +80,7 @@ namespace Core.API.Areas.Renter.Controller
                 CNHType = registerRenterRequest.CNHType,
                 Number = registerRenterRequest.Number
             });
-            return Created();
+            return NoContent();
         }
     }
 }

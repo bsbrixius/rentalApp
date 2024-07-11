@@ -141,7 +141,7 @@ namespace Authentication.API
             return services;
         }
 
-        public static IHostBuilder UseAutofacIoC(this IHostBuilder hostBuilder)
+        public static IHostBuilder UseAutofacIoC(this IHostBuilder hostBuilder, IConfiguration configuration)
         {
             var mediatrConfiguration = MediatRConfigurationBuilder
             .Create(typeof(PreRegisterUserCommand).Assembly)
@@ -151,7 +151,7 @@ namespace Authentication.API
             hostBuilder.ConfigureContainer<ContainerBuilder>(
                builder =>
                {
-                   builder.RegisterModule(new AppModule());
+                   builder.RegisterModule(new AppModule(configuration));
                    builder.RegisterMediatR(mediatrConfiguration);
                });
 

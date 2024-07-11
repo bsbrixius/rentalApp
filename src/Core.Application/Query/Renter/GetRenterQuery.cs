@@ -6,7 +6,7 @@ namespace Core.Application.Query.Renter
 {
     public sealed class GetRenterQuery : IRequest<RenterDTO?>
     {
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         internal sealed class GetRenterQueryHandler : IRequestHandler<GetRenterQuery, RenterDTO?>
         {
             private readonly IRenterQueryRepository _renterQueryRepository;
@@ -18,7 +18,7 @@ namespace Core.Application.Query.Renter
 
             public async Task<RenterDTO?> Handle(GetRenterQuery request, CancellationToken cancellationToken)
             {
-                return RenterDTO.From(await _renterQueryRepository.GetByIdAsync(request.Id));
+                return RenterDTO.From(await _renterQueryRepository.GetByUserIdAsync(request.UserId));
             }
         }
     }

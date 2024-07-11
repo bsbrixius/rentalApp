@@ -12,7 +12,6 @@ namespace Core.API.Areas.Admin.Controllers
     [Area("Admin")]
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
-    [ApiExplorerSettings(GroupName = "Admin")]
     public class MotorcycleController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -38,7 +37,7 @@ namespace Core.API.Areas.Admin.Controllers
 
         [HttpPost]
         [Authorize(Policy = Policies.Roles.Admin.Write)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> Post([FromBody] RegisterMotorcycleRequest registerMotorcycleDTO)

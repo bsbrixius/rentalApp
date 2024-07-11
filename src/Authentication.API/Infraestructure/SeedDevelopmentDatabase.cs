@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Authentication.API.Infraestructure
 {
-    public static class SeedDatabase
+    public static class SeedDevelopmentDatabase
     {
-        public static async Task TrySeedDatabaseAsync(this AuthenticationContext context)
+        public static async Task TrySeedDevelopmentDatabaseAsync(this AuthenticationContext context)
         {
             await SeedRoles(context);
             await SeedUsers(context);
@@ -25,7 +25,15 @@ namespace Authentication.API.Infraestructure
                 var adminRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Admin);
                 adminUser.Roles.Add(adminRole);
                 context.Users.Add(adminUser);
-                await context.SaveChangesAsync();
+            }
+
+            var renterUser = new User("renter@outlook.com", "renter-fullname", DateTime.UtcNow.ToDateOnly());
+            if (!context.Users.Any(x => x.Email == renterUser.Email))
+            {
+                renterUser.PasswordHash = new PasswordHasher<User>().HashPassword(renterUser, "renter123");
+                var renterRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Renter);
+                renterUser.Roles.Add(renterRole);
+                context.Users.Add(renterUser);
             }
         }
 
@@ -50,7 +58,7 @@ namespace Authentication.API.Infraestructure
                 {
                     new RoleClaim(Claims.CustomerService.ReadAccess, ClaimValues.Read),
                     new RoleClaim(Claims.CustomerService.WriteAccess, ClaimValues.Write),
-                    new RoleClaim(Claims.CustomerService.DeleteAccess, ClaimValues.Delete)
+                    //new RoleClaim(Claims.CustomerService.DeleteAccess, ClaimValues.Delete)
                 };
                 var result = await context.AddAsync(role);
             }

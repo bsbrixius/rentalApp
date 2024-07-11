@@ -10,12 +10,17 @@ namespace Core.Data.Queries
         {
         }
 
+        public async Task<Motorcycle?> GetAvailableAtAsync(DateOnly startAt)
+        {
+            return await QueryNoTrack.FirstOrDefaultAsync(x => !x.IsDeleted && !x.Rents.Any(r => r.EndAt > startAt));
+        }
+
         public async Task<Motorcycle?> GetByPlateAsync(string plate)
         {
             return await QueryNoTrack.FirstOrDefaultAsync(x => x.Plate == plate);
         }
 
-        public IQueryable<Motorcycle> SearchBy(string? plate)
+        public IQueryable<Motorcycle> SearchByPlate(string? plate)
         {
             var sql = string.Format(
                 "SELECT * FROM \"Motorcycles\" WHERE \"Plate\" LIKE '%{0}%'",

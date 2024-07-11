@@ -9,6 +9,7 @@ using BuildingBlocks.Security;
 using Core.Application.Commands.Motorcycle;
 using Core.Data;
 using Crosscutting.EventBus.RabbitMq;
+using Crosscutting.StorageService.MinIO;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -137,10 +138,12 @@ namespace Core.API
             services.AddSingleton<JwtValidator>();
             services.TryAddScoped<IIdentityService, IdentityService>();
             services.AddRabbitMqBroker();
+            services.AddMinIOPlaygroundStorageService(configuration);
+            //services.AddMinIOStorageService(configuration);
             return services;
         }
 
-        public static IHostBuilder UseAutofacIoC(this IHostBuilder hostBuilder)
+        public static IHostBuilder UseAutofacIoC(this IHostBuilder hostBuilder, IConfiguration configuration)
         {
             var mediatrConfiguration = MediatRConfigurationBuilder
             .Create(typeof(RegisterMotorcycleCommand).Assembly)
@@ -150,7 +153,7 @@ namespace Core.API
             hostBuilder.ConfigureContainer<ContainerBuilder>(
                builder =>
                {
-                   builder.RegisterModule(new AppModule());
+                   builder.RegisterModule(new AppModule(configuration));
                    builder.RegisterMediatR(mediatrConfiguration);
                });
 

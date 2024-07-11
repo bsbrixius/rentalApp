@@ -21,6 +21,7 @@ namespace Core.Domain.Aggregates.Rent
             StartAt = startAt;
             EndAt = endAt;
             ExpectedReturnAt = expectedReturnAt;
+            CalculateCosts();
         }
 
         public RentStatusType Status { get; private set; }
@@ -31,9 +32,9 @@ namespace Core.Domain.Aggregates.Rent
         public int PriceInCents { get; private set; }
         public int? PenaltyPriceInCents { get; private set; }
         public Guid MotorcycleId { get; set; }
-        public virtual Motorcycle.Motorcycle Motorcycle { get; set; }
+        public virtual Motorcycle.Motorcycle Motorcycle { get; }
         public Guid RenterId { get; set; }
-        public virtual Renter.Renter Renter { get; set; }
+        public virtual Renter.Renter Renter { get; }
 
         public void CalculateCosts()
         {
