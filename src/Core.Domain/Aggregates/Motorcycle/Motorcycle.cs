@@ -44,6 +44,10 @@ namespace Core.Domain.Aggregates.Motorcycle
             }
         }
 
+        public void Rent(Rent.Rent rent)
+        {
+            Rents.Add(rent);
+        }
         #region Domain Events
         private void AddMotorcycleRegisteredDomainEvent()
         {

@@ -9,6 +9,7 @@ using BuildingBlocks.Security;
 using Core.Application.Commands.Motorcycle;
 using Core.Data;
 using Crosscutting.EventBus.RabbitMq;
+using Crosscutting.StorageService.MinIO;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -137,6 +138,8 @@ namespace Core.API
             services.AddSingleton<JwtValidator>();
             services.TryAddScoped<IIdentityService, IdentityService>();
             services.AddRabbitMqBroker();
+            services.AddMinIOPlaygroundStorageService(configuration);
+            //services.AddMinIOStorageService(configuration);
             return services;
         }
 

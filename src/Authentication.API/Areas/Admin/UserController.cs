@@ -14,7 +14,6 @@ namespace Authentication.API.Areas.Admin
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
     [Authorize(Roles = SystemRoles.Admin)]
-    [ApiExplorerSettings(GroupName = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -44,7 +43,7 @@ namespace Authentication.API.Areas.Admin
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
         {
-            var result = await _userQueries.GetByIdAsync(id);
+            var result = await _userQueries.GetByUserIdAsync(id);
             if (result == null) return NoContent();
             return Ok(result);
         }

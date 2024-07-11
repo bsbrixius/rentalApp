@@ -6,5 +6,6 @@ namespace Core.Domain.Aggregates.Motorcycle
     {
         Task<Motorcycle?> GetByPlateAsync(string plate);
         IQueryable<Motorcycle> SearchByPlate(string? plate);
+        Task<Motorcycle?> GetAvailableAtAsync(DateOnly startAt);
     }
 }

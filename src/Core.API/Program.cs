@@ -27,16 +27,6 @@ builder.Services
 
 var app = builder.Build();
 
-//if (app.Environment.IsEnvironment("Testing"))
-//{
-//    using (var scope = app.Services.CreateScope())
-//    {
-//        var dbContext = scope.ServiceProvider.GetRequiredService<CoreContext>();
-//        dbContext.Database.EnsureDeleted();
-//        dbContext.Database.EnsureCreated();
-//        await dbContext.TrySeedDevelopmentDatabaseAsync();
-//    }
-//}
 if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
@@ -67,8 +57,6 @@ app.UseCors(x => x
 app.UseResponseCaching();
 app.UseAuthentication();
 app.UseRouting();
-//app.ConfigureExceptionHandler(logger, env);
-//app.UseMiddleware<JwtMiddleware>();
 app.UseAuthorization();
 //app.UseHealthChecks("/health", GetHealthCheckOptions());
 app.MapControllers();

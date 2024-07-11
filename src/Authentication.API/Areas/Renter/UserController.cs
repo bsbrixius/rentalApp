@@ -14,7 +14,6 @@ namespace Authentication.API.Areas.Renter
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
     [Authorize(Roles = SystemRoles.Renter)]
-    [ApiExplorerSettings(GroupName = "Renter")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -40,7 +39,7 @@ namespace Authentication.API.Areas.Renter
         [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAsync()
         {
-            var result = await _userQueries.GetByIdAsync(_identityService.GetUserId());
+            var result = await _userQueries.GetByUserIdAsync(_identityService.GetUserId());
             if (result == null) return NoContent();
             return Ok(result);
         }

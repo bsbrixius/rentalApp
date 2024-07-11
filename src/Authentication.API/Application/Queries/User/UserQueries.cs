@@ -6,7 +6,7 @@ namespace Authentication.API.Application.Queries.User
 {
     public interface IUserQueries
     {
-        Task<UserDTO?> GetByIdAsync(Guid id);
+        Task<UserDTO?> GetByUserIdAsync(Guid id);
         Task<PaginatedResult<UserDTO>> GetPaginated(PaginatedRequest paginatedRequest);
     }
     public class UserQueries : IUserQueries
@@ -25,7 +25,7 @@ namespace Authentication.API.Application.Queries.User
             if (paginatedUsers is null) return null;
             return paginatedUsers;
         }
-        public async Task<UserDTO?> GetByIdAsync(Guid id)
+        public async Task<UserDTO?> GetByUserIdAsync(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user is null) return null;

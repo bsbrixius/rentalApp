@@ -13,7 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\BuildingBlocks.Common\BuildingBlocks.Common.csproj" />
     <ProjectReference Include="..\BuildingBlocks.Infrastructure\BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\BuildingBlocks.Utils\BuildingBlocks.Utils.csproj" />
     <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
+    <ProjectReference Include="..\Crosscutting.StorageService.Base\Crosscutting.StorageService.Base.csproj" />
   </ItemGroup>
 
 </Project>

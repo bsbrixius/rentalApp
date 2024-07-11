@@ -16,6 +16,7 @@ services:
     networks:
       - postgres
       - rabbitmq_net
+      - minionetwork
 
   authentication.api:
     image: ${DOCKER_REGISTRY-}authenticationapi
@@ -32,6 +33,7 @@ services:
     networks:
       - postgres
       - rabbitmq_net
+      - minionetwork
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -117,32 +119,41 @@ services:
       - smtp4devlan
       - postgres
       - rabbitmq_net
-  minio:
-    image: docker.io/bitnami/minio:2022
-    ports:
-        - '9000:9000'
-        - '9001:9001'
-    networks:
-        - minionetwork
-    volumes:
-        - 'minio_data:/data'
-    environment:
-        - MINIO_ROOT_USER=minioadmin
-        - MINIO_ROOT_PASSWORD=minioadmin
-        - MINIO_DEFAULT_BUCKETS=rental_bucket
+  # minio:
+  #   image: docker.io/bitnami/minio:2024
+  #   ports:
+  #       - '9000:9000'
+  #       - '9001:9001'
+  #   networks:
+  #       - minionetwork
+  #   volumes:
+  #       - 'minio_data:/data'
+  #   environment:
+  #       - MINIO_ROOT_USER=miniorentaladmin
+  #       - MINIO_ROOT_PASSWORD=miniorentaladminpassword
+  #       - MINIO_DEFAULT_BUCKETS=rentaldefaultbucket
+  #       - MINIO_SCHEME=http
+  #       - BITNAMI_DEBUG=true
 
 networks:
   minionetwork:
+    driver: bridge
   smtp4devlan:
+    driver: bridge
   postgres:
+    driver: bridge
   rabbitmq_net:
     driver: bridge
 
 volumes:
     minio_data:
+     driver: local
     smtp4dev-data:
+     driver: local
     rabbitmq_data:
+     driver: local
     postgres:
+     driver: local
     pgadmin:
-        driver: local
+     driver: local
 

@@ -25,7 +25,15 @@ namespace Authentication.API.Infraestructure
                 var adminRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Admin);
                 adminUser.Roles.Add(adminRole);
                 context.Users.Add(adminUser);
-                await context.SaveChangesAsync();
+            }
+
+            var renterUser = new User("renter@outlook.com", "renter-fullname", DateTime.UtcNow.ToDateOnly());
+            if (!context.Users.Any(x => x.Email == renterUser.Email))
+            {
+                renterUser.PasswordHash = new PasswordHasher<User>().HashPassword(renterUser, "renter123");
+                var renterRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Renter);
+                renterUser.Roles.Add(renterRole);
+                context.Users.Add(renterUser);
             }
         }
 

@@ -12,7 +12,6 @@ namespace Core.API.Areas.Admin.Controllers
     [Area("Admin")]
     [ApiController]
     [Route("api/v1/[area]/[controller]")]
-    [ApiExplorerSettings(GroupName = "Admin")]
     public class MotorcycleController : ControllerBase
     {
         private readonly IMediator _mediator;

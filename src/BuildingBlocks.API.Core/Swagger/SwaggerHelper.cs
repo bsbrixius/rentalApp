@@ -40,9 +40,10 @@ namespace BuildingBlocks.API.Core.Swagger
         public static void SwaggerDocByArea(this SwaggerGenOptions options)
         {
             var controllerInfos = GetControllerAreas();
+            var alreadyAddedArea = new HashSet<string>();
             foreach (var controllerInfo in controllerInfos)
             {
-                if (controllerInfo.Area != null)
+                if (controllerInfo.Area != null && !alreadyAddedArea.Contains(controllerInfo.Area.RouteValue))
                 {
                     options.SwaggerDoc(controllerInfo.Area.RouteValue, new OpenApiInfo
                     {
@@ -50,6 +51,7 @@ namespace BuildingBlocks.API.Core.Swagger
                         Version = "v1",//TODO add versioning
                         Description = $"{controllerInfo.Area.RouteValue} - Section"
                     });
+                    alreadyAddedArea.Add(controllerInfo.Area.RouteValue);
                 }
             }
 

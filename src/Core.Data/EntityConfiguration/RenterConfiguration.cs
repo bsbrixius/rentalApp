@@ -9,7 +9,7 @@ namespace Core.Data.EntityConfiguration
         public override void Configure(EntityTypeBuilder<Renter> builder)
         {
             builder.HasIndex(builder => builder.CNPJ).IsUnique();
-            builder.HasIndex(builder => builder.UserId);
+            builder.HasIndex(builder => builder.UserId).IsUnique();
 
             builder.Property(x => x.UserId).IsRequired();
             builder.Property(x => x.Name).IsRequired();
