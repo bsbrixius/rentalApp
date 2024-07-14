@@ -138,8 +138,8 @@ namespace Core.API
             services.AddSingleton<JwtValidator>();
             services.TryAddScoped<IIdentityService, IdentityService>();
             services.AddRabbitMqBroker();
-            services.AddMinIOPlaygroundStorageService(configuration);
-            //services.AddMinIOStorageService(configuration);
+            //services.AddMinIOPlaygroundStorageService(configuration);
+            services.AddMinIOStorageService(configuration);
             return services;
         }
 

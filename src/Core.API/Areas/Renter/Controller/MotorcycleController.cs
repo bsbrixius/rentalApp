@@ -21,7 +21,7 @@ namespace Core.API.Areas.Renter.Controller
 
         [HttpGet]
         [ProducesResponseType(typeof(PaginatedResult<MotorcycleDTO>), StatusCodes.Status200OK)]
-        [Authorize(Policy = Policies.Roles.Admin.Read)]
+        [Authorize(Policy = Policies.Roles.Renter.Read)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] ListMotorcycleRequest listMotorcycleRequest)
         {
