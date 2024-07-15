@@ -1,4 +1,6 @@
 ﻿using Authentication.API.Domain;
+using Authentication.Domain;
+using Authentication.Domain.Aggregates;
 using BuildingBlocks.Security.Authorization;
 using BuildingBlocks.Utils;
 using Microsoft.AspNetCore.Identity;

@@ -1,7 +1,7 @@
-﻿using Authentication.API.Application.Commands.User.PreRegisterUser;
-using Authentication.API.Application.Commands.User.RegisterUser;
-using Authentication.API.Application.Data.User;
-using Authentication.API.Application.Queries.User;
+﻿using Authentication.Application.Commands.User.PreRegisterUser;
+using Authentication.Application.Commands.User.RegisterUser;
+using Authentication.Application.DTOs.User;
+using Authentication.Application.Query.User;
 using BuildingBlocks.Identity.Services;
 using BuildingBlocks.Security.Authorization;
 using MediatR;

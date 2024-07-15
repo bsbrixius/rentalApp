@@ -1,6 +1,7 @@
 using Authentication.API;
-using Authentication.API.Application.Queries.User;
 using Authentication.API.Infraestructure;
+using Authentication.Application.Query.User;
+using Authentication.Domain;
 using BuildingBlocks.API.Core;
 using BuildingBlocks.API.Core.Swagger;
 using Serilog;

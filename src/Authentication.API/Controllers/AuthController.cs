@@ -1,4 +1,4 @@
-﻿using Authentication.API.Domain;
+﻿using Authentication.Domain.Aggregates;
 using BuildingBlocks.Identity.Services;
 using BuildingBlocks.Security;
 using MediatR;
@@ -35,7 +35,7 @@ namespace Authentication.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> RegisterAsync([FromBody] Application.Data.Auth.LoginRequest loginRequest)
+        public async Task<IActionResult> RegisterAsync([FromBody] Authentication.Application.DTOs.Auth.LoginRequest loginRequest)
         {
             var result = _loginService.PasswordSignIn(loginRequest.Email, loginRequest.Password);
 
