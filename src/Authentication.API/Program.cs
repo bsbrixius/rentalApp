@@ -29,7 +29,7 @@ builder.Services
 builder.Services.AddScoped<IUserQueries, UserQueries>();
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Cloud")
 {
     using (var scope = app.Services.CreateScope())
     {

@@ -11,9 +11,6 @@ namespace Authentication.Domain
     public class AuthenticationContext : AuthenticationBaseContext<User>
     {
 
-        static bool? _isRunningInContainer;
-        static bool IsRunningInContainer => _isRunningInContainer ??= bool.TryParse(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), out var inDocker) && inDocker;
-
         public IConfiguration Configuration { get; }
         const string _schema = "identity";
 
@@ -30,10 +27,7 @@ namespace Authentication.Domain
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (IsRunningInContainer)
-                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DockerConnection"));
-            else
-                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("CloudConnection"));
+            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

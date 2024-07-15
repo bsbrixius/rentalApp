@@ -12,9 +12,6 @@ namespace Core.Data
 {
     public class CoreContext : BaseDb
     {
-        static bool? _isRunningInContainer;
-        static bool IsRunningInContainer => _isRunningInContainer ??= bool.TryParse(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), out var inDocker) && inDocker;
-
         protected IConfiguration Configuration { get; }
         public CoreContext(
             IConfiguration configuration,
@@ -34,10 +31,7 @@ namespace Core.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (IsRunningInContainer)
-                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DockerConnection"));
-            else
-                optionsBuilder.UseNpgsql(Configuration.GetConnectionString("CloudConnection"));
+            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
         }
 
         public DbSet<Rent> Rents { get; set; }
