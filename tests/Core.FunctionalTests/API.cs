@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using static Core.Application.DTOs.Motorcycle.SearchMotorcycleRequest;
 
-namespace Core.API.FunctionalTests
+namespace Core.FunctionalTests
 {
     public static class API
     {

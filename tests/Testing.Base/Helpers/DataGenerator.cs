@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Core.API.FunctionalTests.Helpers
+namespace Testing.Base.Helpers
 {
     public static class DataGenerator
     {

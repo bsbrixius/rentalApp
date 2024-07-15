@@ -1,4 +1,4 @@
-namespace Core.API.Domain.UnitTest
+namespace Core.FunctionalTests
 {
     public class UnitTest1
     {

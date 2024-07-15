@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 
-namespace Core.API.FunctionalTests.Helpers
+namespace Testing.Base.Helpers
 {
     public static class WebApplicationFactoryExtensions
     {

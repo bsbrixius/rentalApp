@@ -17,11 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\Authentication.Domain\Authentication.Domain.csproj" />
+    <ProjectReference Include="..\..\src\BuildingBlocks.Utils\BuildingBlocks.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

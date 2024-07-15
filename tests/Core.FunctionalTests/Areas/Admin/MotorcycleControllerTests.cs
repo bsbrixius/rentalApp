@@ -1,14 +1,15 @@
 ﻿using Bogus;
 using BuildingBlocks.API.Core.Data.Pagination;
-using Core.API.FunctionalTests.Helpers;
 using Core.Application.DTOs.Motorcycle;
+using Core.Data;
 using System.Net;
 using System.Net.Http.Json;
+using Testing.Base.Helpers;
 using Xunit.Extensions.Ordering;
 
-namespace Core.API.FunctionalTests.Areas.Admin
+namespace Core.FunctionalTests.Areas.Admin
 {
-    public class MotorcycleControllerTests : BaseTest
+    public class MotorcycleControllerTests : BaseTest<Program, CoreContext>
     {
         private HttpClient _adminClient;
         private HttpClient _renterClient;
@@ -17,7 +18,7 @@ namespace Core.API.FunctionalTests.Areas.Admin
         const string UPDATED_MOTORCYCLE_PLATE = nameof(UPDATED_MOTORCYCLE_PLATE);
         const string DUPLICATED_MOTORCYCLE_PLATE = nameof(DUPLICATED_MOTORCYCLE_PLATE);
 
-        public MotorcycleControllerTests(TestApplicationFactory<Program> factory) : base(factory)
+        public MotorcycleControllerTests(TestApplicationFactory<Program, CoreContext> factory) : base(factory)
         {
             _adminClient = Factory.CreateClientWithTestAuth(TestClaimsProvider.WithAdminClaims());
             _renterClient = Factory.CreateClientWithTestAuth(TestClaimsProvider.WithUserClaims());

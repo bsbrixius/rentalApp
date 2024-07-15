@@ -33,7 +33,7 @@ namespace Core.Application.Commands.Motorcycle
     {
         public RegisterMotorcycleCommandValidator()
         {
-            RuleFor(x => x.Year).GreaterThan((uint)2000);
+            RuleFor(x => x.Year).GreaterThan((uint)1999);
             RuleFor(x => x.Model).NotEmpty().NotNull();
             RuleFor(x => x.Plate).NotEmpty().NotNull();
         }

@@ -104,7 +104,7 @@ namespace BuildingBlocks.Infrastructure.Filters
         private void HandleInternalServerError(ExceptionContext context)
         {
             context.HttpContext.Items.TryGetValue("body", out object body);
-            var problemDetails = _env.IsDevelopment() ?
+            var problemDetails = !_env.IsProduction() ?
                 new InternalServerErrorProblemDetails(context.Exception) :
                 new InternalServerErrorProblemDetails();
             problemDetails.Instance = context.HttpContext.Request.Path;

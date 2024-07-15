@@ -4,7 +4,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Helpers\**" />
+    <EmbeddedResource Remove="Helpers\**" />
+    <None Remove="Helpers\**" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AutoBogus" Version="2.13.1" />
@@ -14,15 +23,13 @@
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.6" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.6" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
 		<PackageReference Include="xunit" Version="2.5.3" />
 		<PackageReference Include="Xunit.Extensions.Ordering" Version="1.4.5" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\..\src\BuildingBlocks.Domain\BuildingBlocks.Domain.csproj" />
-	  <ProjectReference Include="..\..\src\BuildingBlocks.Security\BuildingBlocks.Security.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
 
 </Project>

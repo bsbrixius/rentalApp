@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.Security.Authorization;
-using Microsoft.IdentityModel.JsonWebTokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-namespace Core.API.FunctionalTests.Helpers
+namespace Testing.Base.Helpers
 {
     public class TestClaimsProvider
     {
