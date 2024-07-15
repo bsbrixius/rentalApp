@@ -21,9 +21,6 @@ namespace Testing.Base.Helpers
                             x.DefaultScheme = TestAuthHandler.AuthenticationScheme;
                         })
                         .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.AuthenticationScheme, options => { });
-
-                    //services.AddAuthentication(TestAuthHandler.AuthenticationScheme)
-                    //        .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.AuthenticationScheme, op => { });
                     services.AddScoped<TestClaimsProvider>(_ => claimsProvider);
                 });
             });

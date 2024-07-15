@@ -9,7 +9,7 @@ using Xunit.Extensions.Ordering;
 
 namespace Core.FunctionalTests.Areas.Admin
 {
-    public class MotorcycleControllerTests : BaseTest<Program, CoreContext>
+    public class MotorcycleControllerTests : BaseTest<Program, CoreContext, CoreContextTestingSeeder>, Xunit.IAssemblyFixture<CoreContextTestingSeeder>
     {
         private HttpClient _adminClient;
         private HttpClient _renterClient;
@@ -18,7 +18,7 @@ namespace Core.FunctionalTests.Areas.Admin
         const string UPDATED_MOTORCYCLE_PLATE = nameof(UPDATED_MOTORCYCLE_PLATE);
         const string DUPLICATED_MOTORCYCLE_PLATE = nameof(DUPLICATED_MOTORCYCLE_PLATE);
 
-        public MotorcycleControllerTests(TestApplicationFactory<Program, CoreContext> factory) : base(factory)
+        public MotorcycleControllerTests(TestApplicationFactory<Program, CoreContext, CoreContextTestingSeeder> factory) : base(factory)
         {
             _adminClient = Factory.CreateClientWithTestAuth(TestClaimsProvider.WithAdminClaims());
             _renterClient = Factory.CreateClientWithTestAuth(TestClaimsProvider.WithUserClaims());
@@ -27,6 +27,7 @@ namespace Core.FunctionalTests.Areas.Admin
         [Fact]
         public async Task Admin_Get_Motorcycles_Should_Return_Ok()
         {
+
             var response = await _adminClient.GetAsync(API.Admin.Motorcycle.Get());
             response.EnsureSuccessStatusCode();
         }

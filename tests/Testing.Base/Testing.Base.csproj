@@ -16,6 +16,7 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
 		<PackageReference Include="xunit" Version="2.5.3" />
+		<PackageReference Include="xunit.assemblyfixture" Version="2.2.0" />
 		<PackageReference Include="Xunit.Extensions.Ordering" Version="1.4.5" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
 	</ItemGroup>
@@ -23,6 +24,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\BuildingBlocks.Domain\BuildingBlocks.Domain.csproj" />
 	  <ProjectReference Include="..\..\src\BuildingBlocks.Security\BuildingBlocks.Security.csproj" />
+	  <ProjectReference Include="..\..\src\Core.Data\Core.Data.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -19,25 +19,22 @@ namespace Testing.Base.Helpers
             Factory = factory;
             Data = factory.Data;
         }
-
-        // Add you other helper methods here
     }
 
-    public class BaseTest<TStartup, TDatabase> : IClassFixture<TestApplicationFactory<TStartup, TDatabase>>
+    public class BaseTest<TStartup, TDatabase, TBaseDatabaseSeeder> : IClassFixture<TestApplicationFactory<TStartup, TDatabase, TBaseDatabaseSeeder>>
         where TStartup : class
         where TDatabase : BaseDb
+        where TBaseDatabaseSeeder : BaseDatabaseSeederFixture, new()
     {
         protected Faker Faker { get; } = new Faker();
         protected Fixture Fixture { get; } = new Fixture();
         protected WebApplicationFactory<TStartup> Factory { get; }
         protected Dictionary<string, object> Data { get; }
 
-        public BaseTest(TestApplicationFactory<TStartup, TDatabase> factory)
+        public BaseTest(TestApplicationFactory<TStartup, TDatabase, TBaseDatabaseSeeder> factory)
         {
             Factory = factory;
             Data = factory.Data;
         }
-
-        // Add you other helper methods here
     }
 }
