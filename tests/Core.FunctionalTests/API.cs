@@ -34,5 +34,14 @@ namespace Core.FunctionalTests
                 public static string Delete(string id) => $"{BaseUrl}/{Area}/motorcycle/{id}";
             }
         }
+
+        public static class Renter
+        {
+            private const string Area = "renter";
+            public static class Motorcycle
+            {
+                public static string Get(OrderByType orderByType = OrderByType.Year, SortByType sortByType = SortByType.Descending) => $"{BaseUrl}/{Area}/motorcycle?{nameof(orderByType)}={orderByType}&{nameof(sortByType)}={sortByType}";
+            }
+        }
     }
 }

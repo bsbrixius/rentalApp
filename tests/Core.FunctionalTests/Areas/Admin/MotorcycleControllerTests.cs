@@ -27,10 +27,10 @@ namespace Core.FunctionalTests.Areas.Admin
         [Fact]
         public async Task Admin_Get_Motorcycles_Should_Return_Ok()
         {
-
             var response = await _adminClient.GetAsync(API.Admin.Motorcycle.Get());
             response.EnsureSuccessStatusCode();
         }
+
         #region Admin
 
         [Fact, Order(1)]

@@ -75,7 +75,7 @@ namespace Authentication.API
 
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentityBase<Authentication.Domain.Aggregates.User, AuthenticationContext>();
+            services.AddIdentityBase<Authentication.Domain.Aggregates.User, AuthContext>();
 
             return services;
         }

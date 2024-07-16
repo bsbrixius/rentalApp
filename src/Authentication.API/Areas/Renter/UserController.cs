@@ -54,7 +54,7 @@ namespace Authentication.API.Areas.Renter
                 Email = preRegisterUserDTO.Email,
                 Role = SystemRoles.Renter
             });
-            return Created();
+            return NoContent();
         }
 
         [HttpPost("register")]

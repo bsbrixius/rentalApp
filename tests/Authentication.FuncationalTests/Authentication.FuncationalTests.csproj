@@ -20,4 +20,13 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Admin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Authentication.Domain\Authentication.Domain.csproj" />
+    <ProjectReference Include="..\Testing.Base\Testing.Base.csproj" />
+  </ItemGroup>
+
 </Project>

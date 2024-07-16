@@ -6,11 +6,11 @@ using BuildingBlocks.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Authentication.API.Infraestructure
+namespace Authentication.FunctionalTests
 {
-    public static class SeedDevelopmentDatabase
+    public static class SeedTestingDatabase
     {
-        public static async Task TrySeedDevelopmentDatabaseAsync(this AuthContext context)
+        public static async Task TrySeedTestingDatabaseAsync(this AuthContext context)
         {
             await SeedRoles(context);
             await SeedUsers(context);
@@ -20,19 +20,19 @@ namespace Authentication.API.Infraestructure
 
         private static async Task SeedUsers(AuthContext context)
         {
-            var adminUser = new User("admin@rentalapp.com", "admin-fullname", DateTime.UtcNow.ToDateOnly());
+            var adminUser = new User("test-admin@rentalapp.com", "test-admin-fullname", DateTime.UtcNow.ToDateOnly());
             if (!context.Users.Any(x => x.Email == adminUser.Email))
             {
-                adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, "admin123");
+                adminUser.PasswordHash = new PasswordHasher<User>().HashPassword(adminUser, "testadmin123");
                 var adminRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Admin);
                 adminUser.Roles.Add(adminRole);
                 context.Users.Add(adminUser);
             }
 
-            var renterUser = new User("renter@outlook.com", "renter-fullname", DateTime.UtcNow.ToDateOnly());
+            var renterUser = new User("test-renter@outlook.com", "test-renter-fullname", DateTime.UtcNow.ToDateOnly());
             if (!context.Users.Any(x => x.Email == renterUser.Email))
             {
-                renterUser.PasswordHash = new PasswordHasher<User>().HashPassword(renterUser, "renter123");
+                renterUser.PasswordHash = new PasswordHasher<User>().HashPassword(renterUser, "test-renter123");
                 var renterRole = await context.Roles.FirstOrDefaultAsync(x => x.Name == SystemRoles.Renter);
                 renterUser.Roles.Add(renterRole);
                 context.Users.Add(renterUser);
@@ -79,3 +79,4 @@ namespace Authentication.API.Infraestructure
         }
     }
 }
+

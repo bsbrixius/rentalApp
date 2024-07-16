@@ -1,6 +1,7 @@
 ﻿using Authentication.Domain.Aggregates;
 using BuildingBlocks.Identity.Services;
 using BuildingBlocks.Security;
+using BuildingBlocks.Security.Data;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 namespace Authentication.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -35,7 +36,8 @@ namespace Authentication.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> RegisterAsync([FromBody] Authentication.Application.DTOs.Auth.LoginRequest loginRequest)
+        [ProducesResponseType(typeof(JwtToken), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Login([FromBody] Authentication.Application.DTOs.Auth.LoginRequest loginRequest)
         {
             var result = _loginService.PasswordSignIn(loginRequest.Email, loginRequest.Password);
 
@@ -48,7 +50,8 @@ namespace Authentication.API.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshAsync([FromBody] string refreshToken)
+        [ProducesResponseType(typeof(JwtToken), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Refresh([FromBody] string refreshToken)
         {
             var result = await _jwtValidator.ValidateTokenAsync(refreshToken);
 

@@ -8,18 +8,18 @@ using Microsoft.Extensions.Logging;
 
 namespace Authentication.Domain
 {
-    public class AuthenticationContext : AuthenticationBaseContext<User>
+    public class AuthContext : AuthenticationBaseContext<User>
     {
 
         public IConfiguration Configuration { get; }
         const string _schema = "identity";
 
-        public AuthenticationContext(
+        public AuthContext(
             IMediator mediator,
-            ILogger<AuthenticationContext> logger,
+            ILogger<AuthContext> logger,
             IHttpContextAccessor httpContextAccessor,
             IConfiguration configuration,
-            DbContextOptions<AuthenticationContext> options) : base(mediator, logger, httpContextAccessor, options)
+            DbContextOptions<AuthContext> options) : base(mediator, logger, httpContextAccessor, options)
         {
             Configuration = configuration;
         }

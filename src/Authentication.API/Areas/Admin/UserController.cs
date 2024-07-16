@@ -71,7 +71,7 @@ namespace Authentication.API.Areas.Admin
                 Email = preRegisterUserDTO.Email,
                 Role = SystemRoles.Admin
             });
-            return Created();
+            return NoContent();
         }
     }
 }

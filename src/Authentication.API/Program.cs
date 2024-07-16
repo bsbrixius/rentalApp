@@ -33,7 +33,7 @@ if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Cloud
 {
     using (var scope = app.Services.CreateScope())
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
         //dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
         await dbContext.TrySeedDevelopmentDatabaseAsync();

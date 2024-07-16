@@ -71,11 +71,11 @@ namespace BuildingBlocks.Domain.Base
 
             ValidateEntities();
             var savedEntities = await base.SaveChangesAsync(cancellationToken);
-            await PublishDomainEvents();
+            await DispatchDomainEvents();
             return savedEntities;
         }
 
-        private async Task PublishDomainEvents()
+        private async Task DispatchDomainEvents()
         {
             var entities = ChangeTracker
                 .Entries<IAggregateRoot>()
@@ -88,13 +88,10 @@ namespace BuildingBlocks.Domain.Base
 
             entities.ToList().ForEach(x => x.ClearDomainEvents());
 
-            var tasks = domainEvents
-                .Select(async (domainEvent) =>
-                {
-                    await _mediator.Publish(domainEvent);
-                });
-
-            await Task.WhenAll(tasks);
+            foreach (var domainEvent in domainEvents)
+            {
+                await _mediator.Publish(domainEvent);
+            }
         }
 
         private void ValidateEntities()

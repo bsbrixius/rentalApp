@@ -5,12 +5,29 @@ using BuildingBlocks.Security.Authorization;
 using BuildingBlocks.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using Testing.Base.Helpers;
 
-namespace Authentication.API.Infraestructure
+namespace Authentication.FuncationalTests
 {
-    public static class SeedDevelopmentDatabase
+    public class AuthContextTestingSeeder : BaseDatabaseSeederFixture
     {
-        public static async Task TrySeedDevelopmentDatabaseAsync(this AuthContext context)
+        public AuthContextTestingSeeder() : base()
+        {
+
+        }
+
+        public override void TrySeedDatabase(IHost host)
+        {
+            base.TrySeedDatabase(host);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
+
+        public async Task TrySeedDevelopmentDatabaseAsync(this AuthenticationContext context)
         {
             await SeedRoles(context);
             await SeedUsers(context);
@@ -18,7 +35,7 @@ namespace Authentication.API.Infraestructure
             await context.SaveChangesAsync();
         }
 
-        private static async Task SeedUsers(AuthContext context)
+        private async Task SeedUsers(AuthenticationContext context)
         {
             var adminUser = new User("admin@rentalapp.com", "admin-fullname", DateTime.UtcNow.ToDateOnly());
             if (!context.Users.Any(x => x.Email == adminUser.Email))
@@ -39,7 +56,7 @@ namespace Authentication.API.Infraestructure
             }
         }
 
-        private static async Task SeedRoles(AuthContext context)
+        private async Task SeedRoles(AuthenticationContext context)
         {
             if (!context.Roles.Any(x => x.Name == SystemRoles.Admin))
             {
@@ -77,5 +94,6 @@ namespace Authentication.API.Infraestructure
             }
             await context.SaveChangesAsync();
         }
+
     }
 }

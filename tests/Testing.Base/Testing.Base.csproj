@@ -24,6 +24,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\BuildingBlocks.Domain\BuildingBlocks.Domain.csproj" />
 	  <ProjectReference Include="..\..\src\BuildingBlocks.Security\BuildingBlocks.Security.csproj" />
+	  <ProjectReference Include="..\..\src\BuildingBlocks.Utils\BuildingBlocks.Utils.csproj" />
 	  <ProjectReference Include="..\..\src\Core.Data\Core.Data.csproj" />
 	</ItemGroup>
 
