@@ -1,9 +1,9 @@
 #Desafio Backend
 
-## Vis„o Geral
-O projeto È um sitema de gest„o de aluguel de motocicletas `Motorcycle` e entregadores desenvolvido utilizando .NET 8.
+## Vis√£o Geral
+O projeto √© um sitema de gest√£o de aluguel de motocicletas `Motorcycle` e entregadores desenvolvido utilizando .NET 8.
 O sistema permite que um administrador `Admin` cadastrem motos e modifiquem motos para aluguel.
-TambÈm È possÌvel que entregadores `Renter` se registrem para alugarem motocicletas.
+Tamb√©m √© poss√≠vel que entregadores `Renter` se registrem para alugarem motocicletas.
 
 ## Tecnologias
 - .NET 8
@@ -14,26 +14,26 @@ TambÈm È possÌvel que entregadores `Renter` se registrem para alugarem motocicle
 - MinIO
 - smtp4dev
 
-## ServiÁos
-- `Authentication.API` - ServiÁo de autenticaÁ„o
-- `Core.API` - ServiÁo de gest„o de motocicletas e alugueis
-- `Worker.API` - ServiÁo de processamento de eventos
-## Outros ServiÁos Utilizados
-… possÌvel alterar a variavel de ambiente `ASPNETCORE_ENVIRONMENT` no `docker-compose.yml` para `Development` ou para `Cloud` para que os serviÁos possam utilizar Docker ou serviÁos na nuvem.
+## Servi√ßos
+- `Authentication.API` - Servi√ßo de autentica√ß√£o
+- `Core.API` - Servi√ßo de gest√£o de motocicletas e alugueis
+- `Worker.API` - Servi√ßo de processamento de eventos
+## Outros Servi√ßos Utilizados
+√â poss√≠vel alterar a variavel de ambiente `ASPNETCORE_ENVIRONMENT` no `docker-compose.yml` para `Development` ou para `Cloud` para que os servi√ßos possam utilizar Docker ou servi√ßos na nuvem.
 - Rodando em Docker: 
-	- `pgAdmin` - Interface gr·fica para o banco de dados
+	- `pgAdmin` - Interface gr√°fica para o banco de dados
 	- `Postgres` - Banco de dados
 	- `RabbitMQ` - Mensageria
-	- `smtp4dev` - ServiÁo de email
+	- `smtp4dev` - Servi√ßo de email
 - Rodando na Cloud:
-	- `MinIO` - Storage (⁄nico serviÁo na nuvem tanto utilizando `Development` quanto `Cloud`)
+	- `MinIO` - Storage (√önico servi√ßo na nuvem tanto utilizando `Development` quanto `Cloud`)
 	- `Postgres` - Banco de dados
 	- `RabbitMQ` - Mensageria
 
 
 ## Entidades
 ### Authentication.API
-- `User` - Usu·rio base do sistema, podendo ser um `Admin` ou `Renter`
+- `User` - Usu√°rio base do sistema, podendo ser um `Admin` ou `Renter`
 ### Core.API
 - `Motorcycle` - Entidade que representa uma motocicleta
 - `Rent` - Entidade que representa um aluguel
@@ -42,71 +42,72 @@ TambÈm È possÌvel que entregadores `Renter` se registrem para alugarem motocicle
 - `EventData` - Entidade que representa um evento
 
 ## Casos de Uso
-- [x] Eu como usu·rio admin quero cadastrar uma nova moto.
-	- [x] Os dados obrigatÛrios da moto s„o Identificador, Ano, Modelo e Placa
-	- [x] A placa È um dado ˙nico e n„o pode se repetir.
-	- [x] Quando a moto for cadastrada a aplicaÁ„o dever· gerar um evento de moto cadastrada
-		- [x] A notificaÁ„o dever· ser publicada por mensageria.
+- [x] Eu como usu√°rio admin quero cadastrar uma nova moto.
+	- [x] Os dados obrigat√≥rios da moto s√£o Identificador, Ano, Modelo e Placa
+	- [x] A placa √© um dado √∫nico e n√£o pode se repetir.
+	- [x] Quando a moto for cadastrada a aplica√ß√£o dever√° gerar um evento de moto cadastrada
+		- [x] A notifica√ß√£o dever√° ser publicada por mensageria.
 		- [x] Criar um consumidor para notificar quando o ano da moto for "2024"
-		- [x] Assim que a mensagem for recebida, dever· ser armazenada no banco de dados para consulta futura.
+		- [x] Assim que a mensagem for recebida, dever√° ser armazenada no banco de dados para consulta futura.
 
-- [x] Eu como usu·rio admin quero consultar as motos existentes na plataforma e conseguir filtrar pela placa.
-- [x] Eu como usu·rio admin quero modificar uma moto alterando apenas sua placa que foi cadastrado indevidamente
-- [x] Eu como usu·rio admin quero remover uma moto que foi cadastrado incorretamente, desde que n„o tenha registro de locaÁıes.
-- [x] Eu como usu·rio entregador quero me cadastrar na plataforma para alugar motos.
-	- [x] Os dados do entregador s„o( identificador, nome, cnpj, data de nascimento, n˙mero da CNHh, tipo da CNH, imagemCNH)
-	- [x] Os tipos de cnh v·lidos s„o A, B ou ambas A+B.
-	- [x] O cnpj È ˙nico e n„o pode se repetir.
-	- [x] O n˙mero da CNH È ˙nico e n„o pode se repetir.
+- [x] Eu como usu√°rio admin quero consultar as motos existentes na plataforma e conseguir filtrar pela placa.
+- [x] Eu como usu√°rio admin quero modificar uma moto alterando apenas sua placa que foi cadastrado indevidamente
+- [x] Eu como usu√°rio admin quero remover uma moto que foi cadastrado incorretamente, desde que n√£o tenha registro de loca√ß√µes.
+- [x] Eu como usu√°rio entregador quero me cadastrar na plataforma para alugar motos.
+	- [x] Os dados do entregador s√£o( identificador, nome, cnpj, data de nascimento, n√∫mero da CNHh, tipo da CNH, imagemCNH)
+	- [x] Os tipos de cnh v√°lidos s√£o A, B ou ambas A+B.
+	- [x] O cnpj √© √∫nico e n√£o pode se repetir.
+	- [x] O n√∫mero da CNH √© √∫nico e n√£o pode se repetir.
 
 - [x] Eu como entregador quero enviar a foto de minha cnh para atualizar meu cadastro.
 	- [x] O formato do arquivo deve ser png ou bmp.
-	- [x] A foto n„o poder· ser armazenada no banco de dados, vocÍ pode utilizar um serviÁo de storage( disco local, amazon s3, minIO ou outros).
-	- [x] Eu como entregador quero alugar uma moto por um perÌodo.
-		- Os planos disponÌveis para locaÁ„o s„o:
+	- [x] A foto n√£o poder√° ser armazenada no banco de dados, voc√™ pode utilizar um servi√ßo de storage( disco local, amazon s3, minIO ou outros).
+	- [x] Eu como entregador quero alugar uma moto por um per√≠odo.
+		- Os planos dispon√≠veis para loca√ß√£o s√£o:
 		- [x] 7 dias com um custo de R$30,00 por dia
 		- [x] 15 dias com um custo de R$28,00 por dia
 		- [x] 30 dias com um custo de R$22,00 por dia
 		- [x] 45 dias com um custo de R$20,00 por dia
 		- [x] 50 dias com um custo de R$18,00 por dia
-	- [x] A locaÁ„o obrigatÛriamente tem que ter uma data de inicio e uma data de tÈrmino e outra data de previs„o de tÈrmino. 
-	- [x] O inicio da locaÁ„o obrigatÛriamente È o primeiro dia apÛs a data de criaÁ„o. 
-	- [x] Somente entregadores habilitados na categoria A podem efetuar uma locaÁ„o 
-- [x] Eu como entregador quero informar a data que irei devolver a moto e consultar o valor total da locaÁ„o.
-	- [x] Quando a data informada for inferior a data prevista do tÈrmino, ser· cobrado o valor das di·rias e uma multa adicional
-		- [x] Para plano de 7 dias o valor da multa È de 20% sobre o valor das di·rias n„o efetivadas.
-		- [x] Para plano de 15 dias o valor da multa È de 40% sobre o valor das di·rias n„o efetivadas.
-	- [x] Quando a data informada for superior a data prevista do tÈrmino, ser· cobrado um valor adicional de R$50,00 por di·ria adicional.
+	- [x] A loca√ß√£o obrigat√≥riamente tem que ter uma data de inicio e uma data de t√©rmino e outra data de previs√£o de t√©rmino. 
+	- [x] O inicio da loca√ß√£o obrigat√≥riamente √© o primeiro dia ap√≥s a data de cria√ß√£o. 
+	- [x] Somente entregadores habilitados na categoria A podem efetuar uma loca√ß√£o 
+- [x] Eu como entregador quero informar a data que irei devolver a moto e consultar o valor total da loca√ß√£o.
+	- [x] Quando a data informada for inferior a data prevista do t√©rmino, ser√° cobrado o valor das di√°rias e uma multa adicional
+		- [x] Para plano de 7 dias o valor da multa √© de 20% sobre o valor das di√°rias n√£o efetivadas.
+		- [x] Para plano de 15 dias o valor da multa √© de 40% sobre o valor das di√°rias n√£o efetivadas.
+	- [x] Quando a data informada for superior a data prevista do t√©rmino, ser√° cobrado um valor adicional de R$50,00 por di√°ria adicional.
 
 ## CQRS
-O projeto foi desenvolvido utilizando o padr„o [CQRS](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs), onde as operaÁıes de leitura e escrita s„o separadas.
-## PrÈ-Requisitos para execuÁ„o
+O projeto foi desenvolvido utilizando o padr√£o [CQRS](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs), onde as opera√ß√µes de leitura e escrita s√£o separadas.
+## Pr√©-Requisitos para execu√ß√£o
 - [GIT](https://git-scm.com/)
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - [Docker](https://www.docker.com/)
 
-### Verificar se os prÈ-requisitos est„o instalados
-Verificar o git est· instalado
+### Verificar se os pr√©-requisitos est√£o instalados
+Verificar o git est√° instalado
 ```bash
 git --version
 ```
-Verificar se a vers„o corresponde a vers„o 8.0
+Verificar se a vers√£o corresponde a vers√£o 8.0
 ```bash
 dotnet --version
 ```
-Verificar se o docker est· instalado
+Verificar se o docker est√° instalado
 ```bash
 docker --version
 ```
-### Clonar repositÛrio
+### Clonar reposit√≥rio
 ```bash
 git clone https://github.com/bsbrixius/rentalApp.git
 ```
 
 ### Rodar docker-compose
-- ObservaÁ„o: para os serviÁos `Authentication.API`, `Core.API` e `Worker.API` 
-no docker-compose.yml È possÌvel alterar a variavel de ambiente `ASPNETCORE_ENVIRONMENT` no `docker-compose.yml` para `Development` ou para `Cloud` para que os serviÁos possam utilizar Docker ou serviÁos na nuvem.
+- Observa√ß√£o: para os servi√ßos `Authentication.API`, `Core.API` e `Worker.API` 
+no docker-compose.yml √© poss√≠vel alterar a variavel de ambiente `ASPNETCORE_ENVIRONMENT` no `docker-compose.yml` para `Development` ou para `Cloud` para que os servi√ßos possam utilizar Docker ou servi√ßos na nuvem.
 
 ```bash
+cd rentalApp
 docker-compose up
 ```
