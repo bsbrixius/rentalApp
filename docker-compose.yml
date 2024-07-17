@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   core.api:
-    image: ${DOCKER_REGISTRY-}coreapi
+    image: ${DOCKER_REGISTRY-}coreapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Core.API/Dockerfile
@@ -20,7 +20,7 @@ services:
       - minionetwork
 
   authentication.api:
-    image: ${DOCKER_REGISTRY-}authenticationapi
+    image: ${DOCKER_REGISTRY-}authenticationapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Authentication.API/Dockerfile
@@ -38,7 +38,7 @@ services:
       - minionetwork
 
   worker.api:
-    image: ${DOCKER_REGISTRY-}workerapi
+    image: ${DOCKER_REGISTRY-}workerapi:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Worker.Api/Dockerfile
