@@ -6,11 +6,11 @@ using Testing.Base.Helpers;
 
 namespace Core.FunctionalTests.Areas.Renter
 {
-    public class MotorcycleController : BaseTest<Program, CoreContext, CoreContextTestingSeeder>, IAssemblyFixture<CoreContextTestingSeeder>
+    public class MotorcycleControllerTests : BaseTest<Program, CoreContext, CoreContextTestingSeeder>, IAssemblyFixture<CoreContextTestingSeeder>
     {
         private HttpClient _renterClient;
 
-        public MotorcycleController(TestApplicationFactory<Program, CoreContext, CoreContextTestingSeeder> factory) : base(factory)
+        public MotorcycleControllerTests(TestApplicationFactory<Program, CoreContext, CoreContextTestingSeeder> factory) : base(factory)
         {
             _renterClient = Factory.CreateClientWithTestAuth(TestClaimsProvider.WithUserClaims());
         }

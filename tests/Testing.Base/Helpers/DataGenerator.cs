@@ -44,11 +44,13 @@ namespace Testing.Base.Helpers
                         if (int.TryParse(p.ToString(), out var number))
                         {
                             stringBuilder.Append(charsNumbers[random.Next(0, int.Min(charsNumbers.Length, number))]);
+                            break;
                         }
                         else if (charsAlphabet.Contains(p))
                         {
                             var index = charsAlphabet.IndexOf(p);
                             stringBuilder.Append(charsAlphabet[random.Next(0, int.Min(charsAlphabet.Length, index))]);
+                            break;
                         }
                         throw new ArgumentException("Invalid pattern");
                 }

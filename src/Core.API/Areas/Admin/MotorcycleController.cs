@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.API.Areas.Admin.Controllers
+namespace Core.API.Areas.Admin
 {
     [Area("Admin")]
     [ApiController]

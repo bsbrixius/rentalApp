@@ -11,6 +11,8 @@ namespace Crosscutting.EventBus.RabbitMq
         static bool? _isRunningInContainer;
 
         static bool IsRunningInContainer => _isRunningInContainer ??= bool.TryParse(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), out var inDocker) && inDocker;
+        static bool IsDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+
 
         public static IServiceCollection AddRabbitMqBroker(this IServiceCollection services, string prefix = "", string hostName = "localhost")
         {
@@ -28,15 +30,21 @@ namespace Crosscutting.EventBus.RabbitMq
                     var virtualHost = configuration.GetSection("RabbitMqHostSettings:VirtualHost").Value ?? "/";
                     var username = configuration.GetSection("RabbitMqHostSettings:Username").Value ?? "guest";
                     var password = configuration.GetSection("RabbitMqHostSettings:Password").Value ?? "guest";
+                    var connectionString = configuration.GetSection("RabbitMqHostSettings:ConnectionString").Value;
 
-                    if (IsRunningInContainer)
+
+                    if (IsDevelopment)
                         cfg.Host("rabbitmq");
                     else
-                        cfg.Host(host, port, virtualHost, x =>
                     {
-                        x.Username(username);
-                        x.Password(password);
-                    });
+                        //cfg.Host(connectionString);
+
+                        cfg.Host(host, port, virtualHost, x =>
+                        {
+                            x.Username(username);
+                            x.Password(password);
+                        });
+                    }
 
                     cfg.ConfigureEndpoints(context);
                 });

@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.API.Areas.Renter.Controller
+namespace Core.API.Areas.Renter
 {
     [Area("Renter")]
     [ApiController]

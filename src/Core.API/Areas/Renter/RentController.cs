@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.API.Areas.Renter.Controller
+namespace Core.API.Areas.Renter
 {
     [Area("Renter")]
     [ApiController]
@@ -37,7 +37,7 @@ namespace Core.API.Areas.Renter.Controller
 
         [HttpGet("information")]
         [Authorize(Policy = Policies.Roles.Renter.Read)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RentInformationDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> Rent([FromQuery] GetRentInformationRequest getRentInformationRequest)
         {
             return Ok(await _mediator.Send(new GetRentInformationQuery

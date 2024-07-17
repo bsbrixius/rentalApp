@@ -10,6 +10,7 @@ namespace Core.Domain.Aggregates.Rent
         {
 
         }
+
         public Rent(DateOnly startAt, DateOnly endAt, DateOnly expectedReturnAt) : this()
         {
             if (startAt > endAt)
@@ -18,6 +19,7 @@ namespace Core.Domain.Aggregates.Rent
             if (startAt > expectedReturnAt)
                 throw new DomainException("Start date must be before expected return date");
 
+            Status = RentStatusType.Pending;
             StartAt = startAt;
             EndAt = endAt;
             ExpectedReturnAt = expectedReturnAt;

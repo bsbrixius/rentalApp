@@ -16,20 +16,25 @@ namespace Core.Domain.Aggregates.Motorcycle
 
         public Motorcycle(uint year, string model, string plate) : this()
         {
-            Year = year;
             Model = model;
-            Plate = plate;
+            SetYear(year);
+            SetPlate(plate);
             AddMotorcycleRegisteredDomainEvent();
         }
 
-        public uint Year { get; set; }
-        public string Model { get; set; }
+        public uint Year { get; private set; }
         public string Plate { get; private set; }
+        public string Model { get; set; }
         public virtual List<Rent.Rent> Rents { get; set; }
 
         public void SoftDelete()
         {
             IsDeleted = true;
+        }
+
+        public void SetYear(uint year)
+        {
+            Year = year;
         }
 
         public void SetPlate(string newPlate)
@@ -48,6 +53,7 @@ namespace Core.Domain.Aggregates.Motorcycle
         {
             Rents.Add(rent);
         }
+
         #region Domain Events
         private void AddMotorcycleRegisteredDomainEvent()
         {

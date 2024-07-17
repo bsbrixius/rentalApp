@@ -42,6 +42,19 @@ namespace Core.FunctionalTests
             {
                 public static string Get(OrderByType orderByType = OrderByType.Year, SortByType sortByType = SortByType.Descending) => $"{BaseUrl}/{Area}/motorcycle?{nameof(orderByType)}={orderByType}&{nameof(sortByType)}={sortByType}";
             }
+            public static class Rent
+            {
+                public static string GetPlan => $"{BaseUrl}/{Area}/rent/plans";
+                public static string GetInformation(DateOnly startAt, DateOnly endAt, DateOnly expectedReturnAt) => $"{BaseUrl}/{Area}/rent/information?{nameof(startAt)}={startAt}&{nameof(endAt)}={endAt}&{nameof(expectedReturnAt)}={expectedReturnAt}";
+                public static string PostRent(DateOnly endAt, DateOnly expectedReturnAt) => $"{BaseUrl}/{Area}/rent/information?{nameof(endAt)}={endAt}&{nameof(expectedReturnAt)}={expectedReturnAt}";
+            }
+
+            public static class RenterController
+            {
+                public static string Get => $"{BaseUrl}/{Area}/renter";
+                //public static string GetCNH => $"{BaseUrl}/{Area}/renter/cnh";
+                //public static string Register => $"{BaseUrl}/{Area}/renter/register";
+            }
         }
     }
 }

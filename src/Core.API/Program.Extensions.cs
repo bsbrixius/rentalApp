@@ -149,6 +149,7 @@ namespace Core.API
             .Create(typeof(RegisterMotorcycleCommand).Assembly)
             .WithAllOpenGenericHandlerTypesRegistered()
             .Build();
+
             hostBuilder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             hostBuilder.ConfigureContainer<ContainerBuilder>(
                builder =>
