@@ -93,7 +93,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.FunctionalTests", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.UnitTests", "tests\Core.UnitTests\Core.UnitTests.csproj", "{0BF04818-D021-4C72-B8B5-86774B09FBDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.FunctionalTests", "tests\Authentication.FunctionalTests\Authentication.FunctionalTests.csproj", "{601E06D6-C8A8-422A-A72A-51BF9A0D63F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication.FunctionalTests", "tests\Authentication.FunctionalTests\Authentication.FunctionalTests.csproj", "{601E06D6-C8A8-422A-A72A-51BF9A0D63F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A584B655-C969-465A-8D3A-2025614B53B9}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
