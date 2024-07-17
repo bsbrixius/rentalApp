@@ -15,16 +15,16 @@ Também é possível que entregadores `Renter` se registrem para alugarem motoci
 - smtp4dev
 
 ## Serviços
-- `Authentication.API` - Serviço de autenticação
-- `Core.API` - Serviço de gestão de motocicletas e alugueis
+- [`Authentication.API`](http://localhost:7000/swagger/index.html) - Serviço de autenticação
+- [`Core.API`](http://localhost:7010/swagger/index.html) - Serviço de gestão de motocicletas e alugueis
 - `Worker.API` - Serviço de processamento de eventos
 ## Outros Serviços Utilizados
 É possível alterar a variavel de ambiente `ASPNETCORE_ENVIRONMENT` no `docker-compose.yml` para `Development` ou para `Cloud` para que os serviços possam utilizar Docker ou serviços na nuvem.
 - Rodando em Docker: 
-	- `pgAdmin` - Interface gráfica para o banco de dados
+	- [`pgAdmin`](http://localhost:5050/) - Interface gráfica para o banco de dados
 	- `Postgres` - Banco de dados
-	- `RabbitMQ` - Mensageria
-	- `smtp4dev` - Serviço de email
+	- [`RabbitMQ`](http://localhost:15672/) - Mensageria
+	- [`smtp4dev`](http://localhost:5000/) - Serviço de email
 - Rodando na Cloud:
 	- `MinIO` - Storage (Único serviço na nuvem tanto utilizando `Development` quanto `Cloud`)
 	- `Postgres` - Banco de dados
