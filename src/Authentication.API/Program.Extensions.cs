@@ -1,7 +1,5 @@
-﻿using Authentication.API.Application.Commands.User.PreRegisterUser;
-using Authentication.API.Application.Settings;
-using Authentication.API.Domain;
-using Authentication.API.Infraestructure;
+﻿using Authentication.Application.Commands.User.PreRegisterUser;
+using Authentication.Domain;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BuildingBlocks.API.Core.AutofacModules;
@@ -52,7 +50,6 @@ namespace Authentication.API
                     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
                 });
 
-            services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
             services.Configure<ApiBehaviorOptions>(options => options.SuppressInferBindingSourcesForParameters = true);
 
             //services.AddFluentValidationAutoValidation();
@@ -78,7 +75,7 @@ namespace Authentication.API
 
         public static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentityBase<User, AuthenticationContext>();
+            services.AddIdentityBase<Authentication.Domain.Aggregates.User, AuthContext>();
 
             return services;
         }
@@ -136,7 +133,7 @@ namespace Authentication.API
             services.AddResponseCaching();
             services.AddHttpContextAccessor();
             services.TryAddScoped<IIdentityService, IdentityService>();
-            services.AddSingleton<JwtBuilder<User>>();
+            services.AddSingleton<JwtBuilder<Authentication.Domain.Aggregates.User>>();
             services.AddSingleton<JwtValidator>();
             return services;
         }

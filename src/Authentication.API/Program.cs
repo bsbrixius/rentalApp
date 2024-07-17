@@ -1,6 +1,7 @@
 using Authentication.API;
-using Authentication.API.Application.Queries.User;
 using Authentication.API.Infraestructure;
+using Authentication.Application.Query.User;
+using Authentication.Domain;
 using BuildingBlocks.API.Core;
 using BuildingBlocks.API.Core.Swagger;
 using Serilog;
@@ -28,11 +29,11 @@ builder.Services
 builder.Services.AddScoped<IUserQueries, UserQueries>();
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Cloud")
 {
     using (var scope = app.Services.CreateScope())
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AuthenticationContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
         //dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
         await dbContext.TrySeedDevelopmentDatabaseAsync();

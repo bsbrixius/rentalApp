@@ -66,11 +66,14 @@ namespace BuildingBlocks.API.Core.Swagger
         {
             var controllerInfos = GetControllerAreas();
             var urls = new List<UrlDescriptor>(options.ConfigObject.Urls ?? Enumerable.Empty<UrlDescriptor>());
+            var alreadyAddedArea = new HashSet<string>();
+
             foreach (var controllerInfo in controllerInfos)
             {
-                if (controllerInfo.Area != null)
+                if (controllerInfo.Area != null && !alreadyAddedArea.Contains(controllerInfo.Area.RouteValue))
                 {
                     urls.Add(new UrlDescriptor { Url = $"{controllerInfo.Area.RouteValue}/swagger.json", Name = controllerInfo.Area.RouteValue });
+                    alreadyAddedArea.Add(controllerInfo.Area.RouteValue);
                 }
             }
             options.ConfigObject.Urls = urls;

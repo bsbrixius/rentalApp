@@ -26,10 +26,11 @@ namespace Crosscutting.StorageService.MinIO
             ArgumentNullException.ThrowIfNull(accessKey, nameof(accessKey));
             ArgumentNullException.ThrowIfNull(secretKey, nameof(secretKey));
 
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
             services.AddMinio(configureClient => configureClient
                 .WithEndpoint(endpoint)
                 .WithCredentials(accessKey, secretKey)
-                .WithSSL(false)
+                .WithSSL()
                 .Build());
             services.AddSingleton<IStorageService, MinioStorageService>();
         }

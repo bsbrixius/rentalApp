@@ -1,7 +1,7 @@
-﻿using Authentication.API.Application.Commands.User.PreRegisterUser;
-using Authentication.API.Application.Commands.User.RegisterUser;
-using Authentication.API.Application.Data.User;
-using Authentication.API.Application.Queries.User;
+﻿using Authentication.Application.Commands.User.PreRegisterUser;
+using Authentication.Application.Commands.User.RegisterUser;
+using Authentication.Application.DTOs.User;
+using Authentication.Application.Query.User;
 using BuildingBlocks.API.Core.Data.Pagination;
 using BuildingBlocks.Security.Authorization;
 using MediatR;
@@ -71,7 +71,7 @@ namespace Authentication.API.Areas.Admin
                 Email = preRegisterUserDTO.Email,
                 Role = SystemRoles.Admin
             });
-            return Created();
+            return NoContent();
         }
     }
 }

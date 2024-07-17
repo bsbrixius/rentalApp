@@ -1,4 +1,6 @@
 ﻿using Authentication.API.Domain;
+using Authentication.Domain;
+using Authentication.Domain.Aggregates;
 using BuildingBlocks.Security.Authorization;
 using BuildingBlocks.Utils;
 using Microsoft.AspNetCore.Identity;
@@ -8,7 +10,7 @@ namespace Authentication.API.Infraestructure
 {
     public static class SeedDevelopmentDatabase
     {
-        public static async Task TrySeedDevelopmentDatabaseAsync(this AuthenticationContext context)
+        public static async Task TrySeedDevelopmentDatabaseAsync(this AuthContext context)
         {
             await SeedRoles(context);
             await SeedUsers(context);
@@ -16,7 +18,7 @@ namespace Authentication.API.Infraestructure
             await context.SaveChangesAsync();
         }
 
-        private static async Task SeedUsers(AuthenticationContext context)
+        private static async Task SeedUsers(AuthContext context)
         {
             var adminUser = new User("admin@rentalapp.com", "admin-fullname", DateTime.UtcNow.ToDateOnly());
             if (!context.Users.Any(x => x.Email == adminUser.Email))
@@ -37,7 +39,7 @@ namespace Authentication.API.Infraestructure
             }
         }
 
-        private static async Task SeedRoles(AuthenticationContext context)
+        private static async Task SeedRoles(AuthContext context)
         {
             if (!context.Roles.Any(x => x.Name == SystemRoles.Admin))
             {
