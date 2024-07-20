@@ -86,7 +86,7 @@ O projeto foi desenvolvido utilizando o padrão [CQRS](https://learn.microsoft.c
 - [Docker](https://www.docker.com/)
 
 ### Verificar se os pré-requisitos estão instalados
-Verificar o git está instalado
+Verificar se o git está instalado
 ```bash
 git --version
 ```
